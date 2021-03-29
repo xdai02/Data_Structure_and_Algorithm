@@ -114,6 +114,7 @@ List* delete(List *head, int pos) {
     Node *del = temp->next;
     temp->next = temp->next->next;
     free(del);
+    del = NULL;
     return head;
 }
 
@@ -162,7 +163,7 @@ List* set(List *head, int pos, dataType val) {
  * @brief  销毁链表
  * @param  head: 链表头指针
  */
-void deleteList(List *head) {
+void destroyList(List *head) {
     if(!head) {
         return;
     }
@@ -170,6 +171,7 @@ void deleteList(List *head) {
         delete(head, 0);
     }
     free(head);
+    head = NULL;
 }
 
 int main() {
@@ -190,7 +192,7 @@ int main() {
     show(list);
 
     printf("%d\n", search(list, 6)->data);  // 6
-    deleteList(list);
+    destroyList(list);
 
     return 0;
 }

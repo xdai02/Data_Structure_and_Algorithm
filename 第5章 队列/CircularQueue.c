@@ -86,12 +86,14 @@ dataType dequeue(Queue *queue) {
  * @brief  销毁队列
  * @param  queue: 队列指针
  */
-void deleteQueue(Queue *queue) {
+void destroyQueue(Queue *queue) {
     if(!queue) {
         return;
     }
     free(queue->data);
     free(queue);
+    queue->data = NULL;
+    queue = NULL;
 }
 
 int main() {
@@ -107,6 +109,6 @@ int main() {
         printf("%d\n", dequeue(q));
     }
 
-    deleteQueue(q);
+    destroyQueue(q);
     return 0;
 }

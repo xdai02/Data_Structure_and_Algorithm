@@ -217,6 +217,7 @@ int main() {
 
     printf("%d\n", get(arr, 0));    // 6
     free(arr);
+    arr = NULL;
     
     return 0;
 }

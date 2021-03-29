@@ -96,12 +96,14 @@ dataType peek(Stack *stack) {
  * @brief  销毁栈
  * @param  stack: 栈指针
  */
-void deleteStack(Stack *stack) {
+void destroyStack(Stack *stack) {
     if(!stack) {
         return;
     }
     free(stack->data);
     free(stack);
+    stack->data = NULL;
+    stack = NULL;
 }
 
 int main() {
@@ -116,6 +118,6 @@ int main() {
         printf("%d\n", pop(s));
     }
 
-    deleteStack(s);
+    destroyStack(s);
     return 0;
 }

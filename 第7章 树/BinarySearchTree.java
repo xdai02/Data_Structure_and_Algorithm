@@ -137,7 +137,7 @@ public class BinarySearchTree {
 		
 		if(val < node.getData()) {
 			node.setLeft(insert(node.getLeft(), val));
-		} else if(val >= node.getData()) {
+		} else {
 			node.setRight(insert(node.getRight(), val));
 		}
 		return node;
@@ -161,6 +161,18 @@ public class BinarySearchTree {
 		} else {
 			return search(this.root.getRight(), val);
 		}
+	}
+	
+	/**
+	 * @brief  获取树高
+	 * @param  root: 树根
+	 * @retval 树高
+	 */
+	public int getHeight(Node node) {
+		if(node == null) {
+			return 0;
+		}
+		return Math.max(getHeight(node.getLeft()), getHeight(node.getRight())) + 1;
 	}
 
 	public static void main(String[] args) {
@@ -189,5 +201,6 @@ public class BinarySearchTree {
 	    System.out.println();
 
 	    bst.showTree(root, 0);
+		System.out.println("height: " + bst.getHeight(root));
 	}
 }

@@ -108,7 +108,7 @@ BST* insert(BST *root, dataType val) {
 
     if(val < root->data) {
         root->left = insert(root->left, val);
-    } else if(val >= root->data) {
+    } else {
         root->right = insert(root->right, val);
     }
     return root;
@@ -132,6 +132,22 @@ Node* search(Node *root, dataType val) {
     } else {
         return search(root->right, val);
     }
+}
+
+int max(int num1, int num2) {
+    return num1 > num2 ? num1 : num2;
+}
+
+/**
+ * @brief  获取树高
+ * @param  root: 树根
+ * @retval 树高
+ */
+int getHeight(BST *root) {
+    if(!root) {
+        return 0;
+    }
+    return max(getHeight(root->left), getHeight(root->right)) + 1;
 }
 
 /**
@@ -183,6 +199,7 @@ int main() {
     printf("\n");
 
     showTree(root, 0);
+    printf("height: %d\n", getHeight(root));
 
     destroyBST(root);
     return 0;

@@ -2,140 +2,217 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX 20
-#define INFINITY 65535
+#define MAX         10          // æœ€å¤§é¡¶ç‚¹æ•°é‡
+#define INFINITY    65535       // æ— ç©·å¤§
 
-typedef int Vertex;
+#define UNDIRECTED  0           // æ— å‘å›¾
+#define DIRECTED    1           // æœ‰å‘å›¾
 
-/**
- * ÁÚ½Ó¾ØÕóÊµÏÖÍ¼
- */
+typedef char Vertex;            // é¡¶ç‚¹
+typedef int Edge;               // è¾¹
+
+// å›¾
 typedef struct Graph {
-    char vertex[MAX];   //±£´æ¶¥µãĞÅÏ¢
-    int numV;           //¶¥µãÊıÁ¿
-    int numE;           //±ßÊıÁ¿
-    int weight[MAX][MAX];   //±ßµÄÈ¨Öµ
-    bool isVisited[MAX];    //·ÃÎÊ±êÖ¾
+    int type;                   // å›¾çš„ç±»å‹ï¼ˆæ— å‘å›¾-0 / æœ‰å‘å›¾-1ï¼‰
+    Vertex vertex[MAX];         // é¡¶ç‚¹åç§°
+    int vertexNum;              // é¡¶ç‚¹æ•°é‡
+    int edgeNum;                // è¾¹æ•°é‡
+    int weight[MAX][MAX];       // é‚»æ¥çŸ©é˜µ
 } Graph;
 
-/**
- * Çå¿ÕÍ¼£¬ÉèÖÃÈ¨ÖµÎªÕıÎŞÇî
- * @param g - Í¼
- * @return - Çå¿ÕºóµÄÍ¼
- */
-Graph* clearGraph(Graph *g) {
-    for(int i = 0; i < g->numV; i++) {
-        for(int j = 0; j < g->numV; j++) {
-            g->weight[i][j] = INFINITY;
-        }
-    }
-    return g;
-}
+bool isVisited[MAX];            // è®¿é—®æ ‡å¿—
 
 /**
- * ´´½¨Í¼
- * @return - ´´½¨ºóµÄÍ¼
+ * @brief  åˆ›å»ºå›¾
+ * @note   æŒ‡å®šæ ¼å¼è¾“å…¥å›¾çš„ä¿¡æ¯ï¼ˆtxtæ–‡ä»¶æä¾›æ ·ä¾‹ï¼‰
+ * @retval å›¾ç»“æ„æŒ‡é’ˆ
  */
 Graph* createGraph() {
     Graph *g = (Graph *)malloc(sizeof(Graph));
     if(!g) {
+        fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
 
-    printf("ÊäÈëÍ¼µÄ¶¥µãÊıÁ¿£º");
-    scanf("%d", &g->numV);
-    printf("ÊäÈëÍ¼µÄ±ßÊıÁ¿£º");
-    scanf("%d", &g->numE);
-
-    clearGraph(g);      //Çå¿ÕÍ¼
-
-    printf("\n");
-    printf("*** ÊäÈëÍ¼ÖĞ¸÷¶¥µãµÄĞÅÏ¢ ***\n");
-    for(int i = 0; i < g->numV; i++) {
-        fflush(stdin);
-        printf("µÚ%d¸ö¶¥µã±£´æµÄÊı¾İ£º", i+1);
-        scanf("%c", &(g->vertex[i]));
+    for(int i = 0; i < MAX; i++) {
+        for(int j = 0; j < MAX; j++) {
+            if(i == j) {
+                g->weight[i][j] = 0;
+            } else {
+                g->weight[i][j] = INFINITY;
+            }
+        }
     }
 
-    char v1, v2;        //¶¥µã
-    int weight;         //È¨Öµ
-    int i, j;
-    printf("\n");
-    printf("*** ÊäÈë¹¹³É±ßµÄ¶¥µã¼°ÆäÈ¨Öµ ***\n");
-    for(int k = 0; k < g->numE; k++) {
-        fflush(stdin);
-        printf("µÚ%dÌõ±ßĞÅÏ¢£¨¶¥µã ¶¥µã È¨Öµ£©£º", k+1);
-        scanf("%c %c %d", &v1, &v2, &weight);
+    printf("å›¾çš„ç±»å‹ï¼ˆæ— å‘å›¾-0 / æœ‰å‘å›¾-1ï¼‰ï¼š");
+    scanf("%d", &g->type);
 
-        //ÔÚÒÑÓĞ¶¥µãÖĞ²éÕÒ¶¥µã
-        for(i = 0; v1 != g->vertex[i]; i++);
-        for(j = 0; v2 != g->vertex[j]; j++);
-        g->weight[i][j] = weight;
-        g->weight[j][i] = weight;       //ÎŞÏòÍ¼ÔÚ¶Ô½Ç±£´æÈ¨Öµ
+    printf("å›¾çš„é¡¶ç‚¹æ•°é‡ï¼š");
+    scanf("%d", &g->vertexNum);
+    for(int i = 0; i < g->vertexNum; i++) {
+        fflush(stdin);          // æ¸…ç©ºç¼“å†²åŒº
+        printf("è¾“å…¥ç¬¬%dä¸ªé¡¶ç‚¹åç§°ï¼š", i+1);
+        scanf("%c", &g->vertex[i]);
+    }
+
+    printf("å›¾çš„è¾¹æ•°é‡ï¼š");
+    scanf("%d", &g->edgeNum);
+    for(int i = 0; i < g->edgeNum; i++) {
+        char src, dst;          // èµ·å§‹é¡¶ç‚¹ ç›®æ ‡é¡¶ç‚¹
+        int weight;             // è¾¹çš„æƒå€¼
+        int v1, v2;             // èµ·å§‹é¡¶ç‚¹ä¸‹æ ‡ ç›®æ ‡é¡¶ç‚¹ä¸‹æ ‡
+
+        fflush(stdin);          // æ¸…ç©ºç¼“å†²åŒº
+        printf("è¾“å…¥ç¬¬%dæ¡è¾¹ä¿¡æ¯ï¼ˆèµ·å§‹é¡¶ç‚¹ ç›®æ ‡é¡¶ç‚¹ æƒå€¼ï¼‰ï¼š", i+1);
+        scanf("%c %c %d", &src, &dst, &weight);
+
+        // åœ¨å·²æœ‰çš„é¡¶ç‚¹ä¸­æŸ¥æ‰¾é¡¶ç‚¹ä¸‹æ ‡
+        for(v1 = 0; src != g->vertex[v1]; v1++);
+        for(v2 = 0; dst != g->vertex[v2]; v2++);
+        g->weight[v1][v2] = weight;
+        // æ— å‘å›¾åœ¨å¯¹è§’ä¿å­˜ç›¸åŒæƒå€¼
+        if(g->type == UNDIRECTED) {
+            g->weight[v2][v1] = weight;
+        }
     }
 
     return g;
 }
 
+/**
+ * @brief  è¾“å‡ºå›¾çš„é‚»æ¥çŸ©é˜µ
+ * @param  g: å›¾ç»“æ„æŒ‡é’ˆ
+ */
 void printGraph(Graph *g) {
-    //Ê×ĞĞÊä³ö¶¥µãĞÅÏ¢
-    for(int i = 0; i < g->numV; i++) {
-        printf("\t%c", g->vertex[i]);
+    // é¦–è¡Œè¾“å‡ºé¡¶ç‚¹åç§°
+    for(int i = 0; i < g->vertexNum; i++) {
+        printf("\t%2c", g->vertex[i]);
+    }
+    printf("\n");
+    for(int i = 0; i < g->vertexNum * MAX; i++) {
+        printf("-");
     }
     printf("\n");
 
-    for(int i = 0; i < g->numV; i++) {
-        printf("%c", g->vertex[i]);
-
-        for(int j = 0; j < g->numV; j++) {
+    for(int i = 0; i < g->vertexNum; i++) {
+        printf("%2c", g->vertex[i]);
+        for(int j = 0; j < g->vertexNum; j++) {
             printf("\t");
             if(g->weight[i][j] == INFINITY) {
-                printf("Z");        //Z±íÊ¾ÎŞÇî´ó
+                printf("%4s", "âˆ");
             } else {
-                printf("%d", g->weight[i][j]);
+                printf("%2d", g->weight[i][j]);
             }
+            printf("|");
         }
         printf("\n");
     }
 }
 
 /**
- * Çå¿Õ·ÃÎÊ±êÖ¾
- * @param g - Í¼
+ * @brief  æ¸…ç©ºé¡¶ç‚¹çš„è®¿é—®æ ‡å¿—
+ * @note   å…¨å±€å˜é‡isVisited
  */
-void clearVisit(Graph *g) {
-    for(int i = 0; i < g->numV; i++) {
-        g->isVisited[i] = false;
+void clearFlag() {
+    for(int i = 0; i < MAX; i++) {
+        isVisited[i] = false;
     }
 }
 
 /**
- * Éî¶ÈÓÅÏÈ±éÀú
- * @param g - Í¼
- * @param v - ¿ªÊ¼±éÀúµÄ¶¥µã
+ * @brief  æ·±åº¦ä¼˜å…ˆéå†
+ * @param  g: å›¾ç»“æ„æŒ‡é’ˆ
+ * @param  v: å¼€å§‹éå†çš„é¡¶ç‚¹
  */
-void dfs(Graph *g, Vertex v) {
-    printf("%c\t", g->vertex[v]);
-    g->isVisited[v] = true;
+void dfs(Graph *g, Vertex vertex) {
+    // åœ¨å·²æœ‰çš„é¡¶ç‚¹ä¸­æŸ¥æ‰¾é¡¶ç‚¹ä¸‹æ ‡
+    int v;
+    for(v = 0; vertex != g->vertex[v]; v++);
 
-    for(int i = 0; i < g->numV; i++) {
-        if(g->weight[v][i] != INFINITY) {
-            if(!g->isVisited[i]) {
-                dfs(g, i);
+    // è®¿é—®å½“å‰é¡¶ç‚¹
+    printf("-> %c ", g->vertex[v]);
+    isVisited[v] = true;
+
+    // é€’å½’æ·±åº¦éå†å½“å‰é¡¶ç‚¹æ‰€æœ‰æœªè®¿é—®è¿‡çš„é‚»æ¥ç‚¹
+    for(int i = 0; i < g->vertexNum; i++) {
+        if(g->weight[v][i] != INFINITY && !isVisited[i]) {
+            dfs(g, g->vertex[i]);
+        }
+    }
+}
+
+/**
+ * @brief  Floydç®—æ³•è®¡ç®—å¤šæºæœ€çŸ­è·¯å¾„
+ * @param  g: å›¾ç»“æ„æŒ‡é’ˆ
+ * @param  dist: æœ€çŸ­è·¯å¾„çŸ©é˜µ
+ */
+void floyd(Graph *g, int dist[MAX][MAX]) {
+    // æœ€çŸ­è·¯å¾„çŸ©é˜µåˆå§‹åŒ–ä¸ºå›¾çš„é‚»æ¥çŸ©é˜µ
+    for(int i = 0; i < g->vertexNum; i++) {
+        for(int j = 0; j < g->vertexNum; j++) {
+            dist[i][j] = g->weight[i][j];
+        }
+    }
+
+    // Floydç®—æ³•
+    for(int k = 0; k < g->vertexNum; k++) {
+        for(int i = 0; i < g->vertexNum; i++) {
+            for(int j = 0; j < g->vertexNum; j++) {
+                if(dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
             }
         }
     }
 }
 
-int main() {
-    Graph *g = createGraph();
-
-    printGraph(g);
-
-    printf("Éî¶ÈÓÅÏÈ±éÀú\n");
-    clearVisit(g);
-    dfs(g, 0);
+/**
+ * @brief  æ‰“å°æœ€çŸ­è·¯å¾„çŸ©é˜µ
+ * @param  g: å›¾ç»“æ„æŒ‡é’ˆ
+ * @param  dist: æœ€çŸ­è·¯å¾„çŸ©é˜µ
+ */
+void printShortestDistance(Graph *g, int dist[MAX][MAX]) {
+    // é¦–è¡Œè¾“å‡ºé¡¶ç‚¹åç§°
+    for(int i = 0; i < g->vertexNum; i++) {
+        printf("\t%2c", g->vertex[i]);
+    }
+    printf("\n");
+    for(int i = 0; i < g->vertexNum * MAX; i++) {
+        printf("-");
+    }
     printf("\n");
 
+    for(int i = 0; i < g->vertexNum; i++) {
+        printf("%2c", g->vertex[i]);
+        for(int j = 0; j < g->vertexNum; j++) {
+            printf("\t");
+            if(dist[i][j] == INFINITY) {
+                printf("%4s", "âˆ");
+            } else {
+                printf("%2d", dist[i][j]);
+            }
+            printf("|");
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    Graph *g = createGraph();       // åˆ›å»ºå›¾
+
+    printGraph(g);                  // æ‰“å°é‚»æ¥çŸ©é˜µ
+
+    clearFlag();
+    printf("æ·±åº¦ä¼˜å…ˆéå†ï¼š");
+    dfs(g, 'A');                    // æŒ‡å®šæºç‚¹å¼€å§‹dfs
+    printf("\n");
+
+    // Floydç®—æ³•è®¡ç®—å¤šæºæœ€çŸ­è·¯å¾„
+    int dist[MAX][MAX];
+    floyd(g, dist);
+    printf("å¤šæºæœ€çŸ­è·¯å¾„ï¼š\n");
+    printShortestDistance(g, dist);
+
+    free(g);
     return 0;
 }

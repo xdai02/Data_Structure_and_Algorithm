@@ -57,13 +57,14 @@ bool isFull(Queue *queue) {
  * @param  val: 入队元素
  * @retval 入队成功返回true，失败返回false
  */
-void enqueue(Queue *queue, dataType val) {
+bool enqueue(Queue *queue, dataType val) {
     if(isFull(queue)) {
         fprintf(stderr, "Error: queue is full.\n");
         return false;
     }
     queue->data[queue->rear] = val;
-    queue->rear = (queue->rear + 1) % (queue->max);
+    queue->rear = (queue->rear + 1) % queue->max;
+	return true;
 }
 
 /**
@@ -78,7 +79,7 @@ dataType dequeue(Queue *queue) {
         exit(1);
     }
     dataType ret = queue->data[queue->front];
-    queue->front = (queue->front + 1) % (queue->max);
+    queue->front = (queue->front + 1) % queue->max;
     return ret;
 }
 

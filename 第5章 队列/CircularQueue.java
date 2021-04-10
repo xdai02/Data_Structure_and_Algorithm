@@ -1,18 +1,83 @@
-import java.util.Queue;
-import java.util.LinkedList;
-
 public class CircularQueue {
+	private int[] data;			//  ˝æ›”Ú
+	private int front;			// ∂”Õ∑
+	private int rear;			// ∂”Œ≤
+	private int max;			// ∂”¡–»›¡ø
+	
+	/**
+	 * @brief  ≥ı ºªØ∂”¡–
+	 * @note   —≠ª∑∂”¡––Ë“™±£¡Ù“ª∏ˆø’Œª
+	 */
+	public CircularQueue() {
+		this.max = 10;
+		this.data = new int[max];
+		this.front = this.rear = 0;
+	}
+	
+	/**
+	 * @brief  ≥ı ºªØ∂”¡–
+	 * @note   —≠ª∑∂”¡––Ë“™±£¡Ù“ª∏ˆø’Œª
+	 * @param  size: ∂”¡–»›¡ø
+	 */
+	public CircularQueue(int size) {
+		this.max = size + 1;
+		this.data = new int[max];
+		this.front = this.rear = 0;
+	}
+	
+	/**
+	 * @brief  ≈–∂œ∂”¡– «∑ÒŒ™ø’
+	 * @retval ø’∂”¡–∑µªÿtrue£¨∑«ø’∑µªÿfalse
+	 */
+	public boolean isEmpty() {
+		return front == rear;
+	}
+	
+	/**
+	 * @brief  ≈–∂œ∂”¡– «∑Ò“—¬˙
+	 * @retval ¬˙∂”¡–∑µªÿtrue£¨Œ¥¬˙∑µªÿfalse
+	 */
+	public boolean isFull() {
+		return (rear + 1) % max == front;
+	}
+	
+	/**
+	 * @brief  »Î∂”
+	 * @param  val: »Î∂”‘™Àÿ
+	 * @retval »Î∂”≥…π¶∑µªÿtrue£¨ ß∞‹∑µªÿfalse
+	 */
+	public boolean enqueue(int val) {
+	    if(isFull()) {
+	    	System.err.println("Error: queue is full.");
+	        return false;
+	    }
+	    data[rear] = val;
+	    rear = (rear + 1) % max;
+	    return true;
+	}
+
+	/**
+	 * @brief  ≥ˆ∂”
+	 * @note   ø…ƒ‹“˝∑¢ø’∂”¡–“Ï≥£
+	 * @retval ≥ˆ∂”‘™Àÿ
+	 */
+	public int dequeue() {
+	    int ret = data[front];
+	    front = (front + 1) % max;
+	    return ret;
+	}
+	
     public static void main(String[] args) {
-        Queue<Integer> queue = new LinkedList<Integer>();
-
-        queue.add(1);       // Â§¥ [1] Â∞æ
-        queue.add(2);       // Â§¥ [1, 2] Â∞æ
-        queue.add(3);		// Â§¥ [1, 2, 3] Â∞æ
-        queue.add(4);		// Â§¥ [1, 2, 3, 4] Â∞æ
-        queue.add(5);		// Â§¥ [1, 2, 3, 4, 5] Â∞æ
-
+    	CircularQueue queue = new CircularQueue(5);
+    	
+    	queue.enqueue(1);			// Õ∑ [1] Œ≤
+    	queue.enqueue(2);			// Õ∑ [1, 2] Œ≤
+    	queue.enqueue(3);			// Õ∑ [1, 2, 3] Œ≤
+    	queue.enqueue(4);			// Õ∑ [1, 2, 3, 4] Œ≤
+    	queue.enqueue(5);			// Õ∑ [1, 2, 3, 4, 5] Œ≤
+    	
         while(!queue.isEmpty()) {
-            System.out.println(queue.poll());
+            System.out.println(queue.dequeue());
         }
     }
 }

@@ -25,10 +25,17 @@
 \usepackage{pgf-umlcd}
 \usepackage{bbding}
 \usepackage[edges]{forest}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 % \usepackage{minted}
 
 \makeatletter
 \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
+\makeatother
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
 
 \usetikzlibrary{calc,trees,positioning,arrows,fit,shapes}

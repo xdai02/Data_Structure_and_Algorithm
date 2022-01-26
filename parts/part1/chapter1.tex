@@ -103,13 +103,13 @@ $$
 	\begin{algorithmic}[1]
 		\Procedure{insertionSort}{A[0..n-1]}
 		\For {j = 2 to n - 1}
-			\State key = A[j]
-			\State i = j - 1
-			\While {i > 0 and A[i] > key}
-				\State A[i+1] = A[i]
-				\State i = i - 1
-			\EndWhile
-			\State A[i+1] = key
+		\State key = A[j]
+		\State i = j - 1
+		\While {i > 0 and A[i] > key}
+		\State A[i+1] = A[i]
+		\State i = i - 1
+		\EndWhile
+		\State A[i+1] = key
 		\EndFor
 		\State \Return A
 		\EndProcedure
@@ -240,7 +240,34 @@ void reverse(char *str) {
 
 蒙特卡洛算法的基本思想就是当样本数量足够大时，可以用频率去估计概率，这也是求圆周率$ \pi $的常用方法。
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[]{img/C1/1-3/1.png}
+\end{figure}
 
+当在$ [0, 1] $的范围内随机选择一个坐标$ (x, y) $时，每个坐标点被选中的概率相等，则坐标落在直径为1的正方形中的圆的概率为：
+
+$$
+	P \left( \sqrt{x^2 + y^2} \le 1 \right) = {\pi \over 4}
+$$
+
+在生成大量随机点的前提下能得到尽可能接近圆周率的值。 \\
+
+\mybox{蒙特卡罗算法}
+
+\begin{lstlisting}[language=C]
+double montePI(int n) {
+	int cnt = 0;        // 圆内点的数量
+	for(int i = 0; i < n; i++) {
+		double x = rand() / (RAND_MAX + 1.0);   // [0, 1]
+		double y = rand() / (RAND_MAX + 1.0);   // [0, 1]
+		if(sqrt(x*x + y*y) <= 1) {
+			cnt++;
+		}
+	}
+	return 4.0 * cnt / n;
+}
+\end{lstlisting}
 
 \newpage
 
@@ -252,6 +279,8 @@ void reverse(char *str) {
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[]{img/C1/1-3/1.png}
-	\caption{数据结构}
+	\includegraphics[]{img/C1/1-4/1.png}
+	\caption{常用数据结构}
 \end{figure}
+
+\newpage

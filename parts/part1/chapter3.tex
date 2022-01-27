@@ -145,7 +145,7 @@ Node* search(List *head, dataType val) {
 
 \subsection{更新结点}
 
-如果不考虑查找结点的过程，链表的更新过程会像数组那样简单，直接把旧数据替换成新数据即可。
+如果不考虑查找结点的过程，链表的更新过程会像数组那样简单，直接把旧数据替换成新数据即可。 \\
 
 \mybox{更新结点}
 
@@ -305,7 +305,40 @@ void replace(List *head, int pos, dataType val) {
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{img/C3/3-2/1.png}
+	\begin{tikzpicture}[node distance=2cm, auto, scale=1,
+			every node/.style={scale=1}]
+		\node[head, label=below:head] (head) {};
+		\node[data, right of=head] (A) {\data};
+		\node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+		\node[data, right of=A] (B) {\data};
+		\node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+		\node[data, right of=B] (C) {\data};
+		\node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+		\node[data, right of=C, xshift=0.1cm] (D) {\data};
+		\node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+		\node[data, right of=D] (E) {\data};
+		\node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+
+		\draw[fill] (head.center) circle (0.05);
+
+		\path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
+		\draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+		\draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
+		\draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+		\draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+		\draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+		\draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+
+		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+		\draw[ptr,red] ($(D.south)!0.5!(D.text split)$) -- (8.1,-1.7) -- (11.5,-1.7) -- (last.text west);
+		\draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
+
+		\draw (12.3,0.3) node {NULL};
+
+		\draw[-, red] (9.3,1) -- (11,-1); 
+	\end{tikzpicture}
+	\caption{尾部删除}
 \end{figure}
 
 \subsubsection{头部删除}
@@ -314,7 +347,7 @@ void replace(List *head, int pos, dataType val) {
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{img/C3/3-2/2.png}
+	\includegraphics[scale=0.8]{img/C3/3-2/1.png}
 \end{figure}
 
 \subsubsection{中间删除}
@@ -323,7 +356,7 @@ void replace(List *head, int pos, dataType val) {
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{img/C3/3-2/3.png}
+	\includegraphics[scale=0.5]{img/C3/3-2/2.png}
 \end{figure}
 
 许多高级语言，如Java，拥有自动化的垃圾回收机制，所以不用刻意去释放被删除的结点，只要没有外部引用指向它们，被删除的结点会被自动回收。 \\
@@ -336,7 +369,7 @@ void replace(List *head, int pos, dataType val) {
 
 \subsection{带头结点的链表}
 
-为了方便链表的插入、删除操作，在链表加上头结点之后，无论链表是否为空，头指针始终指向头结尾。因此对于空表和非空表的处理也统一了，方便了链表的操作，也减少了程序的复杂性和出现bug的机会。
+为了方便链表的插入、删除操作，在链表加上头结点之后，无论链表是否为空，头指针始终指向头结尾。因此对于空表和非空表的处理也统一了，方便了链表的操作，也减少了程序的复杂性和出现bug的机会。 \\
 
 \mybox{插入结点}
 
@@ -355,6 +388,8 @@ void insert(List *head, int pos, dataType val) {
     temp->next = newNode;
 }
 \end{lstlisting}
+
+\vspace{0.5cm}
 
 \mybox{删除结点}
 

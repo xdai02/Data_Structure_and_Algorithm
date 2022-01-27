@@ -87,23 +87,28 @@ int binarySearch(int *arr, int n, int key) {
 
 在数组中插入元素存在3种情况：
 
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\ttfamily,
+			array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+					row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+				}]
+
+		\matrix[array] (array) {
+			0    & 1    & 2    & 3    & 4    & 5    & 6    & 7    \\
+			data & data & data & data & data & data & data & data \\
+		};
+	\end{tikzpicture}
+	\caption{数组}
+\end{figure}
+
 \subsubsection{尾部插入}
 
 直接把插入的元素放在数组尾部的空闲位置即可。
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{img/C2/2-3/1.png}
-\end{figure}
-
 \subsubsection{中间插入}
 
-首先把插入位置及后面的元素向后移动，腾出位置，再把要插入的元素放入该位置上。
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{img/C2/2-3/2.png}
-\end{figure}
+首先把插入位置及后面的元素向后移动，腾出位置，再把要插入的元素放入该位置上。 \\
 
 \mybox{插入元素}
 
@@ -123,20 +128,13 @@ int insert(int *arr, int n, int index, int val) {
 
 \subsubsection{超范围插入}
 
-如果数组不断插入新的元素，元素数量超过了数组的最大长度，数组岂不是要撑爆了？ \\
-
 数组的长度在创建时就已经确定了，要实现数组的扩容，只能创建一个新数组，长度是旧数组的2倍，再把旧数组中的元素全部复制过去，这样就实现了数组的扩容。 \\
 
 数组插入元素最好情况是尾部插入，无需移动任何元素，时间复杂度为$ O(1) $。最坏情况是在第一个位置插入，这样就需要移动后面所有$ n - 1 $个元素，时间复杂度为$ O(n) $。因此，总体的时间复杂度为$ O(n) $。
 
 \subsection{删除元素}
 
-数组的删除操作与插入操作过程相反，如果被删除的元素位于数组中间，其后的元素都需要向前挪动一位。
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{img/C2/2-3/3.png}
-\end{figure}
+数组的删除操作与插入操作过程相反，如果被删除的元素位于数组中间，其后的元素都需要向前挪动一位。 \\
 
 \mybox{删除元素}
 

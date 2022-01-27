@@ -20,20 +20,20 @@ typedef struct Node {
 链表的第一个结点被称为头结点，最后一个节点被称为尾结点，尾结点的next指针指向空NULL。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=2,
-					draw, rectangle split horizontal}, >=stealth, start chain]
-		\node[list,on chain] (A) {data};
-		\node[list,on chain] (B) {data};
-		\node[list,on chain] (C) {data};
-		\node[on chain,draw,inner sep=6pt] (D) {};
-		\draw (D.north east) -- (D.south west);
-		\draw (D.north west) -- (D.south east);
-		\draw[*->] let \p1 = (A.two), \p2 = (A.center) in (\x1,\y2) -- (B);
-		\draw[*->] let \p1 = (B.two), \p2 = (B.center) in (\x1,\y2) -- (C);
-		\draw[*->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
-	\end{tikzpicture}
-	\caption{单向链表}
+    \centering
+    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=2,
+                    draw, rectangle split horizontal}, >=stealth, start chain]
+        \node[list,on chain] (A) {data};
+        \node[list,on chain] (B) {data};
+        \node[list,on chain] (C) {data};
+        \node[on chain,draw,inner sep=6pt] (D) {};
+        \draw (D.north east) -- (D.south west);
+        \draw (D.north west) -- (D.south east);
+        \draw[*->] let \p1 = (A.two), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[*->] let \p1 = (B.two), \p2 = (B.center) in (\x1,\y2) -- (C);
+        \draw[*->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
+    \end{tikzpicture}
+    \caption{单向链表}
 \end{figure}
 
 与数组按照下标来随机寻找元素不同，对于链表的其中一个结点A，只能根据结点A的next指针来找到该结点的下一个结点B，再根据结点B的next指针找到下一个节点C…… \\
@@ -47,24 +47,24 @@ typedef struct Node {
 双向链表比单向链表稍微复杂一点，它的每一个结点除了拥有data和next指针，还拥有指向前置结点的prev指针。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=3,
-					draw, rectangle split horizontal}, >=stealth, start chain]
-		\node[on chain,draw,inner sep=6pt] (NULL1) {};
-		\node[list,on chain] (A) {prev \nodepart{second} data \nodepart{third} next};
-		\node[list,on chain] (B) {prev \nodepart{second} data \nodepart{third} next};
-		\node[list,on chain] (C) {prev \nodepart{second} data \nodepart{third} next};
-		\node[on chain,draw,inner sep=6pt] (NULL2) {};
-		\draw (NULL1.north east) -- (NULL1.south west);
-		\draw (NULL1.north west) -- (NULL1.south east);
-		\draw (NULL2.north east) -- (NULL2.south west);
-		\draw (NULL2.north west) -- (NULL2.south east);
-		\draw[<-] let \p1 = (A.west), \p2 = (A.center) in (NULL1) -- (\x1,\y2);
-		\draw[<->] let \p1 = (A.east), \p2 = (A.center) in (\x1,\y2) -- (B);
-		\draw[<->] let \p1 = (B.east), \p2 = (B.center) in (\x1,\y2) -- (C);
-		\draw[->] let \p1 = (C.east), \p2 = (C.center) in (\x1,\y2) -- (NULL2);
-	\end{tikzpicture}
-	\caption{双向链表}
+    \centering
+    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=3,
+                    draw, rectangle split horizontal}, >=stealth, start chain]
+        \node[on chain,draw,inner sep=6pt] (NULL1) {};
+        \node[list,on chain] (A) {prev \nodepart{second} data \nodepart{third} next};
+        \node[list,on chain] (B) {prev \nodepart{second} data \nodepart{third} next};
+        \node[list,on chain] (C) {prev \nodepart{second} data \nodepart{third} next};
+        \node[on chain,draw,inner sep=6pt] (NULL2) {};
+        \draw (NULL1.north east) -- (NULL1.south west);
+        \draw (NULL1.north west) -- (NULL1.south east);
+        \draw (NULL2.north east) -- (NULL2.south west);
+        \draw (NULL2.north west) -- (NULL2.south east);
+        \draw[<-] let \p1 = (A.west), \p2 = (A.center) in (NULL1) -- (\x1,\y2);
+        \draw[<->] let \p1 = (A.east), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[<->] let \p1 = (B.east), \p2 = (B.center) in (\x1,\y2) -- (C);
+        \draw[->] let \p1 = (C.east), \p2 = (C.center) in (\x1,\y2) -- (NULL2);
+    \end{tikzpicture}
+    \caption{双向链表}
 \end{figure}
 
 单向链表只能从头到尾遍历，只能找到后继，无法找到前驱，因此遍历的时候不会死循环。而双向链表需要多分配一个指针的存储空间，每个结点有两个指针，分别指向直接前驱和直接后继。
@@ -74,47 +74,47 @@ typedef struct Node {
 除了单向链表和双向链表以外，还有循环链表。对于单向循环链表，尾结点的next指针指向头结点。对于双向循环链表，尾结点的next指针指向头结点，并且头结点的prev指针指向尾结点。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[
-			list/.style={
-					rectangle split,
-					rectangle split parts=2,
-					draw,
-					rectangle split horizontal
-				},
-			dotarrow/.style={Circle-Stealth},
-			start chain
-		]
-		\node[list,on chain] (A) {data};
-		\node[list,on chain] (B) {data};
-		\node[list,on chain] (C) {data};
-		\draw[dotarrow] (A.two |- A.center) -- (B);
-		\draw[dotarrow] (B.two |- B.center)  -- (C);
-		\draw[dotarrow] (C.two |- C.center) to[out=-20,in=190,distance=4cm] (A);
-	\end{tikzpicture}
-	\caption{单向循环链表}
+    \centering
+    \begin{tikzpicture}[
+            list/.style={
+                    rectangle split,
+                    rectangle split parts=2,
+                    draw,
+                    rectangle split horizontal
+                },
+            dotarrow/.style={Circle-Stealth},
+            start chain
+        ]
+        \node[list,on chain] (A) {data};
+        \node[list,on chain] (B) {data};
+        \node[list,on chain] (C) {data};
+        \draw[dotarrow] (A.two |- A.center) -- (B);
+        \draw[dotarrow] (B.two |- B.center)  -- (C);
+        \draw[dotarrow] (C.two |- C.center) to[out=-20,in=190,distance=4cm] (A);
+    \end{tikzpicture}
+    \caption{单向循环链表}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[list/.style={
-					rectangle split,
-					rectangle split parts=3,
-					draw,
-					rectangle split horizontal
-				},
-			dotarrow/.style={Circle-Stealth},
-			start chain]
-		\node[list,on chain] (A) {prev \nodepart{second} data \nodepart{third} next};
-		\node[list,on chain] (B) {prev \nodepart{second} data \nodepart{third} next};
-		\node[list,on chain] (C) {prev \nodepart{second} data \nodepart{third} next};
+    \centering
+    \begin{tikzpicture}[list/.style={
+                    rectangle split,
+                    rectangle split parts=3,
+                    draw,
+                    rectangle split horizontal
+                },
+            dotarrow/.style={Circle-Stealth},
+            start chain]
+        \node[list,on chain] (A) {prev \nodepart{second} data \nodepart{third} next};
+        \node[list,on chain] (B) {prev \nodepart{second} data \nodepart{third} next};
+        \node[list,on chain] (C) {prev \nodepart{second} data \nodepart{third} next};
 
-		\draw[dotarrow] (A.center -| A.west) to[out=-220,in=20,distance=2cm] (C.north);
-		\draw[<->] let \p1 = (A.east), \p2 = (A.center) in (\x1,\y2) -- (B);
-		\draw[<->] let \p1 = (B.east), \p2 = (B.center) in (\x1,\y2) -- (C);
-		\draw[dotarrow] (C.east |- C.center) to[out=-20,in=220,distance=2cm] (A.south);
-	\end{tikzpicture}
-	\caption{双向循环链表}
+        \draw[dotarrow] (A.center -| A.west) to[out=-220,in=20,distance=2cm] (C.north);
+        \draw[<->] let \p1 = (A.east), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[<->] let \p1 = (B.east), \p2 = (B.center) in (\x1,\y2) -- (C);
+        \draw[dotarrow] (C.east |- C.center) to[out=-20,in=220,distance=2cm] (A.south);
+    \end{tikzpicture}
+    \caption{双向循环链表}
 \end{figure}
 
 \newpage
@@ -169,40 +169,40 @@ void replace(List *head, int pos, dataType val) {
 把最后一个结点的next指针指向新插入的结点。
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, auto, scale=1,
-			every node/.style={scale=1}]
-		\node[head, label=below:head] (head) {};
-		\node[data, right of=head] (A) {\data};
-		\node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
-		\node[data, right of=A] (B) {\data};
-		\node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
-		\node[data, right of=B] (C) {\data};
-		\node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
-		\node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
-		\node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
-		\node[data, right of=D] (E) {\data};
-		\node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
-		\node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
-		\node[above of=last,node distance=0.5cm,label=above:new] (new){};
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=below:head] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
+        \node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+        \node[data, right of=D] (E) {\data};
+        \node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+        \node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
+        \node[above of=last,node distance=0.5cm,label=above:new] (new){};
 
-		\draw[fill] (head.center) circle (0.05);
+        \draw[fill] (head.center) circle (0.05);
 
-		\path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
-		\draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
-		\draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
-		\draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
-		\draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
-		\draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
-		\draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
 
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
-		\draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
-		\draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
-	\end{tikzpicture}
-	\caption{尾部插入}
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
+        \draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
+        \draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
+    \end{tikzpicture}
+    \caption{尾部插入}
 \end{figure}
 
 \subsubsection{头部插入}
@@ -210,43 +210,43 @@ void replace(List *head, int pos, dataType val) {
 先把新结点的next指针指向原先的头结点，再把新结点设置为链表的头结点。
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, auto, scale=1,
-			every node/.style={scale=1}]
-		\node[head, label=below:head, xshift=-0.5cm] (head) {};
-		\node[data, right of=head] (A) {\data};
-		\node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
-		\node[data, right of=A] (B) {\data};
-		\node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
-		\node[data, right of=B] (C) {\data};
-		\node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
-		\node[data, below of=head, xshift=0.6cm, yshift=0.5cm] (NEW) {\data};
-		\node[above of=NEW,node distance=0.3cm,label=above:new] (new){};
-		\node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
-		\node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
-		\node[data, right of=D] (E) {\data};
-		\node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
-		\node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
-		\node[above of=last,node distance=0.5cm,label=above:a6] (a6){};
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=below:head, xshift=-0.5cm] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+        \node[data, below of=head, xshift=0.6cm, yshift=0.5cm] (NEW) {\data};
+        \node[above of=NEW,node distance=0.3cm,label=above:new] (new){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
+        \node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+        \node[data, right of=D] (E) {\data};
+        \node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+        \node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
+        \node[above of=last,node distance=0.5cm,label=above:a6] (a6){};
 
-		\draw[fill] (head.center) circle (0.05);
+        \draw[fill] (head.center) circle (0.05);
 
-		\path[ptr] (head.center) --++(left:7.5mm) |- (NEW.text west);
-		\draw[fill] ($(NEW.south)!0.5!(NEW.text split)$) circle (0.05);
-		\draw[ptr] ($(NEW.south)!0.5!(NEW.text split)$) --++(right:6mm) |- (A.text west);
-		\draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
-		\draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
-		\draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
-		\draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
-		\draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
-		\draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
-		\draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
-		\draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
-	\end{tikzpicture}
-	\caption{头部插入}
+        \path[ptr] (head.center) --++(left:7.5mm) |- (NEW.text west);
+        \draw[fill] ($(NEW.south)!0.5!(NEW.text split)$) circle (0.05);
+        \draw[ptr] ($(NEW.south)!0.5!(NEW.text split)$) --++(right:6mm) |- (A.text west);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
+        \draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
+        \draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
+    \end{tikzpicture}
+    \caption{头部插入}
 \end{figure}
 
 \subsubsection{中间插入}
@@ -254,43 +254,43 @@ void replace(List *head, int pos, dataType val) {
 先把新结点的next指针指向插入位置的结点，再将插入位置的前置结点的next指针指向新结点。
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, auto, scale=1,
-			every node/.style={scale=1}]
-		\node[head, label=below:head] (head) {};
-		\node[data, right of=head] (A) {\data};
-		\node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
-		\node[data, right of=A] (B) {\data};
-		\node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
-		\node[data, right of=B] (C) {\data};
-		\node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
-		\node[data, below of=C, xshift=0.8cm, yshift=0.5cm] (NEW) {\data};
-		\node[above of=NEW,node distance=0.3cm,label=above:new] (new){};
-		\node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
-		\node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
-		\node[data, right of=D] (E) {\data};
-		\node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
-		\node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
-		\node[above of=last,node distance=0.5cm,label=above:a6] (a6){};
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=below:head] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+        \node[data, below of=C, xshift=0.8cm, yshift=0.5cm] (NEW) {\data};
+        \node[above of=NEW,node distance=0.3cm,label=above:new] (new){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
+        \node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+        \node[data, right of=D] (E) {\data};
+        \node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+        \node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
+        \node[above of=last,node distance=0.5cm,label=above:a6] (a6){};
 
-		\draw[fill] (head.center) circle (0.05);
+        \draw[fill] (head.center) circle (0.05);
 
-		\path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
-		\draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
-		\draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
-		\draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
-		\draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
-		\draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
 
-		\draw[ptr] ($(C.south)!0.5!(C.text split)$) |- (NEW.text west);
-		\draw[fill] ($(NEW.south)!0.5!(NEW.text split)$) circle (0.05);
-		\draw[ptr] ($(NEW.south)!0.5!(NEW.text split)$) --++(right:6mm) |- (D.text west);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
-		\draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
-		\draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
-	\end{tikzpicture}
-	\caption{中间插入}
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) |- (NEW.text west);
+        \draw[fill] ($(NEW.south)!0.5!(NEW.text split)$) circle (0.05);
+        \draw[ptr] ($(NEW.south)!0.5!(NEW.text split)$) --++(right:6mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
+        \draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
+        \draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
+    \end{tikzpicture}
+    \caption{中间插入}
 \end{figure}
 
 只要内存空间允许，能够插入链表的元素是无穷无尽的，不需要像数组考虑扩容的问题。如果不考虑插入之前的查找元素的过程，只考虑纯粹的插入操作，时间复杂度是$ O(1) $。
@@ -304,41 +304,41 @@ void replace(List *head, int pos, dataType val) {
 把倒数第二个结点的next指针指向空。
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, auto, scale=1,
-			every node/.style={scale=1}]
-		\node[head, label=below:head] (head) {};
-		\node[data, right of=head] (A) {\data};
-		\node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
-		\node[data, right of=A] (B) {\data};
-		\node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
-		\node[data, right of=B] (C) {\data};
-		\node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
-		\node[data, right of=C, xshift=0.1cm] (D) {\data};
-		\node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
-		\node[data, right of=D] (E) {\data};
-		\node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=below:head] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};
+        \node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+        \node[data, right of=D] (E) {\data};
+        \node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
 
-		\draw[fill] (head.center) circle (0.05);
+        \draw[fill] (head.center) circle (0.05);
 
-		\path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
-		\draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
-		\draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
-		\draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
-		\draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
-		\draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
-		\draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
 
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[ptr,red] ($(D.south)!0.5!(D.text split)$) -- (8.1,-1.7) -- (11.5,-1.7) -- (last.text west);
-		\draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr,red] ($(D.south)!0.5!(D.text split)$) -- (8.1,-1.7) -- (11.5,-1.7) -- (last.text west);
+        \draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
 
-		\draw (12.3,0.3) node {NULL};
+        \draw (12.3,0.3) node {NULL};
 
-		\draw[-, red] (9.3,1) -- (11,-1); 
-	\end{tikzpicture}
-	\caption{尾部删除}
+        \draw[-, red] (9.3,1) -- (11,-1);
+    \end{tikzpicture}
+    \caption{尾部删除}
 \end{figure}
 
 \subsubsection{头部删除}
@@ -346,8 +346,35 @@ void replace(List *head, int pos, dataType val) {
 把链表的头结点设置为原先头结点的next指针。
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{img/C3/3-2/1.png}
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=below:head, xshift=-0.5cm] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};
+        \node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+        \node[data, right of=D] (E) {\data \nodepart{second} \texttt{NULL}};
+        \node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+
+        \draw[fill] (head.center) circle (0.05);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
+
+        \draw[-, red] (0.5,1) -- (2.5,-1);
+        \draw[->, red] (-0.5,0) -- (-0.5,2) -- (3,2) -- (3,0.6);
+    \end{tikzpicture}
+    \caption{头部删除}
 \end{figure}
 
 \subsubsection{中间删除}
@@ -355,8 +382,35 @@ void replace(List *head, int pos, dataType val) {
 把要删除的结点的前置结点的next指针，指向要删除结点的下一个结点。
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.5]{img/C3/3-2/2.png}
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=below:head, xshift=-0.5cm] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm,label=above:a1] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm,label=above:a2] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm,label=above:a3] (a3){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};
+        \node[above of=D,node distance=0.5cm,label=above:a4] (a4){};
+        \node[data, right of=D] (E) {data \nodepart{second} \texttt{NULL}};
+        \node[above of=E,node distance=0.5cm,label=above:a5] (a5){};
+
+        \draw[fill] (head.center) circle (0.05);
+        \path[ptr] (head.center) --++(right:7.5mm) |- (A.text west);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
+
+        \draw[-, red] (2.5,1) -- (4.5,-1);
+        \draw[->, red] (1.5,-0.3) -- (1.5,-2) -- (5.5,-2) -- (5.5,-0.3);
+    \end{tikzpicture}
+    \caption{中间删除}
 \end{figure}
 
 许多高级语言，如Java，拥有自动化的垃圾回收机制，所以不用刻意去释放被删除的结点，只要没有外部引用指向它们，被删除的结点会被自动回收。 \\
@@ -411,33 +465,428 @@ void delete(List *head, int pos) {
 数据结构没有绝对的好与坏，数组和链表各有千秋。
 
 \begin{table}[H]
-	\centering
-	\setlength{\tabcolsep}{5mm}{
-		\begin{tabular}{|c|l|l|}
-			\hline
-			\textbf{比较内容} & \textbf{数组}          & \textbf{链表}                \\
-			\hline
-			基本              & 一组固定数量的数据项   & 可变数量的数据项             \\
-			\hline
-			大小              & 声明期间指定           & 无需指定，执行期间增长或收缩 \\
-			\hline
-			存储分配          & 元素位置在编译期间分配 & 元素位置在运行时分配         \\
-			\hline
-			元素顺序          & 连续存储               & 随机存储                     \\
-			\hline
-			访问元素          & 直接访问：索引、下标   & 顺序访问：指针遍历           \\
-			\hline
-			插入/删除         & 速度慢                 & 快速、高效                   \\
-			\hline
-			查找              & 线性查找、二分查找     & 线性查找                     \\
-			\hline
-			内存利用率        & 低效                   & 高效                         \\
-			\hline
-		\end{tabular}
-	}
-	\caption{数组VS链表}
+    \centering
+    \setlength{\tabcolsep}{5mm}{
+        \begin{tabular}{|c|l|l|}
+            \hline
+            \textbf{比较内容} & \textbf{数组}          & \textbf{链表}                \\
+            \hline
+            基本              & 一组固定数量的数据项   & 可变数量的数据项             \\
+            \hline
+            大小              & 声明期间指定           & 无需指定，执行期间增长或收缩 \\
+            \hline
+            存储分配          & 元素位置在编译期间分配 & 元素位置在运行时分配         \\
+            \hline
+            元素顺序          & 连续存储               & 随机存储                     \\
+            \hline
+            访问元素          & 直接访问：索引、下标   & 顺序访问：指针遍历           \\
+            \hline
+            插入/删除         & 速度慢                 & 快速、高效                   \\
+            \hline
+            查找              & 线性查找、二分查找     & 线性查找                     \\
+            \hline
+            内存利用率        & 低效                   & 高效                         \\
+            \hline
+        \end{tabular}
+    }
+    \caption{数组VS链表}
 \end{table}
 
 数组的优势在于能够快速定位元素，对于读操作多、写操作少的场景来说，用数组更合适一些。 \\
 
 相反，链表的优势在于能够灵活地进行插入和删除操作，如果需要频繁地插入、删除元素，用链表更合适一些。
+
+\newpage
+
+\section{倒数第k个结点}
+
+\subsection{倒数第k个结点}
+
+输入一个链表，输出该链表中倒数第k个结点。例如一个链表有6个结点[0, 1, 2, 3, 4, 5]，这个链表的倒数第3个结点是值为3的结点。 \\
+
+算法的思路是设置两个指针p1和p2，它们都从头开始出发，p2指针先出发k个结点，然后p1指针再进行出发，当p2指针到达链表的尾结点时，则p1指针的位置就是链表的倒数第k个结点。 \\
+
+\mybox{倒数第k个结点}
+
+\begin{lstlisting}[language=Java]
+public static Node findLastKth(LinkedList list, int k) {
+    Node p1 = list.getHead();
+    Node p2 = list.getHead();
+
+    int i = 0;
+    while(p2 != null && i < k) {
+        p2 = p2.next;
+        i++;
+    }
+    while(p2 != null) {
+        p1 = p1.next;
+        p2 = p2.next;
+    }
+    return p1;
+}
+\end{lstlisting}
+
+\newpage
+
+\section{环形链表}
+
+\subsection{环形链表}
+
+一个单向链表中有可能出现环，不允许修改链表结构，如何在时间复杂度$ O(n) $、空间复杂度$ O(1) $内判断出这个链表是有环链表？如果带环，环的长度是多少？环的入口结点是哪个？ \\
+
+暴力算法首先从头结点开始，依次遍历单链表的每一个结点。对于每个结点都从头重新遍历之前的所有结点。如果发现当前结点与之前结点存在相同ID，则说明该结点被遍历过两次，链表有环。但是这种方法的时间复杂度太高。 \\
+
+另一种方法就是利用快慢指针，首先创建两个指针p1和p2，同时指向头结点，然后让p1每次向后移动一个位置，让p2每次向后移动两个位置。在环中，快指针一定会反复遇到慢指针。比如在一个环形跑道上，两个运动员在同一地点起跑，一个运动员速度快，一个运动员速度慢。当两人跑了一段时间，速度快的运动员必然会从速度慢的运动员身后再次追上并超过。 \\
+
+环的长度可以通过从快慢指针相遇的结点开始再走一圈，下一次回到该点的时的移动步数，即环的长度n。 \\
+
+环的入口可以利用类似获取链表倒数第k个结点的方法，准备两个指针p1和p2，让p2先走n步，然后p1和p2一块走。当两者相遇时，即为环的入口处。 \\
+
+\mybox{环形链表}
+
+\begin{lstlisting}[language=Java]
+public static Node cycleNode(LinkedList list) {
+    Node p1 = list.getHead();
+    Node p2 = list.getHead();
+
+    while(p1 != null && p2 != null) {
+        if(p2.next == null || p2.next.next == null) {
+            return null;
+        }
+        p1 = p1.next;
+        p2 = p2.next.next;
+        if(p1 == p2) {
+            return p1;
+        }
+    }
+    return null;
+}
+
+public static int cycleLength(LinkedList list) {
+    Node node = cycleNode(list);
+    if(node == null) {
+        return 0;
+    }
+    int len = 1;
+    Node cur = node.next;
+    while(cur != node) {
+        cur = cur.next;
+        len++;
+    }
+    return len;
+}
+
+public static Node cycleEntrance(LinkedList list) {
+    int n = cycleLength(list);
+    if(n == 0) {
+        return null;
+    }
+
+    Node p1 = list.getHead();
+    Node p2 = list.getHead();
+    for(int i = 0; i < n; i++) {
+        p2 = p2.next;
+    }
+
+    while(p1 != p2) {
+        p1 = p1.next;
+        p2 = p2.next;
+    }
+    return p1;
+}
+\end{lstlisting}
+
+\newpage
+
+\section{反转链表}
+
+\subsection{逆序输出链表}
+
+输入一个单链表，从尾到头打印链表每个结点的值。由于单链表的遍历只能从头到尾，所以可以通过递归达到链表尾部，然后在回溯时输出每个结点的值。 \\
+
+\mybox{逆序输出链表}
+
+\begin{lstlisting}[language=Java]
+public static void inverse(Node head) {
+    if(head != null) {
+        inverse(head.next);
+        System.out.print(head.data + " ");
+    }
+}
+\end{lstlisting}
+
+\subsection{反转链表}
+
+反转一个链表需要调整链表中指针的方向。 \\
+
+递归反转法的实现思想是从链表的尾结点开始，依次向前遍历，遍历过程依次改变各结点的指向，即另其指向前一个结点。 \\
+
+而迭代反转法的实现思想非常直接，就是从当前链表的首结点开始，一直遍历至链表尾部，期间会逐个改变所遍历到的结点的指针域，另其指向前一个结点。 \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=2,
+                    draw, rectangle split horizontal}, >=stealth, start chain]
+        \node[list,on chain] (A) {data};
+        \node[list,on chain] (B) {data};
+        \node[list,on chain] (C) {data};
+        \node[on chain,draw,inner sep=6pt] (D) {};
+        \draw (D.north east) -- (D.south west);
+        \draw (D.north west) -- (D.south east);
+        \draw[*->] let \p1 = (A.two), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[*->] let \p1 = (B.two), \p2 = (B.center) in (\x1,\y2) -- (C);
+        \draw[*->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
+    \end{tikzpicture}
+    \begin{tikzpicture}[
+            list/.style={
+                    rectangle split,
+                    rectangle split parts=2,
+                    draw,
+                    rectangle split horizontal
+                },
+            dotarrow/.style={Circle-Stealth},
+            start chain
+        ]
+        \node[on chain,draw,inner sep=6pt] (D) {};
+        \draw (D.north east) -- (D.south west);
+        \draw (D.north west) -- (D.south east);
+        \node[list,on chain] (A) {data};
+        \node[list,on chain] (B) {data};
+        \node[list,on chain] (C) {data};
+
+        \draw[dotarrow] (A.two |- A.center) to[out=100,in=60,distance=2cm] (D);
+        \draw[dotarrow] (B.two |- B.center) to[out=100,in=60,distance=2cm] (A.east);
+        \draw[dotarrow] (C.two |- C.center) to[out=100,in=60,distance=2cm] (B.east);
+    \end{tikzpicture}
+    \caption{反转链表}
+\end{figure}
+
+\mybox{反转链表（递归）}
+
+\begin{lstlisting}[language=Java]
+public static Node reverseList(Node head) {
+    if(head == null || head.next == null) {
+        return head;
+    }
+    Node next = head.next;
+    head.next = null;
+    Node newHead = reverseList(next);
+    next.next = head;
+    return newHead;
+}
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\mybox{反转链表（迭代）}
+
+\begin{lstlisting}[language=Java]
+public static Node reverseListIterative(LinkedList list) {
+    Node newHead = new Node(-1);
+    Node head = list.getHead();
+    while(head != null) {
+        Node next = head.next;
+        head.next = newHead.next;
+        newHead.next = head;
+        head = next;
+    }
+    return newHead.next;
+}
+\end{lstlisting}
+
+\newpage
+
+\section{跳表}
+
+\subsection{跳表}
+
+给定一个有序链表，如何根据给定元素的值进行高效率查找？ \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=2,
+                    draw, rectangle split horizontal}, >=stealth, start chain]
+        \node[list,on chain] (A) {2};
+        \node[list,on chain] (B) {5};
+        \node[list,on chain] (C) {9};
+        \node[list,on chain] (D) {12};
+        \node[list,on chain] (E) {20};
+        \node[list,on chain] (F) {26};
+        \node[on chain,draw,inner sep=6pt] (NULL) {};
+        \draw (NULL.north east) -- (NULL.south west);
+        \draw (NULL.north west) -- (NULL.south east);
+        \draw[*->] let \p1 = (A.two), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[*->] let \p1 = (B.two), \p2 = (B.center) in (\x1,\y2) -- (C);
+        \draw[*->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
+        \draw[*->] let \p1 = (D.two), \p2 = (D.center) in (\x1,\y2) -- (E);
+        \draw[*->] let \p1 = (E.two), \p2 = (E.center) in (\x1,\y2) -- (F);
+        \draw[*->] let \p1 = (F.two), \p2 = (F.center) in (\x1,\y2) -- (NULL);
+    \end{tikzpicture}
+    \caption{有序链表}
+\end{figure}
+
+是不是可以用二分查找，先找到中间元素？ \\
+
+链表和数组可不一样！数组能直接用下标快速定位，而链表只能从头结点一个一个元素向后找。对于链表，确实没办法像数组那样进行二分查找，但是可以在链表的基础上做一个小小的升级。 \\
+
+如果给你一本书，要求你快速翻到书中的第5章，当然是首先查阅书的目录，根据目录提示，翻到第5章所对应的页码。 \\
+
+其实一个链表也可以拥有自己的目录，或者说索引。 \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[box/.style={on chain,draw,minimum width=1.5em,
+                    text=green!60!black,join=by abc},
+            c/.style={on chain,circle,draw,inner sep=1ex},
+            node distance=1.5em,abc/.style={stealth-}]
+        \path[abc/.style={-stealth},start chain=going right,nodes={alias=1-\X}]
+        foreach \X in {0,1,5,6,8,12,17,22,33,40,44} {\ifnum\X=0
+                    node[c]{}
+                    \else
+                    node[box]{\X}
+                \fi};
+        \begin{scope}[start branch=b0 going above]
+            \chainin(1-0);
+            \node[c,alias=2-0]{};
+            \node[c,alias=3-0]{};
+        \end{scope}
+        \begin{scope}[start branch=b6 going above]
+            \chainin(1-6);
+            \node[box,alias=2-6]{6};
+        \end{scope}
+        \begin{scope}[start branch=b6 going above]
+            \chainin(1-6);
+            \node[box,alias=2-6]{6};
+        \end{scope}
+        \begin{scope}[start branch=b17 going above]
+            \chainin(1-17);
+            \node[box,alias=2-17]{17};
+        \end{scope}
+        \begin{scope}[start branch=b40 going above]
+            \chainin(1-40);
+            \node[box,alias=2-40]{40};
+            \node[box,alias=3-40]{40};
+        \end{scope}
+        \path foreach \X in {1,2,3} {(\X-0) node[left=1em]{$h=\X$}};
+        \path[every edge/.append style={-stealth}] (2-0) edge (2-6) edge (1-0)
+        (3-0) edge (2-0) edge (3-40)
+        (2-6) edge (2-17) (2-17) edge (2-40);
+    \end{tikzpicture}
+    \caption{跳表}
+\end{figure}
+
+在原始链表的基础上，增加了一个索引链表。原始链表的每三个结点，有一个结点在索引链表当中。当需要查找结点17的时候，不需要在原始链表中一个一个结点访问，而是首先访问索引链表。在索引链表找到结点17之后，顺着索引链表的结点向下，找到原始链表的结点17。 \\
+
+这个过程，就像是先查阅了图书的目录，再翻到章节所对应的页码。由于索引链表的结点个数是原始链表的一半，查找结点所需的访问次数也相应减少了一半。 \\
+
+这个过程，就像是先查阅了图书的目录，再翻到章节所对应的页码。由于索引链表的结点个数是原始链表的一半，查找结点所需的访问次数也相应减少了一半。基于原始链表的第1层索引，抽出了第2层更为稀疏的索引，结点数量是第1层索引的一半。这样的多层索引可以进一步提升查询效率。 \\
+
+假设原始链表有n个结点，那么索引的层级就是$ logn - 1 $，在每一层的访问次数是常量，因此查找结点的平均时间复杂度是$ O(logn) $，这比起常规的线性查找效率要高得多。 \\
+
+但相应的，这种基于链表的优化增加了额外的空间开销，各层索引的结点总数是$ {n \over 2} + {n \over 4} + {n \over 8} + {n \over 16} + \dots \approx n $。也就是说，优化之后的数据结构所占空间，是原来的2倍，这是典型的以空间换时间的做法。 \\
+
+像这样基于链表改造的数据结构，有一个全新的名字，叫做跳表。
+
+\subsection{跳表插入结点}
+
+假设要插入的结点是10，首先按照跳表查找结点的方法，找到待插入结点的前置结点（仅小于待插入结点）。按照一般链表的插入方式，把结点10插入到结点8的下一个位置。 \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[box/.style={on chain,draw,minimum width=1.5em,
+                    text=green!60!black,join=by abc},
+            c/.style={on chain,circle,draw,inner sep=1ex},
+            node distance=1.5em,abc/.style={stealth-}]
+        \path[abc/.style={-stealth},start chain=going right,nodes={alias=1-\X}]
+        foreach \X in {0,1,5,6,8,10,12,17,22,33,40} {\ifnum\X=0
+                    node[c]{}
+                    \else
+                    node[box]{\X}
+                \fi};
+        \begin{scope}[start branch=b0 going above]
+            \chainin(1-0);
+            \node[c,alias=2-0]{};
+            \node[c,alias=3-0]{};
+        \end{scope}
+        \begin{scope}[start branch=b6 going above]
+            \chainin(1-6);
+            \node[box,alias=2-6]{6};
+        \end{scope}
+        \begin{scope}[start branch=b6 going above]
+            \chainin(1-6);
+            \node[box,alias=2-6]{6};
+        \end{scope}
+        \begin{scope}[start branch=b17 going above]
+            \chainin(1-17);
+            \node[box,alias=2-17]{17};
+        \end{scope}
+        \begin{scope}[start branch=b40 going above]
+            \chainin(1-40);
+            \node[box,alias=2-40]{40};
+            \node[box,alias=3-40]{40};
+        \end{scope}
+        \path foreach \X in {1,2,3} {(\X-0) node[left=1em]{$h=\X$}};
+        \path[every edge/.append style={-stealth}] (2-0) edge (2-6) edge (1-0)
+        (3-0) edge (2-0) edge (3-40)
+        (2-6) edge (2-17) (2-17) edge (2-40);
+        \draw[-, very thick, red] (5.9,0.3) -- (6.6,0.3) -- (6.6,-0.3) -- (5.9,-0.3) -- (5.9,0.3);
+    \end{tikzpicture}
+    \caption{插入结点10}
+\end{figure}
+
+这样是不是插入工作就完成了呢？并不是。随着原始链表的新结点越来越多，索引会渐渐变得不够用了，因此索引结点也需要相应作出调整。 \\
+
+调整索引的方法就是让新插入的结点随机晋升成为索引结点，晋升成功的几率是50\%。新结点在成功晋升之后，仍然有机会继续向上一层索引晋升。 \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[box/.style={on chain,draw,minimum width=1.5em,
+                    text=green!60!black,join=by abc},
+            c/.style={on chain,circle,draw,inner sep=1ex},
+            node distance=1.5em,abc/.style={stealth-}]
+        \path[abc/.style={-stealth},start chain=going right,nodes={alias=1-\X}]
+        foreach \X in {0,1,5,6,8,10,12,17,22,33,40} {\ifnum\X=0
+                    node[c]{}
+                    \else
+                    node[box]{\X}
+                \fi};
+        \begin{scope}[start branch=b0 going above]
+            \chainin(1-0);
+            \node[c,alias=2-0]{};
+            \node[c,alias=3-0]{};
+        \end{scope}
+        \begin{scope}[start branch=b6 going above]
+            \chainin(1-6);
+            \node[box,alias=2-6]{6};
+        \end{scope}
+        \begin{scope}[start branch=b6 going above]
+            \chainin(1-6);
+            \node[box,alias=2-6]{6};
+        \end{scope}
+        \begin{scope}[start branch=b10 going above]
+            \chainin(1-10);
+            \node[box,alias=2-10]{10};
+            \node[box,alias=3-10]{10};
+        \end{scope}
+        \begin{scope}[start branch=b17 going above]
+            \chainin(1-17);
+            \node[box,alias=2-17]{17};
+        \end{scope}
+        \begin{scope}[start branch=b40 going above]
+            \chainin(1-40);
+            \node[box,alias=2-40]{40};
+            \node[box,alias=3-40]{40};
+        \end{scope}
+        \path foreach \X in {1,2,3} {(\X-0) node[left=1em]{$h=\X$}};
+        \path[every edge/.append style={-stealth}] (2-0) edge (2-6) edge (1-0)
+        (3-0) edge (2-0) edge (3-10) (3-10) edge (3-40)
+        (2-6) edge (2-10) (2-10) edge (2-17) (2-17) edge (2-40);
+        \draw[-, very thick, red] (5.9,0.3) -- (6.6,0.3) -- (6.6,-0.3) -- (5.9,-0.3) -- (5.9,0.3);
+        \draw[-, very thick, red] (5.9,1.45) -- (6.6,1.45) -- (6.6,0.9) -- (5.9,0.9) -- (5.9,1.45);
+        \draw[-, very thick, red] (5.9,2.6) -- (6.6,2.6) -- (6.6,2.1) -- (5.9,2.1) -- (5.9,2.6);
+    \end{tikzpicture}
+    \caption{晋升结点}
+\end{figure}
+
+\subsection{跳表删除结点}
+

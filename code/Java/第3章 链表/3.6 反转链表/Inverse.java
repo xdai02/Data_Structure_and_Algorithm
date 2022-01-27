@@ -11,8 +11,6 @@ public class Inverse {
 
         inverse(list.getHead());
         System.out.println();
-
-        inverseNonRecursive(list);
     }
 
     public static void inverse(Node head) {
@@ -20,19 +18,5 @@ public class Inverse {
             inverse(head.next);
             System.out.print(head.data + " ");
         }
-    }
-
-    public static void inverseNonRecursive(LinkedList list) {
-        Stack s = new Stack();
-
-        Node node = list.getHead();
-        while(node != null) {
-            s.push(node);
-            node = node.next;
-        }
-        while(!s.isEmpty()) {
-            System.out.print(s.pop().data + " ");
-        }
-        System.out.println();
     }
 }

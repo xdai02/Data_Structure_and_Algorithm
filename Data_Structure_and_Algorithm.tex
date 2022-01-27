@@ -30,6 +30,26 @@
 \usepackage{algpseudocode}
 % \usepackage{minted}
 
+\usetikzlibrary{calc,trees,positioning,arrows,fit,shapes}
+\usetikzlibrary{shapes.multipart,chains}
+\usetikzlibrary{shadows}
+\usetikzlibrary{arrows.meta}
+
+\tikzstyle{ptr}  = [draw, -{Stealth[scale=1.0]}, blue]
+\tikzstyle{head} = [rectangle, draw, text height=3mm, text width=3mm,
+                    text centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{data} = [rectangle split, rectangle split parts=2, draw,
+                    text centered, minimum height=3em]
+\newcommand{\data}{
+  data \nodepart{second}
+  \phantom{\texttt{NULL}}
+}
+
+\def\x{0}
+\def\y{0}
+\def\k{0}
+\def\radius{5}
+
 \makeatletter
 \newcommand{\verbatimfont}[1]{\renewcommand{\verbatim@font}{\ttfamily#1}}
 \makeatother
@@ -37,10 +57,6 @@
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
-
-\usetikzlibrary{calc,trees,positioning,arrows,fit,shapes}
-\usetikzlibrary{shapes.multipart,chains}
-\usetikzlibrary{shadows}
 
 \tikzstyle{startend} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!30]
 \tikzstyle{io}        = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, inner xsep = -15pt, minimum height=1cm, text centered, draw=black, fill=blue!30]

@@ -28,6 +28,8 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{tkz-graph}
+\usepackage{drawstack}
 % \usepackage{minted}
 
 \usetikzlibrary{calc,trees,positioning,arrows,fit,shapes}
@@ -44,6 +46,23 @@
 \newcommand{\data}{
   data \nodepart{second}
   \phantom{\texttt{NULL}}
+}
+
+\tikzset{
+    queue element/.style={
+        draw,very thin,rounded corners,
+        fill=yellow!30,
+        minimum width=1cm,minimum height=.5cm,
+        font=\sffamily\footnotesize
+    },
+    >={[scale=0.8]Triangle},
+    queue/.style={matrix of nodes,
+        nodes in empty cells,
+        nodes={queue element, anchor=center},
+        fill=green!20,
+        column sep=5mm,
+        row sep=2mm,
+    },
 }
 
 \def\x{0}

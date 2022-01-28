@@ -9,32 +9,32 @@
 栈中的元素只能先进后出（FILO, First In Last Out）。最早进入栈的元素所存放的位置叫作栈底（bottom），最后进入栈的元素存放的位置叫作栈顶（top）。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\matrix[queue] (Q1) {
-		|[fill=none, draw=none]| \\
-		|(front)| C\\
-		B\\
-		|(rear)| A\\};
-		\draw[green,thick,-] (Q1.north west) |-(Q1.south)-| (Q1.north east);
-		\draw[<-] ([xshift=.2cm]front.east) -- ++ (0:.5) node[right] {top};
-		\draw[<-] ([xshift=.2cm]rear.east) -- ++ (0:.5) node[right] {bottom};
-		\draw[<-,very thick] (Q1.north) to[out=90,in=190] ++ (1,1) node[right, queue element] (D) {D};
-		\node[below=3mm of Q1.south east] {before};
+    \centering
+    \begin{tikzpicture}
+        \matrix[queue] (Q1) {
+        |[fill=none, draw=none]| \\
+        |(front)| C\\
+        B\\
+        |(rear)| A\\};
+        \draw[green,thick,-] (Q1.north west) |-(Q1.south)-| (Q1.north east);
+        \draw[<-] ([xshift=.2cm]front.east) -- ++ (0:.5) node[right] {top};
+        \draw[<-] ([xshift=.2cm]rear.east) -- ++ (0:.5) node[right] {bottom};
+        \draw[<-,very thick] (Q1.north) to[out=90,in=190] ++ (1,1) node[right, queue element] (D) {D};
+        \node[below=3mm of Q1.south east] {before};
 
-		\scope[xshift=3.5cm]
-		\matrix[queue] (Q1) {
-			|(front)| D \\
-			C           \\
-			B           \\
-			|(rear)| A\\};
-		\draw[green,thick,-] (Q1.north west) |-(Q1.south)-| (Q1.north east);
-		\draw[<-] ([xshift=.2cm]front.east) -- ++ (0:.5) node[right] {top};
-		\draw[<-] ([xshift=.2cm]rear.east) -- ++ (0:.5) node[right] {bottom};
-		\node[below=3mm of Q1.south east] {after};
-		\endscope
-	\end{tikzpicture}
-	\caption{栈}
+        \scope[xshift=3.5cm]
+        \matrix[queue] (Q1) {
+            |(front)| D \\
+            C           \\
+            B           \\
+            |(rear)| A\\};
+        \draw[green,thick,-] (Q1.north west) |-(Q1.south)-| (Q1.north east);
+        \draw[<-] ([xshift=.2cm]front.east) -- ++ (0:.5) node[right] {top};
+        \draw[<-] ([xshift=.2cm]rear.east) -- ++ (0:.5) node[right] {bottom};
+        \node[below=3mm of Q1.south east] {after};
+        \endscope
+    \end{tikzpicture}
+    \caption{栈}
 \end{figure}
 
 栈这种数据结构既可以用数组来实现，也可以用链表来实现。
@@ -46,18 +46,18 @@
 进行入栈操作时，栈顶指针+1；出栈时，栈顶指针-1。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[font=\ttfamily,
-			array/.style={matrix of nodes,nodes={draw, minimum size=15mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
-					row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
-				}]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=15mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
 
-		\matrix[array] (array) {
-			bottom &      &      &      &      &      &      & top  \\
-			data   & data & data & data & data & data & data & data \\
-		};
-	\end{tikzpicture}
-	\caption{顺序栈}
+        \matrix[array] (array) {
+            bottom &      &      &      &      &      &      & top  \\
+            data   & data & data & data & data & data & data & data \\
+        };
+    \end{tikzpicture}
+    \caption{顺序栈}
 \end{figure}
 
 对满栈进行入栈和对空栈进行出栈操作操作都会产生数组的越界并引起程序崩溃，称为上溢和下溢。因此使用顺序栈前需要提前声明一个数组的大小，如果数组大小不够则可能发生数组越界，如果数组太大则会浪费一定的空间。 \\
@@ -69,43 +69,43 @@
 使用链表方式实现的栈称为动态栈。通过在表头插入一个元素来实现入栈，通过删除表尾元素来实现出栈。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm, auto, scale=1,
-			every node/.style={scale=1}]
-		\node[head, label=above:head, xshift=-0.5cm] (head) {};
-		\node[data, right of=head] (A) {\data};
-		\node[above of=A,node distance=0.5cm] (a1){};
-		\node[data, right of=A] (B) {\data};
-		\node[above of=B,node distance=0.5cm] (a2){};
-		\node[data, right of=B] (C) {\data};
-		\node[above of=C,node distance=0.5cm] (a3){};
-		\node[data, below of=head, xshift=0.6cm, yshift=0.5cm] (NEW) {\data};
-		\node[above of=NEW,node distance=0.3cm,label=above:top] (new){};
-		\node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
-		\node[above of=D,node distance=0.5cm] (a4){};
-		\node[data, right of=D] (E) {\data};
-		\node[above of=E,node distance=0.5cm] (a5){};
-		\node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
-		\node[above of=last,node distance=0.5cm,label=above:bottom] (a6){};
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto, scale=1,
+            every node/.style={scale=1}]
+        \node[head, label=above:head, xshift=-0.5cm] (head) {};
+        \node[data, right of=head] (A) {\data};
+        \node[above of=A,node distance=0.5cm] (a1){};
+        \node[data, right of=A] (B) {\data};
+        \node[above of=B,node distance=0.5cm] (a2){};
+        \node[data, right of=B] (C) {\data};
+        \node[above of=C,node distance=0.5cm] (a3){};
+        \node[data, below of=head, xshift=0.6cm, yshift=0.5cm] (NEW) {\data};
+        \node[above of=NEW,node distance=0.3cm,label=above:top] (new){};
+        \node[data, right of=C, xshift=0.1cm] (D) {\data};%, xshift=1.5cm
+        \node[above of=D,node distance=0.5cm] (a4){};
+        \node[data, right of=D] (E) {\data};
+        \node[above of=E,node distance=0.5cm] (a5){};
+        \node[data, right of=E] (last) {data \nodepart{second} \texttt{NULL}};
+        \node[above of=last,node distance=0.5cm,label=above:bottom] (a6){};
 
-		\draw[fill] (head.center) circle (0.05);
+        \draw[fill] (head.center) circle (0.05);
 
-		\path[ptr] (head.center) --++(left:7.5mm) |- (NEW.text west);
-		\draw[fill] ($(NEW.south)!0.5!(NEW.text split)$) circle (0.05);
-		\draw[ptr] ($(NEW.south)!0.5!(NEW.text split)$) --++(right:6mm) |- (A.text west);
-		\draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
-		\draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
-		\draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
-		\draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
-		\draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
-		\draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
-		\draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
-		\draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
-		\draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
-	\end{tikzpicture}
-	\caption{链式栈}
+        \path[ptr] (head.center) --++(left:7.5mm) |- (NEW.text west);
+        \draw[fill] ($(NEW.south)!0.5!(NEW.text split)$) circle (0.05);
+        \draw[ptr] ($(NEW.south)!0.5!(NEW.text split)$) --++(right:6mm) |- (A.text west);
+        \draw[fill] ($(A.south)!0.5!(A.text split)$) circle (0.05);
+        \draw[ptr] ($(A.south)!0.5!(A.text split)$) --++(right:10mm) |- (B.text west);
+        \draw[fill] ($(B.south)!0.5!(B.text split)$) circle (0.05);
+        \draw[ptr] ($(B.south)!0.5!(B.text split)$) --++(right:10mm) |- (C.text west);
+        \draw[fill] ($(C.south)!0.5!(C.text split)$) circle (0.05);
+        \draw[ptr] ($(C.south)!0.5!(C.text split)$) --++(right:10mm) |- (D.text west);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[fill] ($(D.south)!0.5!(D.text split)$) circle (0.05);
+        \draw[ptr] ($(D.south)!0.5!(D.text split)$) --++(right:10mm) |- (E.text west);
+        \draw[fill] ($(E.south)!0.5!(E.text split)$) circle (0.05);
+        \draw[ptr] ($(E.south)!0.5!(E.text split)$) --++(right:10mm) |- (last.text west);
+    \end{tikzpicture}
+    \caption{链式栈}
 \end{figure}
 
 动态栈有链表的部分特性，元素与元素之间在物理存储上可以不连续，但是功能有些受限制，动态栈只能在栈顶处进行插入和删除操作，不能在栈尾或栈中间进行插入和删除操作。 \\
@@ -117,31 +117,31 @@
 栈的输出顺序和输入顺序相反，所以栈同行用于对历史的回溯。例如实现递归的逻辑，就可以用栈回溯调用链。 \\
 
 \begin{figure}[H]
-	\centering
-	\begin{drawstack}
-		\startframe
-		\cell{N = 1}
-		\cell{...}
-		\finishframe{fact(1)}
-		\startframe
-		\cell{N = 2}
-		\cell{...}
-		\finishframe{fact(2)}
-		\cell{$ \vdots $}
-		\startframe
-		\cell{N = 5}
-		\cell{...}
-		\finishframe{fact(5)}
-	\end{drawstack}
-	\caption{函数调用栈}
+    \centering
+    \begin{drawstack}
+        \startframe
+        \cell{N = 1}
+        \cell{...}
+        \finishframe{fact(1)}
+        \startframe
+        \cell{N = 2}
+        \cell{...}
+        \finishframe{fact(2)}
+        \cell{$ \vdots $}
+        \startframe
+        \cell{N = 5}
+        \cell{...}
+        \finishframe{fact(5)}
+    \end{drawstack}
+    \caption{函数调用栈}
 \end{figure}
 
 栈还有一个著名的应用场景就是面包屑导航，使用户在流浪页面时可以轻松地回溯到上一级更更上一级页面。
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[]{img/C4/4-1/1.png}
-	\caption{面包屑导航}
+    \centering
+    \includegraphics[]{img/C4/4-1/1.png}
+    \caption{面包屑导航}
 \end{figure}
 
 \newpage
@@ -261,19 +261,19 @@ def valid_paratheses(s):
 
 \begin{enumerate}
     \item 如果遇到操作数，就直接将其输出。
-    
+
     \item 如果遇到左括号，将其放入栈中。
-    
+
     \item 如果遇到右括号，则一直出栈并输出，直到遇到左括号为止。注意，左括号只出栈并不输出。
-    
+
     \item 如果遇到任何其它的运算符，如果为栈为空，则直接入栈。否则从栈中出栈元素并输出，直到遇到优先级更低的元素（或者栈为空）位置。在出栈完这些元素后，再将当前遇到的运算符入栈。有一点需要注意，只有在遇到右括号的情况下才将左括号出栈，其它情况都不会出栈左括号。
-    
+
     \item 如果读取到了表达式的末尾，则将栈中所有元素依次出栈输出。
 \end{enumerate}
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
+    \centering
+    \begin{tikzpicture}[]
         \draw[-] (0,0) rectangle (7,1);
         \draw[-] (1,0) -- (1,1);
         \draw[-] (2,0) -- (2,1);
@@ -290,5 +290,474 @@ def valid_paratheses(s):
         \draw (4.5,0.5) node{+};
         \draw (5.5,0.5) node{3};
         \draw (6.5,0.5) node{)};
-	\end{tikzpicture}
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw[->, red] (0.5,0) to[bend right] (8,-1.5);
+    \end{tikzpicture}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw[->, red] (1.5,0) to[bend right] (10,-1.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw (10.5,-0.5) node{(};
+        \draw[->, red] (2.5,0) to[bend right] (10,-0.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw (10.5,-0.5) node{(};
+        \draw (8.5,-0.5) node{2};
+        \draw[->, red] (3.5,0) to[bend right] (8,-0.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw (10.5,-0.5) node{(};
+        \draw (8.5,-0.5) node{2};
+        \draw (10.5,0.5) node{+};
+        \draw[->, red] (4.5,0) to[bend right] (10,0.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw (10.5,-0.5) node{(};
+        \draw (8.5,-0.5) node{2};
+        \draw (10.5,0.5) node{+};
+        \draw (8.5,0.5) node{3};
+        \draw[->, red] (5.5,1) to[bend left] (8,0.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw (10.5,-0.5) node{(};
+        \draw (8.5,-0.5) node{2};
+        \draw (10.5,0.5) node{+};
+        \draw (8.5,0.5) node{3};
+        \draw[->, red] (6.5,2) -- (6.5,1);
+        \draw[->, red] (10,0.5) -- (9,1.5);
+        \draw[->, red] (11,-0.5) -- (12,-0.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (10.5,-1.5) node{*};
+        \draw (8.5,-0.5) node{2};
+        \draw (8.5,0.5) node{3};
+        \draw (8.5,1.5) node{+};
+        \draw[->, red] (10,-1.5) -- (9,2.5);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[]
+        \draw[-] (0,0) rectangle (7,1);
+        \draw[-] (1,0) -- (1,1);
+        \draw[-] (2,0) -- (2,1);
+        \draw[-] (3,0) -- (3,1);
+        \draw[-] (4,0) -- (4,1);
+        \draw[-] (5,0) -- (5,1);
+        \draw[-] (6,0) -- (6,1);
+        \draw[-] (7,0) -- (7,1);
+
+        \draw (0.5,0.5) node{1};
+        \draw (1.5,0.5) node{*};
+        \draw (2.5,0.5) node{(};
+        \draw (3.5,0.5) node{2};
+        \draw (4.5,0.5) node{+};
+        \draw (5.5,0.5) node{3};
+        \draw (6.5,0.5) node{)};
+
+        \draw[-] (8,3) rectangle (9,-2);
+        \draw[-] (8,2) -- (9,2);
+        \draw[-] (8,1) -- (9,1);
+        \draw[-] (8,0) -- (9,0);
+        \draw[-] (8,-1) -- (9,-1);
+        \draw (8.5,-2.5) node{num};
+
+        \draw[-] (10,3) rectangle (11,-2);
+        \draw[-] (10,2) -- (11,2);
+        \draw[-] (10,1) -- (11,1);
+        \draw[-] (10,0) -- (11,0);
+        \draw[-] (10,-1) -- (11,-1);
+        \draw (10.5,-2.5) node{op};
+
+        \draw (8.5,-1.5) node{1};
+        \draw (8.5,-0.5) node{2};
+        \draw (8.5,0.5) node{3};
+        \draw (8.5,1.5) node{+};
+        \draw (8.5,2.5) node{*};
+    \end{tikzpicture}
+\end{figure}
+
+\mybox{表达式求值}
+
+\begin{lstlisting}[language=Python]
+def priority(op):
+    """
+        运算符的优先级
+        乘除法优先级高于加减法
+        Args:
+            op (str): 运算符
+        Returns:
+            (int): 优先级
+    """
+    if op == "*" or op == "/":
+        return 2
+    elif op == "+" or op == "-":
+        return 1
+    else:
+        return 0
+
+def infix_to_postfix(exp):
+    """
+        中缀表达式转换后缀表达式
+        转换后的后缀表达式操作数之前带空格
+        Args:
+            exp (str): 中缀表达式
+        Returns:
+            (str): 后缀表达式
+    """
+    postfix = ""    # 保存生成的后缀表达式
+    s = stack.Stack()
+
+    number = ""
+    for ch in exp:
+        # 如果是数字，保存每一位数字
+        if ch.isdigit():
+            number += ch
+            continue
+        
+        # 如果读取一个完整数字，直接输出
+        if len(number) > 0:
+            postfix += number + " "
+            number = ""
+        
+        # 空格忽略
+        if ch == " ":
+            continue
+        
+        # 如果是运算符，并且空栈，则直接入栈
+        if s.is_empty():
+            s.push(ch)
+        # 如果遇到左括号，将其放入栈中
+        elif ch == "(":
+            s.push(ch)
+        # 如果遇到右括号，则一直出栈并输出，直到遇到左括号为止
+        # 注意，左括号只出栈并不输出
+        elif ch == ")":
+            while s.peek() != "(":
+                postfix += s.pop() + " "
+            s.pop()
+        # 如果遇到任何其它的运算符，如果为栈为空，则直接入栈
+        # 否则从栈中出栈元素并输出，直到遇到优先级更低的元素（或为空）
+        # 在出栈完这些元素后，再将当前遇到的运算符入栈
+        # 只有遇到右括号的情况下才将左括号出栈
+        else:
+            while not s.is_empty() 
+                    and priority(ch) <= priority(s.peek()):
+                postfix += s.pop() + " "
+            s.push(ch)
+    
+    # 如果读取一个完整数字，直接输出
+    if len(number) > 0:
+        postfix += number + " "
+        number = ""
+    
+    while not s.is_empty():
+        postfix += s.pop() + " "
+    
+    return postfix.rstrip()
+
+def calculate(postfix):
+    """
+    表达式求值
+    Args:
+        postfix (str): 后缀表达式
+    Returns:
+        (int): 表达式结果
+    """
+    s = stack.Stack()
+
+    tokens = postfix.split()
+    for token in tokens:
+        # 数字则入栈
+        try:
+            s.push(int(token))
+        # 运算符则出栈2次，将计算结果入栈
+        except ValueError:
+            num2 = s.pop()
+            num1 = s.pop()
+            if token == '+':
+                s.push(num1 + num2)
+            elif token == '-':
+                s.push(num1 - num2)
+            elif token == '*':
+                s.push(num1 * num2)
+            elif token == '/':
+                s.push(int(num1 / num2))
+    return s.pop()
+\end{lstlisting}
+
+\newpage

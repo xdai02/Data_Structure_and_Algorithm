@@ -1,0 +1,146 @@
+\chapter{分治法}
+
+\section{分治法}
+
+\subsection{分治法（Divide and Conquer）}
+
+分治策略是将原问题分解为k个子问题，并对k个子问题分别求解。如果子问题的规模仍然不够小，则再划分为k个子问题，如此递归的进行下去，直到问题规模足够小，很容易求出其解为止。 \\
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			level distance=2.5cm,
+			level 1/.style={sibling distance=6cm},
+			level 2/.style={sibling distance=3cm},
+			level 3/.style={sibling distance=2cm}
+		]
+		\node {problem}
+		child {
+				node {subproblem}
+				child {node {compute}}
+				child {node {compute}}
+			}
+		child {
+				node {subproblem}
+				child {node {compute}}
+				child {node {compute}}
+			};
+	\end{tikzpicture}
+	\caption{分治法}
+\end{figure}
+
+将求出的小规模的问题的解合并为一个更大规模的问题的解，自底向上逐步求出原来问题的解。 \\
+
+分治法的适用条件有以下四点：
+
+\begin{enumerate}
+	\item 该问题的规模缩小到一定的程度就可以容易地解决。
+
+	\item 该问题可以分解为若干个规模较小的相同问题，即该问题具有最优子结构性质。
+
+	\item 利用该问题分解出的子问题的解可以合并为该问题的解。
+
+	\item 该问题所分解出的各个子问题是相互独立的，即子问题之间不包含公共的子问题（如果各子问题是不独立的，则分治法要做许多不必要的工作，重复地解公共的子问题，此时虽然也可用分治法，但一般用动态规划较好）。
+\end{enumerate}
+
+人们在大量事件中发现，在用分治法设计算法时，最好使子问题的规模大致相同。即将一个问题分成大小相等的k个子问题的处理方法是行之有效的。这种使子问题规模大致相等的做法是出自一种平衡子问题的思想，它几乎总是比子问题规模不等的做法要好。
+
+\subsection{二分搜索}
+
+一个装有16个硬币的袋子，16个硬币中有一个是伪造的，并且那个伪造的硬币比真的硬币要轻一些，要求找出这个伪造的硬币。只提供一台可用来比较两组硬币重量的仪器，利用这台仪器，可以知道两组硬币的重量是否相同。 \\
+
+算法思想是将16个硬币等分成A、B两份，将A放仪器的一边，B放另一边，如果A袋轻，则表明伪币在A，解子问题A即可，否则解子问题B。 \\
+
+二分搜索每执行一次循环，待搜索数组的大小减少一半，在最坏情况下，循环被执行了$ O(logn) $次，循环体内运算需要$ O(1) $时间。因此，整个算法在最坏情况下的计算时间复杂性为$ O(logn) $。
+
+\newpage
+
+\section{大整数加法}
+
+\subsection{大整数加法}
+
+如果有两个很大的整数，如何求出它们的和？ \\
+
+这还不简单？直接用long类型存储，在程序里相加不就行了？ \\
+
+C/C++中的int类型能表示的范围是$ -2^{31} \sim 2^{31} - 1 $，unsigned类型能表示的范围是$ 0 \sim 2^{32} - 1 $，所以int和unsigned类型变量都不能保存超过10位的整数。 \\
+
+有时需要参与运算的数可能会远远不止10位，例如计算$ 100! $的精确值。即便使用能表示很大数值范围的double变量，但是由于double变量只有64位，精度也不足以表示一个超过100位的整数。我们称这种基本数据类型无法表示的整数为大整数。 \\
+
+在小学的时候，老师教我们用列竖式的方式计算两个整数的和。
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cD{.}{.}{3}}
+		  & 426709752318 \\
+		+ & 95481253129  \\
+		\hline
+		= & 522191005447
+	\end{tabular}
+\end{table}
+
+不仅仅是人脑，对于计算机来说同样如此。对于大整数，我们无法一步到位直接算出结果，所以不得不把计算拆解成一个一个子步骤。 \\
+
+可是，既然大整数已经超出了long类型的范围，我们如何来存储这样的整数呢？ \\
+
+存放大整数最简单的方法就是使用数组，可以用数组的每一个元素存储整数的每一个数位。如果给定大整数的最长位数是n，那么按位计算的时间复杂度是$ O(n) $。 \\
+
+\mybox{大整数加法}
+
+\begin{lstlisting}[language=Python]
+def big_int_add(num1, num2):
+    # 其中一个数为0，直接返回另一个数
+    if num1 == "0":
+        return num2
+    elif num2 == "0":
+        return num1
+    
+    # 计算两个数中较长的整数位数
+    max_len = max(len(num1), len(num2))
+    # 让位数较短的整数前面补0对齐
+    num1 = '0' * (max_len - len(num1)) + num1
+    num2 = '0' * (max_len - len(num2)) + num2
+
+    result = ""         # 结果
+    carry = 0           # 保存进位
+    # 从右往左逐位相加
+    for i in range(max_len - 1, -1, -1):
+        s = int(num1[i]) + int(num2[i]) + carry
+        result = str(s % 10) + result
+        carry = s // 10
+    
+    # 判断最高位是否有进位
+    if carry > 0:
+        result = str(carry) + result
+    
+    # 去除结果前面多余的0
+    i = 0
+    while result[i] == '0':
+        i += 1
+    return result[i:]
+\end{lstlisting}
+
+这种思路其实还存在一个可优化的地方。我们之前是把大整数按照每一个十进制数位来拆分，比如较大整数的长度有50位，那么需要创建一个51位的数组，数组的每个元素存储其中一位。 \\
+
+真的有必要把原整数拆分得那么细吗？显然不需要，只需要拆分到可以被直接计算的程度就够了。int类型的取值范围是$ -2147483648 \sim 2147483647 $，最多有10位整数。为了防止溢出，可以把大整数的每9位作为数组的一个元素，进行加法运算。如此一来，占用空间和运算次数，都被压缩了9倍。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			level distance=2.5cm,
+			level 1/.style={sibling distance=2cm}
+		]
+		\node {50位}
+		child {node {9位}}
+		child {node {9位}}
+		child {node {9位}}
+		child {node {9位}}
+		child {node {9位}}
+		child {node {9位}};
+	\end{tikzpicture}
+	\caption{大整数加法优化}
+\end{figure}
+
+在Java中，工具类BigInteger和BidDecimal的底层实现也是把大整数拆分成数组进行运算，与此处的思路大体类似。
+
+\newpage

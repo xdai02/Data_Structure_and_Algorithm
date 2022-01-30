@@ -40,6 +40,22 @@
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{matrix,backgrounds}
 
+\tikzset{block/.style={
+        font=\sffamily,
+        draw=black,
+        thin,
+        fill=pink!50,
+        rectangle split,
+        rectangle split horizontal,
+        rectangle split parts=#1,
+        outer sep=0pt},
+        %
+        gblock/.style={
+            block,
+            rectangle split parts=#1,
+            fill=green!30}
+        }
+
 \tikzstyle{ptr}  = [draw, -{Stealth[scale=1.0]}, blue]
 \tikzstyle{head} = [rectangle, draw, text height=3mm, text width=3mm,
                     text centered, node distance=3cm, inner sep=0pt]
@@ -263,6 +279,6 @@
 
 \setcounter{page}{1}
 
-\input{parts/part1}
+\input{parts/parts}
 
 \end{document}

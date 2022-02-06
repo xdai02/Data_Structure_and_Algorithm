@@ -578,3 +578,626 @@ void quickSort(int *arr, int start, int end) {
 
 二叉堆本质上是一种完全二叉树，分为最大堆和最小堆两个类型。在最大堆中，任何一个父结点的值都大于等于它左右孩子结点的值。在最小堆中，任何一个父结点的值都小于等于它左右孩子结点的值。 \\
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {10}
+        child {
+                node[circle,draw] {8}
+                child {
+                        node[circle,draw] {7}
+                        child {node[circle,draw] {3}}
+                        child {node[circle,draw] {2}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {9}
+                child {node[circle,draw] {4}}
+                child {node[circle,draw] {6}}
+            };
+    \end{tikzpicture}
+    \caption{大顶堆}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {1}
+        child {
+                node[circle,draw] {3}
+                child {
+                        node[circle,draw] {6}
+                        child {node[circle,draw] {9}}
+                        child {node[circle,draw] {10}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {2}
+                child {node[circle,draw] {7}}
+                child {node[circle,draw] {8}}
+            };
+    \end{tikzpicture}
+    \caption{小顶堆}
+\end{figure}
+
+二叉堆的根结点称为堆顶，在最大堆中堆顶是整个堆中的最大元素，在最小堆中堆顶是整个堆中的最小元素。 \\
+
+在二叉堆中插入结点、删除结点、构造二叉堆的操作都基于堆的自我调整。 \\
+
+二叉堆虽然是一棵完全二叉树，但它的存储方式并不是链式存储，而是顺序存储。数组中，通过下标可以定位到结点的左右孩子，假设父结点的下标是parent，那么它的左孩子下标为2 * parent + 1、右孩子下标为2 * parent + 2。
+
+\subsection{插入结点}
+
+二叉堆的插入操作可以看成是结点上浮，当在堆中插入一个结点时，必须满足完全二叉树的标准，那么被插入结点的位置是完全二叉树的最后一个位置。在最大堆中，如果新结点的值大于它的父结点的值，则让新结点上浮，即和父结点交换位置。 \\
+
+堆的插入时间复杂度取决于树高为$ O(logn) $。 \\
+
+例如在大顶堆\{20, 15, 2, 14, 10\}中插入21： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {20}
+        child {
+                node[circle,draw] {15}
+                child {node[circle,draw] {14}}
+                child {node[circle,draw] {10}}
+            }
+        child {
+                node[circle,draw] {2}
+                child {node[circle,draw] {\textcolor{red}{21}}}
+                child[missing] {}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0  & 1  & 2 & 3  & 4  & 5                      \\
+            20 & 15 & 2 & 14 & 10 & \textcolor{red}{21} \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+将新元素21与其父结点2比较，因为21 > 2，将21和2的位置交换： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {20}
+        child {
+                node[circle,draw] {15}
+                child {node[circle,draw] {14}}
+                child {node[circle,draw] {10}}
+            }
+        child {
+                node[circle,draw] {\textcolor{red}{21}}
+                child {node[circle,draw] {2}}
+                child[missing] {}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0  & 1  & 2                      & 3  & 4  & 5 \\
+            20 & 15 & \textcolor{red}{21} & 14 & 10 & 2 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+因为21 > 20，将21与20的位置交换： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {\textcolor{red}{21}}
+        child {
+                node[circle,draw] {15}
+                child {node[circle,draw] {14}}
+                child {node[circle,draw] {10}}
+            }
+        child {
+                node[circle,draw] {20}
+                child {node[circle,draw] {2}}
+                child[missing] {}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0                      & 1  & 2  & 3  & 4  & 5 \\
+            \textcolor{red}{21} & 15 & 20 & 14 & 10 & 2 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+\subsection{删除结点}
+
+二叉堆的删除操作总是从堆的根结点删除元素。根结点被删除之后为了能够保证该树还是一棵完全二叉树，需要将完全二叉树的最后一个结点补到根结点的位置，让其继续符合完全二叉树的定义。二叉堆的删除结点操作可以看作是结点下沉。在最大堆中，如果新堆顶元素小于它的左右孩子中较大的那个结点，则与它的较大的子结点交换位置。 \\
+
+堆的删除时间复杂度取决于树高为$ O(logn) $。 \\
+
+例如删除大顶堆的堆顶元素20： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {20}
+        child {
+                node[circle,draw] {15}
+                child {node[circle,draw] {14}}
+                child {node[circle,draw] {10}}
+            }
+        child {
+                node[circle,draw] {2}
+                child {node[circle,draw] {1}}
+                child[missing] {}
+            };
+
+        \draw[very thick, red] (-0.5,1) -- (0.5,-1);
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0                      & 1  & 2 & 3  & 4  & 5 \\
+            \textcolor{red}{20} & 15 & 2 & 14 & 10 & 1 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+移动最后一个结点到堆顶，使其满足二叉树的性质： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {\textcolor{red}{1}}
+        child {
+                node[circle,draw] {15}
+                child {node[circle,draw] {14}}
+                child {node[circle,draw] {10}}
+            }
+        child {node[circle,draw] {2}};
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0                      & 1  & 2 & 3  & 4  \\
+            \textcolor{red}{1} & 15 & 2 & 14 & 10 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+将堆顶元素1与其子结点比较，因为15 > 2，交换较大子结点15与1的位置： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {15}
+        child {
+                node[circle,draw] {\textcolor{red}{1}}
+                child {node[circle,draw] {14}}
+                child {node[circle,draw] {10}}
+            }
+        child {node[circle,draw] {2}};
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0  & 1                      & 2 & 3  & 4  \\
+            15 & \textcolor{red}{1} & 2 & 14 & 10 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+继续将元素1与其子结点比较，因为14 > 10，交换较大子结点14与1的位置： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {15}
+        child {
+                node[circle,draw] {14}
+                child {node[circle,draw] {\textcolor{red}{1}}}
+                child {node[circle,draw] {10}}
+            }
+        child {node[circle,draw] {2}};
+    \end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[font=\ttfamily,
+            array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+                    row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+                }]
+
+        \matrix[array] (array) {
+            0  & 1 & 2 & 3                      & 4  \\
+            15 & 1 & 2 & \textcolor{red}{1} & 10 \\
+        };
+    \end{tikzpicture}
+\end{figure}
+
+\subsection{构建二叉堆}
+
+构建二叉堆，就是把一个无序的完全二叉树调整为二叉堆，本质上就是让所有非叶子结点依次下沉。 \\
+
+例如将一个无序的完全二叉树构建成最小堆： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {7}
+        child {
+                node[circle,draw] {1}
+                child {
+                        node[circle,draw] {10}
+                        child {node[circle,draw] {9}}
+                        child {node[circle,draw] {6}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {3}
+                child {node[circle,draw] {2}}
+                child {node[circle,draw] {8}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+首先从最后一个非叶子结点开始，结点10下沉： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {7}
+        child {
+                node[circle,draw] {1}
+                child {
+                        node[circle,draw] {6}
+                        child {node[circle,draw] {9}}
+                        child {node[circle,draw] {\textcolor{red}{10}}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {3}
+                child {node[circle,draw] {2}}
+                child {node[circle,draw] {8}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+接着处理倒数第二个非叶子结点，结点3下沉： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {7}
+        child {
+                node[circle,draw] {1}
+                child {
+                        node[circle,draw] {6}
+                        child {node[circle,draw] {9}}
+                        child {node[circle,draw] {10}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {2}
+                child {node[circle,draw] {\textcolor{red}{3}}}
+                child {node[circle,draw] {8}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+倒数第三个非叶子结点1无需移动。 \\
+
+最后处理倒数第四个非叶子结点7下沉： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {1}
+        child {
+                node[circle,draw] {5}
+                child {
+                        node[circle,draw] {6}
+                        child {node[circle,draw] {9}}
+                        child {node[circle,draw] {10}}
+                    }
+                child {node[circle,draw] {\textcolor{red}{7}}}
+            }
+        child {
+                node[circle,draw] {2}
+                child {node[circle,draw] {3}}
+                child {node[circle,draw] {8}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+最终一棵无序完全二叉树就调整成了一个最小堆。
+
+\subsection{堆排序（Heap Sort）}
+
+有了二叉堆的构建、删除和自我调节，实现堆排序就是水到聚成了。当删除一个最大堆的堆顶后（并不是完全删除，而是替换到堆的最后面），经过自我调节，第二大的元素就会被交换上来，成为最大堆的新堆顶。 \\
+
+首先将待排序数组构建成大顶堆： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {10}
+        child {
+                node[circle,draw] {8}
+                child {
+                        node[circle,draw] {7}
+                        child {node[circle,draw] {3}}
+                        child {node[circle,draw] {2}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {9}
+                child {node[circle,draw] {4}}
+                child {node[circle,draw] {6}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+移除堆顶元素（与最后元素交换）： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {\textcolor{red}{2}}
+        child {
+                node[circle,draw] {8}
+                child {
+                        node[circle,draw] {7}
+                        child {node[circle,draw] {3}}
+                        child {node[circle,draw] {\textcolor{blue}{10}}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {9}
+                child {node[circle,draw] {4}}
+                child {node[circle,draw] {6}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+将新的堆顶元素进行下沉，重新调整为大顶堆： \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {9}
+        child {
+                node[circle,draw] {8}
+                child {
+                        node[circle,draw] {7}
+                        child {node[circle,draw] {3}}
+                        child {node[circle,draw] {\textcolor{blue}{10}}}
+                    }
+                child {node[circle,draw] {5}}
+            }
+        child {
+                node[circle,draw] {6}
+                child {node[circle,draw] {4}}
+                child {node[circle,draw] {\textcolor{red}{2}}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+只要反复删除堆顶，反复调节二叉堆，所得到的的集合就成为了一个有序集合。 \\
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+            level distance=1.5cm,
+            level 1/.style={sibling distance=4cm},
+            level 2/.style={sibling distance=2cm},
+            level 3/.style={sibling distance=1cm}
+        ]
+        \node[circle,draw] {2}
+        child {
+                node[circle,draw] {3}
+                child {
+                        node[circle,draw] {5}
+                        child {node[circle,draw] {9}}
+                        child {node[circle,draw] {10}}
+                    }
+                child {node[circle,draw] {6}}
+            }
+        child {
+                node[circle,draw] {4}
+                child {node[circle,draw] {7}}
+                child {node[circle,draw] {8}}
+            };
+    \end{tikzpicture}
+\end{figure}
+
+\mybox{堆排序}
+
+\begin{lstlisting}[language=Java]
+public static void downAdjust(int[] arr, int parentIndex, int len) {
+    // 保存父结点的值，用于最后的赋值
+    int temp = arr[parentIndex];
+    int childIndex = 2 * parentIndex + 1;
+
+    while(childIndex < len) {
+        // 如果有右孩子，且右孩子大于左孩子的值，则定位到右孩子
+        if(childIndex + 1 < len 
+            && arr[childIndex + 1] > arr[childIndex]) {
+            childIndex++;
+        }
+        // 如果父结点小于任何一个孩子的值，直接跳出
+        if(temp >= arr[childIndex]) {
+            break;
+        }
+        // 无需真正交换，单向赋值即可
+        arr[parentIndex] = arr[childIndex];
+        parentIndex = childIndex;
+        childIndex = 2 * childIndex + 1;
+    }
+    arr[parentIndex] = temp;
+}
+
+public static void heapSort(int[] arr) {
+    // 把无序数组构建成二叉堆
+    for(int i = (arr.length-2) / 2; i >= 0; i--) {
+        downAdjust(arr, i, arr.length);
+    }
+
+    // 循环删除堆顶元素，移到数组尾部，调节堆产生新的堆顶
+    for(int i = arr.length - 1; i > 0; i--) {
+        // 最后一个元素和第一个元素交换
+        int temp = arr[i];
+        arr[i] = arr[0];
+        arr[0] = temp;
+        // 下沉调整最大堆
+        downAdjust(arr, 0, i);
+    }
+}
+\end{lstlisting}
+
+堆排序的空间复杂度为$ O(1) $，因为算法并没有开辟额外的集合空间。 \\
+
+至于空间复杂度，假设二叉堆总共有n个元素，那么下沉调整的最坏时间复杂度就等同于二叉堆的高度$ O(logn) $。 \\
+
+堆排序的算法步骤分为两部分：
+
+\begin{enumerate}
+    \item 把无序数组构建成二叉堆：进行$ n / 2 $次循环，每次循环进行一次下沉调节，因为此步骤的计算规模为$ n/2 * logn $，时间复杂度为$ O(nlogn) $。
+
+    \item 循环删除堆顶元素，移到数组尾部，调节堆产生新堆顶：进行n - 1次循环，每次循环进行一次下沉调节，因此次步骤的计算规模为$ (n-1) * logn $，时间复杂度为$ O(nlogn) $。
+\end{enumerate}
+
+综合堆排序的两个步骤，整体时间复杂度为$ O(nlogn) $。
+
+\newpage

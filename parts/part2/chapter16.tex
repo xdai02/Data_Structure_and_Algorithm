@@ -639,3 +639,117 @@ KMP算法的整体思路就是在已匹配的前缀当中寻找最长可匹配�
 要找到这两个子串没有必要每次都去遍历，可以事先缓存到一个集合当中，用的时候再去集合里面取。这个集合被称为next数组，如何生成next数组是KMP算法的最大难点。
 
 \subsection{next数组}
+
+next数组实质上就是找出模式串前后字符重复出现的个数，next[i]表示模式串T[0]到T[i]这个子串使得前k个字符等于后k个字符的最大值，其中k不能取i + 1，因为子串一共才i + 1个字符，自己跟自己相等毫无意义。 \\
+
+例如当文本串S = "ABABAABAABAC"，P = "ABAABAC"。
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{模式串}   & \textbf{A} & \textbf{B} & \textbf{A} & \textbf{A} & \textbf{B} & \textbf{A} & \textbf{C} \\
+			\hline
+			\textbf{next数组} & 0          & 0          & 1          & 1          & 2          & 3          & 0          \\
+			\hline
+		\end{tabular}
+	}
+	\caption{模式串ABAABAC的next数组}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{0}          & \textbf{1}          & \textbf{2}          & \textbf{3}         & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} \\
+			\hline
+			\textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{red}{B} & A          & A          & B          & A          & A          & B          & A           & C           \\
+			\hline
+			\textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{red}{A} & B          & A          & C          &            &            &            &             &             \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+已经成功匹配3个，查看next[3-1] = 1，表示最长匹配前后缀长度为1。模式串需要跳过的长度为匹配上的长度减去最长匹配前后缀长度，即3 - 1 = 2。
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{0} & \textbf{1} & \textbf{2}          & \textbf{3}          & \textbf{4}          & \textbf{5}          & \textbf{6}          & \textbf{7}          & \textbf{8}         & \textbf{9} & \textbf{10} & \textbf{11} \\
+			\hline
+			A          & B          & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{red}{A} & B          & A           & C           \\
+			\hline
+			           &            & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{red}{C} &            &             &             \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+已经成功匹配6个，查看next[6-1] = 3，表示最长匹配前后缀长度为3。模式串需要跳过的长度为匹配上的长度减去最长匹配前后缀长度，即6 - 3 = 3。
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5}          & \textbf{6}          & \textbf{7}          & \textbf{8}          & \textbf{9}          & \textbf{10}         & \textbf{11}         \\
+			\hline
+			A          & B          & A          & B          & A          & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{blue}{C} \\
+			\hline
+			           &            &            &            &            & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{blue}{A} & \textcolor{blue}{B} & \textcolor{blue}{A} & \textcolor{blue}{C} \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+在跳过不可能匹配的趟数后，并非再从头开始匹配，而是从之前不匹配的位置开始。
+
+\subsection{算法分析}
+
+假设模式串的长度为m，主串的长度为n。KMP算法唯一的额外空间是next数组，那么空间复杂度就是$ O(m) $。 \\
+
+至于时间复杂度，KMP算法包括两步。第一步生成next数组，时间复杂度为$ O(m) $；第二步是对主串的遍历，时间复杂度为$ O(n) $。因此KMP算法的整体时间复杂度就是$ O(m + n) $。 \\
+
+\mybox{KMP}
+
+\begin{lstlisting}[language=Java]
+public static int[] getNexts(String p) {
+	int n = p.length();
+	int[] next = new int[n];
+	int j = 0;
+	for(int i = 2; i < n; i++) {
+		while(j != 0 && p.charAt(j) != p.charAt(i-1)) {
+			j = next[j];
+		}
+		if(p.charAt(j) == p.charAt(i-1)) {
+			j++;
+		}
+		next[i] = j;
+	}
+	return next;
+}
+
+public static int kmp(String s, String p) {
+	int[] next = getNexts(p);
+	int j = 0;
+	for(int i = 0; i < s.length(); i++) {
+		while(j > 0 && s.charAt(i) != p.charAt(j)) {
+			j = next[j];
+		}
+		if(s.charAt(i) == p.charAt(j)) {
+			j++;
+		}
+		if(j == p.length()) {
+			return i - p.length() + 1;
+		}
+	}
+	return -1;
+}
+\end{lstlisting}
+
+\newpage

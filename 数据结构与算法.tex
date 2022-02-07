@@ -168,7 +168,7 @@ size=20pt,inner sep=0pt,text=black}}
 
 \begin{document}
 
-\pagestyle{plain}
+\thispagestyle{empty}
 
 \begin{tikzpicture}[overlay,remember picture]
 	% Background color
@@ -275,9 +275,10 @@ size=20pt,inner sep=0pt,text=black}}
 
 \newpage
 
+\pagestyle{plain}
+\setcounter{page}{1}
 \setcounter{tocdepth}{1}
 \tableofcontents
-\thispagestyle{empty}
 
 \newpage
 

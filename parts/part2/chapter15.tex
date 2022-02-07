@@ -30,3 +30,738 @@
 
 接下来就引申出了一个新的问题，如果已知从第0级走到第9级的走法有X种，从第0级走到第8级的走法有Y种，那么从第0级走到第10级的走法就有X + Y种。 \\
 
+为了方便表达，我们把10级台阶的走法数量简写为F(10)，此时F(10) = F(9) + F(8)。那么如何计算F(9)和F(8)呢？ \\
+
+利用刚才的思路可以很容易地推断出F(9) = F(8) + F(7)， F(8) = F(7) + F(6)。这样我们就把一个复杂的问题分阶段进行简化，逐步简化成简单的问题，这就是动态规划的思想。 \\
+
+当只有1级台阶和2级台阶的时候，显然分别只有1种和2种走法。由此可以归纳出递推公式：
+
+\vspace{-0.5cm}
+
+\begin{align*}
+	F(n) = \begin{cases}
+		1               & n = 1   \\
+		1               & n = 2   \\
+		F(n-1) + F(n-2) & n \ge 3
+	\end{cases}
+\end{align*}
+
+动态规划当中包含了三个重要的概念：
+
+\begin{itemize}
+	\item 最优子结构
+	\item 边界
+	\item 状态转移方程
+\end{itemize}
+
+刚才分析得出的F(10) = F(9) + F(8)中，F(9)和F(8)就是F(10)的最优子结构。 \\
+
+当只有1级台阶或2级台阶时，我们可以直接得出结果，无需继续简化。因此F(1)和F(2)就是问题的边界。如果一个问题没有边界，将永远无法得到有限的结果。 \\
+
+F(n) = F(n-1) + F(n-2)是阶段与阶段之间的状态转移方程，这是动态规划的核心，决定了问题的每一个阶段与下一阶段的关系。 \\
+
+既然已经归纳出了F(n) = F(n-1) + F(n-2)，又知道了边界，那就可以直接用递归的思路实现。 \\
+
+\mybox{爬楼梯（递归）}
+
+\begin{lstlisting}[language=C]
+int climbStairs(int n) {
+    if(n <= 0) {
+        return 0;
+    } else if(n == 1) {
+        return 1;
+    } else if(n == 2) {
+        return 2;
+    }
+    return climbStairs(n-1) + climbStairs(n-2);
+}
+\end{lstlisting}
+
+递归的确可以计算出最终答案，可是其时间复杂度却是指数级的。 \\
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			level distance=2.5cm,
+			level 1/.style={sibling distance=8cm},
+			level 2/.style={sibling distance=4cm},
+			level 3/.style={sibling distance=2cm}
+		]
+		\node {F(n)}
+		child {
+				node {F(n-1)}
+				child {
+						node {F(n-2)}
+						child {node {F(n-3)}}
+						child {node {F(n-4)}}
+					}
+				child {
+						node {F(n-3)}
+						child {node {F(n-4)}}
+						child {node {F(n-5)}}
+					}
+			}
+		child {
+				node {F(n-2)}
+				child {
+						node {F(n-3)}
+						child {node {F(n-4)}}
+						child {node {F(n-5)}}
+					}
+				child {
+						node {F(n-4)}
+						child {node {F(n-5)}}
+						child {node {F(n-6)}}
+					}
+			};
+	\end{tikzpicture}
+	\caption{递归树}
+\end{figure}
+
+二叉树的结点个数就是递归方法所需要计算的次数，因此递归方法的时间复杂度为$ O(2^n) $。 \\
+
+可以发现在递归树中，有些相同的参数被重复计算了，越往下走，重复的越多。 \\
+
+可是一定要对F(n)自顶向下做递归运算吗？采用自底向上，用迭代的方法也可以推导出结果。 \\
+
+之前已经得出结论，F(1) = 1，F(2) = 2：
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{台阶数} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+			\hline
+			\textbf{走法数} & 1          & 2          &            &            &            &            \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+因为F(3) = F(1) + F(2)，经过一次迭代可以计算出F(3)：
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{台阶数} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+			\hline
+			\textbf{走法数} & 1          & 2          & 3          &            &            &            \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+第二次迭代，由于F(4)只依赖于F(2)和F(3)，而F(3)已经在上一次迭代计算得出，无需重复计算：
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{台阶数} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+			\hline
+			\textbf{走法数} & 1          & 2          & 3          & 5          &            &            \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+\mybox{爬楼梯（动态规划）}
+
+\begin{lstlisting}[language=C]
+int climbStairs(int n) {
+    if(n <= 0) {
+        return 0;
+    } else if(n == 1) {
+        return 1;
+    } else if(n == 2) {
+        return 2;
+    }
+    int num1 = 1;
+    int num2 = 2;
+    int sum;
+    for(int i = 3; i <= n; i++) {
+        sum = num1 + num2;
+        num1 = num2;
+        num2 = sum;
+    }
+    return sum;
+}
+\end{lstlisting}
+
+\newpage
+
+\section{硬币找零}
+
+\subsection{硬币找零}
+
+有三种硬币，面值分别是2元、5元、7元，每种硬币都有足够多。买一个物品需要27元，如何用最少的硬币组合正好付清？ \\
+
+要让硬币最少，应该尽量用面值大的硬币，也就是贪心算法的结果为7 + 7 + 7 + 5 = 26，呃…… \\
+
+那么需要改变一下策略，尽量用面值大的硬币，最后如果可以用一种硬币付清就行。7 + 7 + 7 + 2 + 2 + 2 = 27，一共6枚硬币，应该对了吧…… \\
+
+但是正确答案是7 + 5 + 5 + 5 + 5 = 27，一共5枚硬币。 \\
+
+状态在动态规划中的作用属于定海神针，确定状态需要两个意识：最后一步和子问题。 \\
+
+虽然目前不知道最优策略是什么，但是最优策略肯定是k枚硬币$ a_1, a_2, \dots, a_k $面值加起来是27，所以一定存在最后一枚硬币$ a_k $。除了这枚硬币，前面硬币的面值加起来是$ 27 - a_k $。因为是最优策略，所以拼出$ 27 - a_k $的硬币数一定要最少。 \\
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw[fill=cyan] (0,0) rectangle node{$ 27 - a_k $} (7,1);
+		\draw[fill=yellow] (7,0) rectangle node{$ a_k $} (10,1);
+		\draw (3.5,-0.5) node{k-1枚硬币};
+		\draw (8.5,-0.5) node{最后一枚硬币};
+	\end{tikzpicture}
+	\caption{最后一步}
+\end{figure}
+
+因此问题就变成了最少用多少枚硬币可以拼出$ 27 - a_k $。这样就将原问题转化成了一个子问题，而且规模更小。 \\
+
+假设状态F(x)表示拼出x元的所需的最少硬币数，最后那枚硬币$ a_k $只可能是2元、5元或7元：
+
+\begin{itemize}
+	\item 如果$ a_k $是2元，F(27) = F(27-2) + 1（加上最后一枚2元硬币）。
+
+	\item 如果$ a_k $是5元，F(27) = F(27-5) + 1（加上最后一枚5元硬币）。
+
+	\item 如果$ a_k $是7元，F(27) = F(27-7) + 1（加上最后一枚7元硬币）。
+\end{itemize}
+
+由此可得到递归公式：
+
+\vspace{-0.5cm}
+
+$$
+	F(27) = min\{F(27-2)+1,\ F(27-5)+1,\ F(27-7)+1\}
+$$
+
+\vspace{0.5cm}
+
+\mybox{硬币找零（递归）}
+
+\begin{lstlisting}[language=Java]
+public static int getMinCoins(int price) {
+    // 0元钱只需要0枚硬币
+    if(price == 0) {
+        return 0;
+    }
+    // 初始化为无穷大
+    int coinNum = Integer.MAX_VALUE - 1;
+    // 最后一枚硬币是2元
+    if(price >= 2) {
+        coinNum = Math.min(getMinCoins(price-2) + 1, coinNum);
+    }
+    // 最后一枚硬币是5元
+    if(price >= 5) {
+        coinNum = Math.min(getMinCoins(price-5) + 1, coinNum);
+    }
+    // 最后一枚硬币是7元
+    if(price >= 7) {
+        coinNum = Math.min(getMinCoins(price-7) + 1, coinNum);
+    }
+    return coinNum;
+}
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			level distance=2.5cm,
+			level 1/.style={sibling distance=5cm},
+			level 2/.style={sibling distance=1.5cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node {F(27)}
+		child {
+				node {F(25)}
+				child {
+						node {F(23)}
+						child {node { }}
+						child {node { }}
+					}
+				child {
+						node {F(20)}
+						child {node { }}
+						child {node { }}
+					}
+				child {
+						node {F(18)}
+						child {node { }}
+						child {node { }}
+					}
+			}
+		child {
+				node {F(22)}
+				child {
+						node {F(20)}
+						child {node { }}
+						child {node { }}
+					}
+				child {
+						node {F(17)}
+						child {node { }}
+						child {node { }}
+					}
+				child {
+						node {F(15)}
+						child {node { }}
+						child {node { }}
+					}
+			}
+		child {
+				node {F(20)}
+				child {
+						node {F(18)}
+						child {node { }}
+						child {node { }}
+					}
+				child {
+						node {F(15)}
+						child {node { }}
+						child {node { }}
+					}
+				child {
+						node {F(13)}
+						child {node { }}
+						child {node { }}
+					}
+			};
+	\end{tikzpicture}
+	\caption{递归树}
+\end{figure}
+
+动态规划的另一个组成部分就是状态转移方程：
+
+\vspace{-0.5cm}
+
+$$
+	F[X] = min\{F[X-2]+1,\ F[X-5]+1,\ F[X-7]+1\}
+$$
+
+其次需要考虑初始条件和边界情况。如果不能拼出i元，则定义$ F[i] = \infty $。例如当$ x - 2 $、$ x - 5 $、$ x - 7 $小于0时：
+
+\vspace{-0.5cm}
+
+$$
+	F[-1] = F[-2] = \dots = \infty
+$$
+
+状态转移方程的初始状态为F[0] = 0，因为无需任何硬币就能拼成0元。 \\
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{$ \dots $} & \textbf{F[-1]} & \textbf{F[0]} & \textbf{F[1]} & \textbf{F[2]} & \textbf{F[3]} & \textbf{F[4]} & \textbf{F[5]} & \textbf{F[6]} & \textbf{$ \dots $} & \textbf{F[27]} \\
+			\hline
+			$ \infty $         & $ \infty $     & 0             &               &               &               &               &               &               &                    &                \\
+			\hline
+		\end{tabular}
+	}
+	\caption{初始状态}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{$ \dots $} & \textbf{F[-1]} & \textbf{F[0]} & \textbf{F[1]} & \textbf{F[2]} & \textbf{F[3]} & \textbf{F[4]} & \textbf{F[5]} & \textbf{F[6]} & \textbf{$ \dots $} & \textbf{F[27]} \\
+			\hline
+			$ \infty $         & $ \infty $     & 0             & $ \infty $    &               &               &               &               &               &                    &                \\
+			\hline
+		\end{tabular}
+	}
+	\caption{$ F[1] = min\{F[-1] + 1, F[-4] + 1, F[-6] + 1\} = \infty $}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{$ \dots $} & \textbf{F[-1]} & \textbf{F[0]} & \textbf{F[1]} & \textbf{F[2]} & \textbf{F[3]} & \textbf{F[4]} & \textbf{F[5]} & \textbf{F[6]} & \textbf{$ \dots $} & \textbf{F[27]} \\
+			\hline
+			$ \infty $         & $ \infty $     & 0             & $ \infty $    & 1             &               &               &               &               &                    &                \\
+			\hline
+		\end{tabular}
+	}
+	\caption{$ F[2] = min\{F[0] + 1, F[-3] + 1, F[-5] + 1\} = 1 $}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{$ \dots $} & \textbf{F[-1]} & \textbf{F[0]} & \textbf{F[1]} & \textbf{F[2]} & \textbf{F[3]} & \textbf{F[4]} & \textbf{F[5]} & \textbf{F[6]} & \textbf{$ \dots $} & \textbf{F[27]} \\
+			\hline
+			$ \infty $         & $ \infty $     & 0             & $ \infty $    & 1             & $ \infty $    &               &               &               &                    &                \\
+			\hline
+		\end{tabular}
+	}
+	\caption{$ F[3] = min\{F[1] + 1, F[-2] + 1, F[-4] + 1\} = \infty $}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{$ \dots $} & \textbf{F[-1]} & \textbf{F[0]} & \textbf{F[1]} & \textbf{F[2]} & \textbf{F[3]} & \textbf{F[4]} & \textbf{F[5]} & \textbf{F[6]} & \textbf{$ \dots $} & \textbf{F[27]} \\
+			\hline
+			$ \infty $         & $ \infty $     & 0             & $ \infty $    & 1             & $ \infty $    & 2             &               &               &                    &                \\
+			\hline
+		\end{tabular}
+	}
+	\caption{$ F[4] = min\{F[2] + 1, F[-1] + 1, F[-3] + 1\} = 2 $}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{$ \dots $} & \textbf{F[-1]} & \textbf{F[0]} & \textbf{F[1]} & \textbf{F[2]} & \textbf{F[3]} & \textbf{F[4]} & \textbf{F[5]} & \textbf{F[6]} & \textbf{$ \dots $} & \textbf{F[27]} \\
+			\hline
+			$ \infty $         & $ \infty $     & 0             & $ \infty $    & 1             & $ \infty $    & 2             & 1             & 3             & $ \dots $          & 5              \\
+			\hline
+		\end{tabular}
+	}
+	\caption{$ F[27] = min\{F[25] + 1, F[-22] + 1, F[-20] + 1\} = 5 $}
+\end{table}
+
+\mybox{硬币找零（动态规划）}
+
+\begin{lstlisting}[language=Python]
+def get_min_coins(coins, price):
+    f = [INF] * (price + 1)
+
+    f[0] = 0
+    for i in range(1, price+1):
+        for j in range(len(coins)):
+            if i >= coins[j] and f[i - coins[j]] != INF:
+                f[i] = min(f[i - coins[j]] + 1, f[i])
+        
+    if f[price] == INF:
+        f[price] = -1
+    return f[price]
+\end{lstlisting}
+
+\newpage
+
+\section{路径问题}
+
+\subsection{路径问题}
+
+有一个机器人位于一个m行n列的网格的左上角$ (0, 0) $，机器人每次只能向下或向右移动一步，问有多少种方法可以走到右下角。 \\
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			           & \textbf{0}         & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} \\
+			\hline
+			\textbf{0} & \textcolor{red}{R} &            &            &            &            &            &            &            \\
+			\hline
+			\textbf{1} &                    &            &            &            &            &            &            &            \\
+			\hline
+			\textbf{2} &                    &            &            &            &            &            &            &            \\
+			\hline
+			\textbf{3} &                    &            &            &            &            &            &            &            \\
+			\hline
+		\end{tabular}
+	}
+	\caption{起点}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			           & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6}                       & \textbf{7}                      \\
+			\hline
+			\textbf{0} &            &            &            &            &            &            &                                  &                                 \\
+			\hline
+			\textbf{1} &            &            &            &            &            &            &                                  &                                 \\
+			\hline
+			\textbf{2} &            &            &            &            &            &            &                                  & \textcolor{red}{$ \downarrow $} \\
+			\hline
+			\textbf{3} &            &            &            &            &            &            & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{R}              \\
+			\hline
+		\end{tabular}
+	}
+	\caption{终点}
+\end{table}
+
+无论机器人用何种方式到达右下角，总有最后挪动的一步。右下角的坐标为$ (m-1, n-1) $，那么前一步机器人一定在$ (m-2, n-1) $或$ (m-1, n-2) $的位置。 \\
+
+如果机器人有X种方式从左上角走到$ (m-2, n-1) $，有Y种方式从左上角走到$ (m-1, n-2) $，那么机器人一共有X + Y种方式从左上角走到$ (m-1, n-1) $。原问题就转换为了机器人有多少种方式从左上角走到$ (m-2, n-1) $和$ (m-1, n-2) $。 \\
+
+那么可以得出转移方程f[i][j] = f[i-1][j] + f[i][j-1]，其中f[i][j]表示机器人有多少种方式走到$ (i, j) $。 \\
+
+初始条件为f[0][0] = 1，因为机器人只有1种方式到达左上角。 \\
+
+边界情况为当i = 0或j = 0，则前一步只能有一个方向到达，因此f[i][j] = 1。 \\
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			           & \textbf{0}                      & \textbf{1}                       & \textbf{2}                       & \textbf{3}                       & \textbf{4}                       & \textbf{5}                       & \textbf{6}                       & \textbf{7}         \\
+			\hline
+			\textbf{0} &                                 & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{$ \rightarrow $} & \textcolor{red}{R} \\
+			\hline
+			\textbf{1} & \textcolor{red}{$ \downarrow $} &                                  &                                  &                                  &                                  &                                  &                                  &                    \\
+			\hline
+			\textbf{2} & \textcolor{red}{$ \downarrow $} &                                  &                                  &                                  &                                  &                                  &                                  &                    \\
+			\hline
+			\textbf{3} & \textcolor{red}{R}              &                                  &                                  &                                  &                                  &                                  &                                  &                    \\
+			\hline
+		\end{tabular}
+	}
+	\caption{边界情况}
+\end{table}
+
+\mybox{路径问题}
+
+\begin{lstlisting}[language=C]
+int uniquePath(int m, int n) {
+    int f[m][n];
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            if(i == 0 || j == 0) {
+                f[i][j] = 1;
+            } else {
+                f[i][j] = f[i-1][j] + f[i][j-1];
+            }
+        }
+    }
+    return f[m-1][n-1];
+}
+\end{lstlisting}
+
+\newpage
+
+\section{跳跃游戏}
+
+\subsection{跳跃游戏}
+
+有n块石头分别在$ 0, 1, \dots, n-1 $的位置，一只青蛙在石头0，想跳到石头n - 1。如果青蛙在第i块石头上，每块石头的元素表示可以跳跃的最长距离。问青蛙能否跳到石头n - 1。 \\
+
+\textbf{示例1}
+
+输入：s = [2, 3, 1, 1, 4]
+
+输出：True
+
+解释：可以先跳1步，从石头0达到石头1，然后再从石头1跳3步到达目标。 \\
+
+\textbf{示例2}
+
+输入：s = [3, 2, 1, 0, 4]
+
+输出：False
+
+解释：无论怎样，总会达到石头3，但该石头的最大跳跃长度是0，所以永远不可能到达目标。 \\
+
+如果青蛙能跳到最后一块石头n - 1，那么它一定是从石头i跳过来的（i < n - 1）。 \\
+
+这需要两个条件同时满足：
+
+\begin{enumerate}
+	\item 青蛙可以跳到石头i。
+	\item 最后一跳不能超过可以跳跃的最大距离。
+\end{enumerate}
+
+那么问题转化为了青蛙能否跳到石头i。假设f[j]表示青蛙能否跳到石头j，可以得出转移方程：
+
+\vspace{-0.5cm}
+
+$$
+	f[j] = OR_{0 \le i < j}(f[i]\ AND\ i + a[i] \ge j)
+$$
+
+\begin{itemize}
+	\item $ f[j] $：青蛙能否跳到石头$ j $。
+
+	\item $ OR_{0 \le i < j} $：枚举上一个跳到的石头$ i $。
+
+	\item $ f[i] $：青蛙能否跳到石头$ i $。
+
+	\item $ a[i] $：最后一步的距离不能超过$ a_i $。
+\end{itemize}
+
+初始条件为f[0] = True，因为青蛙一开始就在石头0。 \\
+
+\mybox{跳跃游戏}
+
+\begin{lstlisting}[language=Java]
+public static boolean canJump(int[] stone) {
+    int n = stone.length;
+    boolean[] f = new boolean[n];
+    f[0] = true;
+
+    for(int j = 1; j < n; j++) {
+        f[j] = false;
+        for(int i = 0; i < j; i++) {
+            if(f[i] && i + stone[i] >= j) {
+                f[j] = true;
+                break;
+            }
+        }
+    }
+    return f[n-1];
+}
+\end{lstlisting}
+
+\newpage
+
+\section{0-1背包}
+
+\subsection{0-1背包（0-1 Knapsack）}
+
+有一个小偷带了一个能够装C = 20公斤物品的背包到商店里面偷东西，请问他要怎么偷才能使价值最高？ \\
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{物品} & \textbf{重量W} & \textbf{价格V} \\
+			\hline
+			\textbf{0}    & 2              & 3              \\
+			\hline
+			\textbf{1}    & 3              & 4              \\
+			\hline
+			\textbf{2}    & 4              & 5              \\
+			\hline
+			\textbf{3}    & 5              & 8              \\
+			\hline
+			\textbf{4}    & 9              & 10             \\
+			\hline
+		\end{tabular}
+	}
+	\caption{物品信息}
+\end{table}
+
+假设用B(k, C)表示当背包容量还剩下C的时候，在前k件物品中能偷到的最大价值。
+
+\vspace{-0.5cm}
+
+\begin{align*}
+	B(k, C) = \begin{cases}
+		B(k-1, C) & \text{当第}k\text{件太重} \\
+		max \begin{cases}
+			B(k-1, C-w_k) + v_k & \text{偷}   \\
+			B(k-1, C)           & \text{不偷} \\
+		\end{cases}
+	\end{cases}
+\end{align*}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			level distance=2.5cm,
+			level 1/.style={sibling distance=8cm},
+			level 2/.style={sibling distance=4cm},
+			level 3/.style={sibling distance=3cm}
+		]
+		\node {B(4,20)}
+		child {
+				node {B(3,11)+10}
+				child {
+						node {B(2,6)+18}
+						child {
+								node {B(1,2)+23}
+								child[missing] {}
+								child {
+										node {B(0,2)+23}
+										child {node {3+23=26}}
+										child[missing] {}
+									}
+							}
+						child {node {B(1,6)+18}}
+					}
+				child {node {B(2,11)+10}}
+			}
+		child {node {B(3,20)}};
+
+		\draw (-2.2,-1) node{偷};
+		\draw (2.2,-1) node{不偷};
+
+		\draw (-5.2,-3.5) node{偷};
+		\draw (-2.8,-3.5) node{不偷};
+
+		\draw (-7,-6) node{偷};
+		\draw (-4.8,-6) node{不偷};
+
+		\draw (-6.3,-8.5) node{不偷};
+
+		\draw (-7,-11) node{偷};
+	\end{tikzpicture}
+	\caption{决策树}
+\end{figure}
+
+边界情况为B(i, 0) = B(0, j) = 0，即当背包容量为0或者没有物品可偷的情况下，最大价值为0。 \\
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{1.3mm}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\textbf{Capacity} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} & \textbf{19} & \textbf{20} \\
+			\hline
+			\textbf{No Item}  & 0          & 0          & 0          & 0          & 0          & 0          & 0          & 0          & 0          & 0          & 0           & 0           & 0           & 0           & 0           & 0           & 0           & 0           & 0           & 0           & 0           \\
+			\hline
+			\textbf{Item 0}   & 0          & 0          & 3          & 3          & 3          & 3          & 3          & 3          & 3          & 3          & 3           & 3           & 3           & 3           & 3           & 3           & 3           & 3           & 3           & 3           & 3           \\
+			\hline
+			\textbf{Item 1}   & 0          & 0          & 3          & 4          & 4          & 7          & 7          & 7          & 7          & 7          & 7           & 7           & 7           & 7           & 7           & 7           & 7           & 7           & 7           & 7           & 7           \\
+			\hline
+			\textbf{Item 2}   & 0          & 0          & 3          & 4          & 5          & 7          & 8          & 9          & 9          & 12         & 12          & 12          & 12          & 12          & 12          & 12          & 12          & 12          & 12          & 12          & 12          \\
+			\hline
+			\textbf{Item 3}   & 0          & 0          & 3          & 4          & 5          & 8          & 8          & 11         & 12         & 13         & 15          & 16          & 17          & 17          & 20          & 20          & 20          & 20          & 20          & 20          & 20          \\
+			\hline
+			\textbf{Item 4}   & 0          & 0          & 3          & 4          & 5          & 8          & 8          & 11         & 12         & 13         & 15          & 16          & 17          & 17          & 20          & 20          & 21          & 22          & 23          & 25          & 26          \\
+			\hline
+		\end{tabular}
+		\caption{动态规划表格法}
+	}
+\end{table}
+
+\mybox{0-1背包}
+
+\begin{lstlisting}[language=C]
+#define ITEM_NUM 5
+#define CAPACITY 20
+
+int getMaxValue(int *weight, int *value) {
+    int b[ITEM_NUM+1][CAPACITY+1] = {{0}};
+
+    for(int k = 1; k <= ITEM_NUM; k++) {
+        for(int c = 1; c <= CAPACITY; c++) {
+            if(weight[k] > c) {
+                b[k][c] = b[k-1][c];
+            } else {
+                b[k][c] = max(
+                b[k-1][c-weight[k]] + value[k],
+                b[k-1][c]
+                );
+            }
+        }
+    }
+    return b[ITEM_NUM][CAPACITY];
+}
+\end{lstlisting}
+
+\newpage

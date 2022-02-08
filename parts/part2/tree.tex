@@ -1,0 +1,470 @@
+\section{红黑树}
+
+\subsection{红黑树（Red Black Tree）}
+
+红黑树是一种自平衡的二叉查找树，除了符合二叉查找树的基本特性外，它还具有如下附加特性：
+
+\begin{enumerate}
+	\item 结点是红色或黑色的。
+	\item 根结点是黑色的。
+	\item 叶子结点都是黑色的空结点NIL。
+	\item 红色结点的两个子结点都是黑色的，即从叶子到根的所有路径上不能有连续的两个红色结点。
+	\item 从任一结点到其每个叶子的所有路径都包含相同数目的黑色结点。
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=8cm},
+			level 2/.style={sibling distance=4cm},
+			level 3/.style={sibling distance=2cm},
+			level 4/.style={sibling distance=1cm},
+		]
+		\node [blackVertex] (r){13}
+		child {
+				node [redVertex] {8}
+				child {
+						node [blackVertex] {1}
+						child {node [nil] {NIL}}
+						child {
+								node [redVertex] {6}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+					}
+				child {
+						node [blackVertex] {11}
+						child {node [nil] {NIL}}
+						child {node [nil] {NIL}}
+					}
+			}
+		child {
+				node [redVertex] {17}
+				child {
+						node [blackVertex] {15}
+						child {node [nil] {NIL}}
+						child {node [nil] {NIL}}
+					}
+				child {
+						node [blackVertex] {25}
+						child {
+								node [redVertex] {22}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+						child {
+								node [redVertex] {27}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+					}
+			};
+	\end{tikzpicture}
+	\caption{红黑树}
+\end{figure}
+
+天呐，这条条框框的太多了吧！ \\
+
+正是因为这些规则限制，才保证了红黑树的自平衡，红黑树从根到叶子的最长路径不会超过最短路径的2倍。 \\
+
+红黑树的应用有很多，其中JDK的集合类TreeMap和TreeSet底层就是红黑树实现的。在Java8中，连HashMap也用到了红黑树。
+
+\subsection{失衡调整}
+
+当插入或删除结点时，红黑树的规则可能被破坏，需要调整使其重新符合规则。 \\
+
+例如向红黑树中插入新结点14，由于父结点15是黑色结点，这种情况不会破坏红黑树的规则，无需做任何调整。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=8cm},
+			level 2/.style={sibling distance=4cm},
+			level 3/.style={sibling distance=2cm},
+			level 4/.style={sibling distance=1cm},
+		]
+		\node [blackVertex] (r){13}
+		child {
+				node [redVertex] {8}
+				child {
+						node [blackVertex] {1}
+						child {node [nil] {NIL}}
+						child {
+								node [redVertex] {6}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+					}
+				child {
+						node [blackVertex] {11}
+						child {node [nil] {NIL}}
+						child {node [nil] {NIL}}
+					}
+			}
+		child {
+				node [redVertex] {17}
+				child {
+						node [blackVertex] {15}
+						child {
+								node [redVertex] {14}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+						child {node [nil] {NIL}}
+					}
+				child {
+						node [blackVertex] {25}
+						child {
+								node [redVertex] {22}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+						child {
+								node [redVertex] {27}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+					}
+			};
+	\end{tikzpicture}
+	\caption{插入14}
+\end{figure}
+
+向红黑树中插入新结点21，由于父结点22是红色结点，违反了红黑树的规则4（红色结点的两个子结点都是黑色的）。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=8cm},
+			level 2/.style={sibling distance=4cm},
+			level 3/.style={sibling distance=2cm},
+			level 4/.style={sibling distance=1cm},
+		]
+		\node [blackVertex] (r){13}
+		child {
+				node [redVertex] {8}
+				child {
+						node [blackVertex] {1}
+						child {node [nil] {NIL}}
+						child {
+								node [redVertex] {6}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+					}
+				child {
+						node [blackVertex] {11}
+						child {node [nil] {NIL}}
+						child {node [nil] {NIL}}
+					}
+			}
+		child {
+				node [redVertex] {17}
+				child {
+						node [blackVertex] {15}
+						child {node [nil] {NIL}}
+						child {node [nil] {NIL}}
+					}
+				child {
+						node [blackVertex] {25}
+						child {
+								node [redVertex] {22}
+								child {
+										node [redVertex] {21}
+										child {node [nil] {NIL}}
+										child {node [nil] {NIL}}
+									}
+								child {node [nil] {NIL}}
+							}
+						child {
+								node [redVertex] {27}
+								child {node [nil] {NIL}}
+								child {node [nil] {NIL}}
+							}
+					}
+			};
+	\end{tikzpicture}
+	\caption{插入21}
+\end{figure}
+
+调整的方法有变色和旋转两种，而旋转又包含左旋转和右旋转两种方式。 \\
+
+为了重新符合红黑树的规则，有时需要把红色结点变为黑色，或是把黑色结点变为红色。 \\
+
+例如对于红黑树的一部分（子树），新插入的结点Y是红色结点，它的父结点X也是红色结点，不符合规则4（红色结点的两个子结点都是黑色的），因此可以把结点X变为黑色。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=4cm},
+			level 2/.style={sibling distance=2cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [redVertex] (r){X}
+		child {
+				node [redVertex] {Y}
+				child {node [nil] {NIL}}
+				child {node [nil] {NIL}}
+			}
+		child {node [nil] {NIL}};
+	\end{tikzpicture}
+	\caption{违反规则4}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=4cm},
+			level 2/.style={sibling distance=2cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){X}
+		child {
+				node [redVertex] {Y}
+				child {node [nil] {NIL}}
+				child {node [nil] {NIL}}
+			}
+		child {node [nil] {NIL}};
+	\end{tikzpicture}
+	\caption{变色}
+\end{figure}
+
+但是，如果这是简单的把一个结点变色，会导致相关路径凭空多出一个黑色结点，这样就会打破规则5（从任一结点到其每个叶子的所有路径都包含相同数目的黑色结点），因此还需要其它的调整策略。
+
+\subsection{红黑树插入结点}
+
+红黑树插入新结点时，可以分为五种不同的局面。每一种局面有不同的调整方法。
+
+\subsubsection{局面1}
+
+新结点（A）位于树根，没有父结点。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm}
+		]
+		\node [redVertex] (r){A}
+		child {node[rectangle,draw] {1}}
+		child {node[rectangle,draw] {2}};
+	\end{tikzpicture}
+	\caption{局面1}
+\end{figure}
+
+这种局面，直接让新结点变色为黑色，规则2（根结点是黑色的）满足。同时黑色的根结点使每条路径上的黑色结点数目都增加了1，因此并没有打破规则5（从任一结点到其每个叶子的所有路径都包含相同数目的黑色结点）。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){A}
+		child {node[rectangle,draw] {1}}
+		child {node[rectangle,draw] {2}};
+	\end{tikzpicture}
+\end{figure}
+
+\subsubsection{局面2}
+
+新结点（B）的父结点是黑色的。新插入的红色结点B并没有打破规则，无需调整。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){A}
+		child {
+				node [redVertex] {B}
+				child {node[rectangle,draw] {1}}
+				child {node[rectangle,draw] {2}}
+			}
+		child {node[rectangle,draw] {3}};
+	\end{tikzpicture}
+	\caption{局面2}
+\end{figure}
+
+\subsubsection{局面3}
+
+新结点（D）的父结点和叔叔结点都是红色。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){A}
+		child {
+				node [redVertex] {B}
+				child {
+						node [redVertex] {D}
+						child {node[rectangle,draw] {1}}
+						child {node[rectangle,draw] {2}}
+					}
+				child {node[rectangle,draw] {3}}
+			}
+		child {
+				node [redVertex] {C}
+				child {node[rectangle,draw] {4}}
+				child {node[rectangle,draw] {5}}
+			};
+	\end{tikzpicture}
+	\caption{局面3}
+\end{figure}
+
+这种局面，两个红色结点B和D连续，违反了规则4（红色结点的两个子结点都是黑色的），因此需要先让结点B变为黑色。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){A}
+		child {
+				node [blackVertex] {B}
+				child {
+						node [redVertex] {D}
+						child {node[rectangle,draw] {1}}
+						child {node[rectangle,draw] {2}}
+					}
+				child {node[rectangle,draw] {3}}
+			}
+		child {
+				node [redVertex] {C}
+				child {node[rectangle,draw] {4}}
+				child {node[rectangle,draw] {5}}
+			};
+	\end{tikzpicture}
+\end{figure}
+
+但是这样一来，结点B所在路径凭空多出了一个黑色结点，打破了规则5（从任一结点到其每个叶子的所有路径都包含相同数目的黑色结点），因此再让结点A变为红色。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [redVertex] (r){A}
+		child {
+				node [blackVertex] {B}
+				child {
+						node [redVertex] {D}
+						child {node[rectangle,draw] {1}}
+						child {node[rectangle,draw] {2}}
+					}
+				child {node[rectangle,draw] {3}}
+			}
+		child {
+				node [redVertex] {C}
+				child {node[rectangle,draw] {4}}
+				child {node[rectangle,draw] {5}}
+			};
+	\end{tikzpicture}
+\end{figure}
+
+这时结点A和C又成为了连续的红色结点，再将结点C变为黑色。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [redVertex] (r){A}
+		child {
+				node [blackVertex] {B}
+				child {
+						node [redVertex] {D}
+						child {node[rectangle,draw] {1}}
+						child {node[rectangle,draw] {2}}
+					}
+				child {node[rectangle,draw] {3}}
+			}
+		child {
+				node [blackVertex] {C}
+				child {node[rectangle,draw] {4}}
+				child {node[rectangle,draw] {5}}
+			};
+	\end{tikzpicture}
+\end{figure}
+
+如果红色结点A是根结点，那么违反了规则2（根结点是黑色），参考局面1的方法，将其变为黑色。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){A}
+		child {
+				node [blackVertex] {B}
+				child {
+						node [redVertex] {D}
+						child {node[rectangle,draw] {1}}
+						child {node[rectangle,draw] {2}}
+					}
+				child {node[rectangle,draw] {3}}
+			}
+		child {
+				node [blackVertex] {C}
+				child {node[rectangle,draw] {4}}
+				child {node[rectangle,draw] {5}}
+			};
+	\end{tikzpicture}
+\end{figure}
+
+\subsubsection{局面4}
+
+新结点（D）的父结点是红色，叔叔结点是黑色或者没有叔叔，且新结点是父结点的右孩子，父结点是祖父结点的左孩子。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\sffamily, very thick,
+			level distance=1.5cm,
+			level 1/.style={sibling distance=2cm},
+			level 2/.style={sibling distance=1cm},
+			level 3/.style={sibling distance=1cm}
+		]
+		\node [blackVertex] (r){A}
+		child {
+				node [blackVertex] {B}
+				child {
+						node [redVertex] {D}
+						child {node[rectangle,draw] {1}}
+						child {node[rectangle,draw] {2}}
+					}
+				child {node[rectangle,draw] {3}}
+			}
+		child {
+				node [blackVertex] {C}
+				child {node[rectangle,draw] {4}}
+				child {node[rectangle,draw] {5}}
+			};
+	\end{tikzpicture}
+    \caption{局面4}
+\end{figure}

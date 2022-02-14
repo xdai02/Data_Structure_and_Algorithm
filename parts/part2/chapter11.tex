@@ -4,41 +4,45 @@
 
 \subsection{输入规模}
 
-算法的时间复杂度是针对指定基本运算，计算算法所做的运算次数。其中基本运算指的是比较、加法、乘法、置指针、交换等操作。 \\
+算法的时间复杂度是针对指定基本运算，计算算法所做的运算次数。其中基本运算指的是比较、加法、乘法、置指针、交换等操作。\\
 
-算法基本运算可以表示为跟输入规模相关的函数。常见的输入规模有数组的元素个数、调度问题的任务个数、图的顶点数和边数等。对于相同输入规模的不同实例，算法的基本运算次数有可能会不一样。 \\
+算法基本运算可以表示为跟输入规模相关的函数。常见的输入规模有数组的元素个数、调度问题的任务个数、图的顶点数和边数等。对于相同输入规模的不同实例，算法的基本运算次数有可能会不一样。\\
 
-对于排序算法，输入规模为数组的元素个数，基本运算为元素之间的比较。 \\
+对于排序算法，输入规模为数组的元素个数，基本运算为元素之间的比较。\\
 
-对于整数乘法，$ m $位整数与$ n $位整数相乘需要做$ m \times n $次乘法。 \\
+对于整数乘法，$ m $位整数与$ n $位整数相乘需要做$ m \times n $次乘法。\\
 
-对于矩阵乘法，$ i \times j $矩阵与$ j \times k $矩阵相乘需要做$ i \times j \times k $次乘法。
+对于矩阵乘法，$ i \times j $矩阵与$ j \times k $矩阵相乘需要做$ i \times j \times k $次乘法。\\
 
 \subsection{时间复杂度}
 
-最好情况时间复杂度是指算法在最理想情况下的时间复杂度。例如在查找算法中，目标元素刚好在数组的第一个位置，那么只需要一次就能找到，时间复杂度是常量阶$ O(1) $。 \\
+最好情况时间复杂度是指算法在最理想情况下的时间复杂度。例如在查找算法中，目标元素刚好在数组的第一个位置，那么只需要一次就能找到，时间复杂度是常量阶$ O(1) $。\\
 
-最坏情况时间复杂度$ W(n) $是指算法在最坏情况下执行的时间复杂度。例如目标元素在数组最后一个位置或者不在数组中，那么需要遍历完整个数组才能得出结果，时间复杂度为$ O(n) $。 \\
+最坏情况时间复杂度$ W(n) $是指算法在最坏情况下执行的时间复杂度。例如目标元素在数组最后一个位置或者不在数组中，那么需要遍历完整个数组才能得出结果，时间复杂度为$ O(n) $。\\
 
-平均情况时间复杂度$ A(n) $是指用算法在所有情况下执行的次数的加权平均值表示，也就是算法在求解这类问题所需要的平均时间。 \\
+平均情况时间复杂度$ A(n) $是指用算法在所有情况下执行的次数的加权平均值表示，也就是算法在求解这类问题所需要的平均时间。\\
 
 假设$ S $是规模n为实例集，实例的$ i \in S $概率是$ p_i $，算法对实例$ i $执行的基本运算次数是$ t_i $：
 
 \vspace{-0.5cm}
 
 $$
-    A(n) = \sum_{i \in S} p_i t_i
+	A(n) = \sum_{i \in S} p_i t_i
 $$
 
 例如，利用顺序查找算法在一个长度为n的数组中查找元素x。假设x在数组中的概率是$ p $（x不在数组中的概率为$ 1 - p $），且每个位置概率相等：
 
+\vspace{-1cm}
+
 \begin{align*}
-    A(n) & = \sum_{i=1}^{n} i {p \over n} + (1 - p)n \\
-         & = {p(n+1) \over 2} + (1 - p)n             \\
-    \text{当}p = {1 \over 2},                        \\
-         & = {n+1 \over 4} + {n \over 2}             \\
-         & = {3 \over 4}n
+	A(n) & = \sum_{i=1}^{n} i {p \over n} + (1 - p)n \\
+	     & = {p(n+1) \over 2} + (1 - p)n             \\
+	\text{当}p = {1 \over 2},                        \\
+	     & = {n+1 \over 4} + {n \over 2}             \\
+	     & = {3 \over 4}n
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{大O符号}
 
@@ -47,7 +51,7 @@ $$
 \vspace{-0.5cm}
 
 $$
-    0 \le f(n) \le cg(n)
+	0 \le f(n) \le cg(n)
 $$
 
 则称$ f(n) $的渐进上界是$ g(n) $，即$ f(n) $的阶不高于$ g(n) $的阶，记作：
@@ -55,20 +59,22 @@ $$
 \vspace{-0.5cm}
 
 $$
-    f(n) = O(g(n))
+	f(n) = O(g(n))
 $$
 
 \vspace{0.5cm}
 
 \mybox{大O符号}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    f(n) & = n^2 + n \\
-    f(n) & = O(n^2)  \\
-    f(n) & = O(n^3)
+	f(n) & = n^2 + n \\
+	f(n) & = O(n^2)  \\
+	f(n) & = O(n^3)
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{大$ \Omega $符号}
 
@@ -77,7 +83,7 @@ $$
 \vspace{-0.5cm}
 
 $$
-    0 \le cg(n) \le f(n)
+	0 \le cg(n) \le f(n)
 $$
 
 则称$ f(n) $的渐进下界是$ g(n) $，即$ f(n) $的阶不低于$ g(n) $的阶，记作：
@@ -85,20 +91,22 @@ $$
 \vspace{-0.5cm}
 
 $$
-    f(n) = \Omega(g(n))
+	f(n) = \Omega(g(n))
 $$
 
 \vspace{0.5cm}
 
 \mybox{大$ \Omega $符号}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    f(n) & = n^2 + n      \\
-    f(n) & = \Omega(n^2)  \\
-    f(n) & = \Omega(100n)
+	f(n) & = n^2 + n      \\
+	f(n) & = \Omega(n^2)  \\
+	f(n) & = \Omega(100n)
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{小o符号}
 
@@ -107,7 +115,7 @@ $$
 \vspace{-0.5cm}
 
 $$
-    0 \le f(n) < cg(n)
+	0 \le f(n) < cg(n)
 $$
 
 则称$ f(n) $的阶低于$ g(n) $的阶，记作：
@@ -115,19 +123,21 @@ $$
 \vspace{-0.5cm}
 
 $$
-    f(n) = o(g(n))
+	f(n) = o(g(n))
 $$
 
 \vspace{0.5cm}
 
 \mybox{小o符号}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    f(n) & = n^2 + n \\
-    f(n) & = o(n^3)
+	f(n) & = n^2 + n \\
+	f(n) & = o(n^3)
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{小$ \omega $符号}
 
@@ -136,7 +146,7 @@ $$
 \vspace{-0.5cm}
 
 $$
-    0 \le cg(n) < f(n)
+	0 \le cg(n) < f(n)
 $$
 
 则称$ f(n) $的阶高于$ g(n) $的阶，记作：
@@ -144,19 +154,21 @@ $$
 \vspace{-0.5cm}
 
 $$
-    f(n) = \omega(g(n))
+	f(n) = \omega(g(n))
 $$
 
 \vspace{0.5cm}
 
 \mybox{小$ \omega $符号}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    f(n) & = n^2 + n   \\
-    f(n) & = \omega(n)
+	f(n) & = n^2 + n   \\
+	f(n) & = \omega(n)
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{$ \Theta $符号}
 
@@ -165,112 +177,114 @@ $$
 \vspace{-0.5cm}
 
 $$
-    f(n) = \Theta(g(n))
+	f(n) = \Theta(g(n))
 $$
 
 \vspace{0.5cm}
 
 \mybox{$ \Theta $符号}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    f(n) & = n^2 + n      \\
-    g(n) & = 100n^2       \\
-    f(n) & = \Theta(g(n))
+	f(n) & = n^2 + n      \\
+	g(n) & = 100n^2       \\
+	f(n) & = \Theta(g(n))
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{定理（Theorem）}
 
 \begin{enumerate}
-    \item 如果$ \lim\limits_{n \rightarrow \infty} {f(n) \over g(n)} $存在，并且等于某个常数$ c > 0 $，那么$ f(n) = \Theta(g(n)) $。
+	\item 如果$ \lim\limits_{n \rightarrow \infty} {f(n) \over g(n)} $存在，并且等于某个常数$ c > 0 $，那么$ f(n) = \Theta(g(n)) $。
 
-    \item 如果$ \lim\limits_{n \rightarrow \infty} {f(n) \over g(n)} = 0 $，那么$ f(n) = o(g(n)) $。
+	\item 如果$ \lim\limits_{n \rightarrow \infty} {f(n) \over g(n)} = 0 $，那么$ f(n) = o(g(n)) $。
 
-    \item 如果$ \lim\limits_{n \rightarrow \infty} {f(n) \over g(n)} = +\infty $，那么$ f(n) = \omega(g(n)) $。
+	\item 如果$ \lim\limits_{n \rightarrow \infty} {f(n) \over g(n)} = +\infty $，那么$ f(n) = \omega(g(n)) $。
 
-    \item 多项式函数的阶低于指数函数的阶，即$ n^d = o(r^n),\ r > 1,\ d > 0 $。
+	\item 多项式函数的阶低于指数函数的阶，即$ n^d = o(r^n),\ r > 1,\ d > 0 $。
 
-    \item 对数函数的阶低于幂函数的阶，即$ ln(n) = o(n^d),\ d > 0 $。
+	\item 对数函数的阶低于幂函数的阶，即$ ln(n) = o(n^d),\ d > 0 $。
 
-    \item 函数的阶之间的关系具有传递性：
-          \begin{itemize}
-              \item 如果$ f = O(g),\ g = O(h) $，那么$ f = O(h) $。
+	\item 函数的阶之间的关系具有传递性：
+	      \begin{itemize}
+		      \item 如果$ f = O(g),\ g = O(h) $，那么$ f = O(h) $。
 
-              \item 如果$ f = \Omega(g),\ g = \Omega(h) $，那么$ f = \Omega(h) $。
+		      \item 如果$ f = \Omega(g),\ g = \Omega(h) $，那么$ f = \Omega(h) $。
 
-              \item 如果$ f = \Theta(g),\ g = \Theta(h) $，那么$ f = \Theta(h) $。
-          \end{itemize}
+		      \item 如果$ f = \Theta(g),\ g = \Theta(h) $，那么$ f = \Theta(h) $。
+	      \end{itemize}
 \end{enumerate}
 
 \vspace{0.5cm}
 
-\mybox{证明} \\
+\mybox{证明}\\
 
 $ f(n) = {1 \over 2}n^2 - 3n $，证明$ f(n) = \Theta(n^2) $
 
 \vspace{-0.5cm}
 
 \begin{align*}
-     & \lim\limits_{n \rightarrow \infty} {f(n) \over n^2}                  \\
-     & = \lim\limits_{n \rightarrow \infty} {{1 \over 2}n^2 - 3n \over n^2} \\
-     & = {1 \over 2}
+	 & \lim\limits_{n \rightarrow \infty} {f(n) \over n^2}                  \\
+	 & = \lim\limits_{n \rightarrow \infty} {{1 \over 2}n^2 - 3n \over n^2} \\
+	 & = {1 \over 2}
 \end{align*}
 
 \vspace{0.5cm}
 
-\mybox{证明} \\
+\mybox{证明}\\
 
 证明多项式函数的阶低于指数函数的阶。
 
 \vspace{-0.5cm}
 
 \begin{align*}
-     & \lim\limits_{n \rightarrow \infty} {n^d \over r^n}                    \\
-     & = \lim\limits_{n \rightarrow \infty} {dn^{d-1} \over r^nln(r)}        \\
-     & = \lim\limits_{n \rightarrow \infty} {d(d-1)n^{d-2} \over r^nln(r)^2} \\
-     & = \dots                                                               \\
-     & = \lim\limits_{n \rightarrow \infty} {d! \over r^nln(r)^d}            \\
-     & = 0
+	 & \lim\limits_{n \rightarrow \infty} {n^d \over r^n}                    \\
+	 & = \lim\limits_{n \rightarrow \infty} {dn^{d-1} \over r^nln(r)}        \\
+	 & = \lim\limits_{n \rightarrow \infty} {d(d-1)n^{d-2} \over r^nln(r)^2} \\
+	 & = \dots                                                               \\
+	 & = \lim\limits_{n \rightarrow \infty} {d! \over r^nln(r)^d}            \\
+	 & = 0
 \end{align*}
 
 \vspace{0.5cm}
 
-\mybox{证明} \\
+\mybox{证明}\\
 
 证明对数函数的阶低于幂函数的阶。
 
 \vspace{-0.5cm}
 
 \begin{align*}
-     & \lim\limits_{n \rightarrow \infty} {ln(n) \over n^d}              \\
-     & = \lim\limits_{n \rightarrow \infty} {{1 \over n} \over dn^{d-1}} \\
-     & = \lim\limits_{n \rightarrow \infty} {1 \over dn^d}               \\
-     & = 0
+	 & \lim\limits_{n \rightarrow \infty} {ln(n) \over n^d}              \\
+	 & = \lim\limits_{n \rightarrow \infty} {{1 \over n} \over dn^{d-1}} \\
+	 & = \lim\limits_{n \rightarrow \infty} {1 \over dn^d}               \\
+	 & = 0
 \end{align*}
 
 \vspace{0.5cm}
 
 \mybox{排序}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-     & f(n) = (n^2 + n) / 2 \\
-     & g(n) = 10n           \\
-     & h(n) = 1.5^n         \\
-     & t(n) = n^{1 \over 2}
+	 & f(n) = (n^2 + n) / 2 \\
+	 & g(n) = 10n           \\
+	 & h(n) = 1.5^n         \\
+	 & t(n) = n^{1 \over 2}
 \end{align*}
 
 按照阶从高到低排序。
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-     & h(n) = \omega(f(n))       \\
-     & f(n) = \omega(g(n))       \\
-     & g(n) = \omega(t(n))       \\
-     & h(n) < f(n) < g(n) < t(n)
+	 & h(n) = \omega(f(n))       \\
+	 & f(n) = \omega(g(n))       \\
+	 & g(n) = \omega(t(n))       \\
+	 & h(n) < f(n) < g(n) < t(n)
 \end{align*}
 
 \newpage
@@ -297,20 +311,20 @@ void insert(int val) {
 }
 \end{lstlisting}
 
-这段代码实现了一个往数组中插入数据的功能。当数组元素满时，就遍历数组求和，将元素和保存到数组的第0个位置，并清空数组，然后再将新的数据插入。但如果数组一开始就有空闲空间，则直接将数据插入数组。 \\
+这段代码实现了一个往数组中插入数据的功能。当数组元素满时，就遍历数组求和，将元素和保存到数组的第0个位置，并清空数组，然后再将新的数据插入。但如果数组一开始就有空闲空间，则直接将数据插入数组。\\
 
-最理想的情况下，数组中有空闲空间，最好情况时间复杂度为$ O(1) $；最坏的情况下，数组中没有空闲空间了，需要先做一次遍历求和，然后再将数据插入，所以最坏情况时间复杂度为$ O(n) $。 \\
+最理想的情况下，数组中有空闲空间，最好情况时间复杂度为$ O(1) $；最坏的情况下，数组中没有空闲空间了，需要先做一次遍历求和，然后再将数据插入，所以最坏情况时间复杂度为$ O(n) $。\\
 
-假设数组的长度是n，根据数据插入的位置的不同，可以分为n种情况，每种情况的时间复杂度是$ O(1) $。除此之外，还有一种情况，就是在数组没有空闲空间时插入一个数据，这个时候的时间复杂度是$ O(n) $。这n + 1种情况发生的概率一样，都是$ 1 \over n+1 $。 \\
+假设数组的长度是n，根据数据插入的位置的不同，可以分为n种情况，每种情况的时间复杂度是$ O(1) $。除此之外，还有一种情况，就是在数组没有空闲空间时插入一个数据，这个时候的时间复杂度是$ O(n) $。这n + 1种情况发生的概率一样，都是$ 1 \over n+1 $。\\
 
 根据加权平均的计算方法，求得的平均时间复杂度：
 
 \vspace{-0.5cm}
 
 \begin{align*}
-     & 1 \times {1 \over n+1} + 1 \times {1 \over n+1} + \dots + 1 \times {1 \over n+1} + n \times {1 \over n+1} \\
-     & = {2n \over n+1}                                                                                          \\
-     & = O(1)
+	 & 1 \times {1 \over n+1} + 1 \times {1 \over n+1} + \dots + 1 \times {1 \over n+1} + n \times {1 \over n+1} \\
+	 & = {2n \over n+1}                                                                                          \\
+	 & = O(1)
 \end{align*}
 
 对一个数据结构进行一组连续操作中，大部分情况下时间复杂度都很低，只有个别情况下时间复杂度比较高，而且这些操作之间存在前后连贯的时序关系，这个时候就可以将这一组操作放在一块分析，看是否能将较高时间复杂度那次操作的耗时，平摊到其它那些时间复杂度比较低的操作上。而且，在能够应用均摊时间复杂度分析的场合，一般均摊时间复杂度就等于最好情况时间复杂度。
@@ -321,15 +335,15 @@ void insert(int val) {
 
 \subsection{递推（Recurrence）}
 
-如果数列$ \{a_n\} $的第n项与它前一项的关系可以用一个公式来表示，那么这个公式就叫做这个数列的递推方程。 \\
+如果数列$ \{a_n\} $的第n项与它前一项的关系可以用一个公式来表示，那么这个公式就叫做这个数列的递推方程。\\
 
 算术级数的递推关系：
 
 \vspace{-1cm}
 
 \begin{align*}
-    a_0 & = a           \\
-    a_n & = a_{n-1} + d
+	a_0 & = a           \\
+	a_n & = a_{n-1} + d
 \end{align*}
 
 几何级数的递推关系：
@@ -337,9 +351,11 @@ void insert(int val) {
 \vspace{-1cm}
 
 \begin{align*}
-    a_0 & = a                \\
-    a_n & = a_{n-1} \times r
+	a_0 & = a                \\
+	a_n & = a_{n-1} \times r
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{斐波那契数列（Fibonacci Sequence）}
 
@@ -348,17 +364,17 @@ void insert(int val) {
 \vspace{-0.5cm}
 
 \begin{align*}
-    f(n) = \begin{cases}
-        1               & n = 1  \\
-        1               & n = 2  \\
-        f(n-1) + f(n-2) & n >= 3
-    \end{cases}
+	f(n) = \begin{cases}
+		1               & n = 1  \\
+		1               & n = 2  \\
+		f(n-1) + f(n-2) & n >= 3
+	\end{cases}
 \end{align*}
 
 斐波那契数列的通项公式为：
 
 $$
-    f_n = {1 \over \sqrt{5}} \left({1 + \sqrt{5} \over 2} \right)^{n+1} - {1 \over \sqrt{5}} \left({1 - \sqrt{5} \over 2} \right)^{n+1}
+	f_n = {1 \over \sqrt{5}} \left({1 + \sqrt{5} \over 2} \right)^{n+1} - {1 \over \sqrt{5}} \left({1 - \sqrt{5} \over 2} \right)^{n+1}
 $$
 
 \vspace{0.5cm}
@@ -375,42 +391,42 @@ int fibonacci(int n) {
 \end{lstlisting}
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[
-            level distance=2.5cm,
-            level 1/.style={sibling distance=6cm},
-            level 2/.style={sibling distance=3cm},
-            level 3/.style={sibling distance=2cm}
-        ]
-        \node {$ f(5) $}
-        child {
-                node {$ f(3) $}
-                child {node {$ f(1) $}}
-                child {
-                        node {$ f(2) $}
-                        child {node {$ f(0) $}}
-                        child {node {$ f(1) $}}
-                    }
-            }
-        child {
-                node {$ f(4) $}
-                child {
-                        node {$ f(2) $}
-                        child {node {$ f(0) $}}
-                        child {node {$ f(1) $}}
-                    }
-                child {
-                        node {$ f(3) $}
-                        child {node {$ f(1) $}}
-                        child {
-                                node {$ f(2) $}
-                                child {node {$ f(0) $}}
-                                child {node {$ f(1) $}}
-                            }
-                    }
-            };
-    \end{tikzpicture}
-    \caption{递归树}
+	\centering
+	\begin{tikzpicture}[
+			level distance=2.4cm,
+			level 1/.style={sibling distance=6cm},
+			level 2/.style={sibling distance=3cm},
+			level 3/.style={sibling distance=2cm}
+		]
+		\node {$ f(5) $}
+		child {
+				node {$ f(3) $}
+				child {node {$ f(1) $}}
+				child {
+						node {$ f(2) $}
+						child {node {$ f(0) $}}
+						child {node {$ f(1) $}}
+					}
+			}
+		child {
+				node {$ f(4) $}
+				child {
+						node {$ f(2) $}
+						child {node {$ f(0) $}}
+						child {node {$ f(1) $}}
+					}
+				child {
+						node {$ f(3) $}
+						child {node {$ f(1) $}}
+						child {
+								node {$ f(2) $}
+								child {node {$ f(0) $}}
+								child {node {$ f(1) $}}
+							}
+					}
+			};
+	\end{tikzpicture}
+	\caption{递归树}
 \end{figure}
 
 \vspace{0.5cm}
@@ -428,29 +444,31 @@ int fibonacci(int n) {
 }
 \end{lstlisting}
 
+\vspace{0.5cm}
+
 \subsection{汉诺塔（Hanoi Tower）}
 
-给定三根柱子，其中A柱子从大到小套有n个圆盘，问题是如何借助B柱子，将圆盘从A搬到C。 \\
+给定三根柱子，其中A柱子从大到小套有n个圆盘，问题是如何借助B柱子，将圆盘从A搬到C。\\
 
 规则：
 
 \begin{itemize}
-    \item 一次只能搬动一个圆盘。
-    \item 不能将大圆盘放在小圆盘上面。
+	\item 一次只能搬动一个圆盘。
+	\item 不能将大圆盘放在小圆盘上面。
 \end{itemize}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{img/C11/11-3/1.png}
-    \caption{汉诺塔}
+	\centering
+	\includegraphics[scale=0.4]{img/C11/11-3/1.png}
+	\caption{汉诺塔}
 \end{figure}
 
 递归算法求解汉诺塔问题：
 
 \begin{enumerate}
-    \item 将前n - 1个圆盘从A柱借助于C柱搬到B柱。
-    \item 将最后一个圆盘直接从A柱搬到C柱。
-    \item 将n - 1个圆盘从B柱借助于A柱搬到C柱。
+	\item 将前n - 1个圆盘从A柱借助于C柱搬到B柱。
+	\item 将最后一个圆盘直接从A柱搬到C柱。
+	\item 将n - 1个圆盘从B柱借助于A柱搬到C柱。
 \end{enumerate}
 
 \vspace{0.5cm}
@@ -467,43 +485,45 @@ def hanoi(n, A, B, C):
         hanoi(n-1, B, A, C)
 \end{lstlisting}
 
-当圆盘数为64时，假设每次移动花费1秒，总共大约需要5800亿年。 \\
+当圆盘数为64时，假设每次移动花费1秒，总共大约需要5800亿年。\\
 
 汉诺塔递归算法的递推公式：
 
 \vspace{-0.5cm}
 
 \begin{align*}
-    T(n) = \begin{cases}
-        1             & n = 1 \\
-        2T(n - 1) + 1 & n > 1
-    \end{cases}
+	T(n) = \begin{cases}
+		1             & n = 1 \\
+		2T(n - 1) + 1 & n > 1
+	\end{cases}
 \end{align*}
 
 利用迭代法，不断用递推方程的右部替换左部，直到出现初值停止迭代。
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    T(n) & = 2 * T(n - 1) + 1                     \\
-         & = 2 * [ 2 * T(n - 2) + 1] + 1          \\
-         & = 2 * [2 * [2 * T(n - 3) + 1] + 1] + 1 \\
-         & = \dots                                \\
-         & = 2^k * T(n - k) + 2^k - 1             \\
-    \\
-         & \because n - k = 1                     \\
-         & \therefore k = n - 1                   \\
-    \\
-    T(n) & = 2^{n-1} * T(1) + 2^{n-1} - 1         \\
-         & = 2^{n-1} + 2^{n-1} - 1                \\
-         & = 2^n - 1                              \\
-         & = O(2^n)
+	T(n) & = 2 * T(n - 1) + 1                     \\
+	     & = 2 * [ 2 * T(n - 2) + 1] + 1          \\
+	     & = 2 * [2 * [2 * T(n - 3) + 1] + 1] + 1 \\
+	     & = \dots                                \\
+	     & = 2^k * T(n - k) + 2^k - 1             \\
+	\\
+	     & \because n - k = 1                     \\
+	     & \therefore k = n - 1                   \\
+	\\
+	T(n) & = 2^{n-1} * T(1) + 2^{n-1} - 1         \\
+	     & = 2^{n-1} + 2^{n-1} - 1                \\
+	     & = 2^n - 1                              \\
+	     & = O(2^n)
 \end{align*}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[]{img/C11/11-3/2.png}
+	\centering
+	\includegraphics[]{img/C11/11-3/2.png}
 \end{figure}
+
+\vspace{0.5cm}
 
 \subsection{插入排序}
 
@@ -512,40 +532,42 @@ def hanoi(n, A, B, C):
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(n) = \begin{cases}
-        0                & n = 1 \\
-        W(n - 1) + n - 1 & n > 1
-    \end{cases}
+	W(n) = \begin{cases}
+		0                & n = 1 \\
+		W(n - 1) + n - 1 & n > 1
+	\end{cases}
 \end{align*}
 
 当数组中只有1个元素时，无须进行任何交换。当数组中的元素大于1时，最坏情况下需要进行n - 1次交换。
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    W(n) & = W(n - 1) + n - 1                             \\
-         & = [W(n - 2) + n - 2] + n - 1                   \\
-         & = [[W(n - 3) + n - 3] + n - 2] + n - 1         \\
-         & = \dots                                        \\
-         & = W(n - k) + 1 + 2 + \dots + (n - 2) + (n - 1) \\
-         & = W(1) + n(n - 1) / 2                          \\
-         & = n(n - 1) / 2                                 \\
-         & = O(n^2)
+	W(n) & = W(n - 1) + n - 1                             \\
+	     & = [W(n - 2) + n - 2] + n - 1                   \\
+	     & = [[W(n - 3) + n - 3] + n - 2] + n - 1         \\
+	     & = \dots                                        \\
+	     & = W(n - k) + 1 + 2 + \dots + (n - 2) + (n - 1) \\
+	     & = W(1) + n(n - 1) / 2                          \\
+	     & = n(n - 1) / 2                                 \\
+	     & = O(n^2)
 \end{align*}
+
+\vspace{0.5cm}
 
 \subsection{归并排序}
 
-利用换元法，可以将对n个递推式转换成对其它变元k的递推式，通过对k直接迭代，最后将关于k的函数转换成关于n的函数。 \\
+利用换元法，可以将对n个递推式转换成对其它变元k的递推式，通过对k直接迭代，最后将关于k的函数转换成关于n的函数。\\
 
 假设$ n = 2^k $，二分归并排序的递推公式：
 
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(n) = \begin{cases}
-        0               & n = 1 \\
-        2W(n/2) + n - 1 & n > 1
-    \end{cases}
+	W(n) = \begin{cases}
+		0               & n = 1 \\
+		2W(n/2) + n - 1 & n > 1
+	\end{cases}
 \end{align*}
 
 通过换元：
@@ -553,23 +575,23 @@ def hanoi(n, A, B, C):
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(2^k) = \begin{cases}
-        0                     & n = 1 \\
-        2W(2^{k-1}) + 2^k - 1 & n > 1
-    \end{cases}
+	W(2^k) = \begin{cases}
+		0                     & n = 1 \\
+		2W(2^{k-1}) + 2^k - 1 & n > 1
+	\end{cases}
 \end{align*}
 
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(2^k) & = 2W(2^{k-1}) + 2^k - 1                                   \\
-           & = 2[2W(2^{k-2}) + 2^{k-1} - 1] + 2^k - 1                  \\
-           & = 2[2[2W(2^{k-3}) + 2^{k-2} - 1] + 2^{k-1} - 1] + 2^k - 1 \\
-           & = \dots                                                   \\
-           & = 2^k W(1) + k2^k - (2^{k-1} + 2^{k-2} + \dots + 2 + 1)   \\
-           & = k2^k - 2^k + 1                                          \\
-           & = nlogn - n + 1                                           \\
-           & = O(nlogn)
+	W(2^k) & = 2W(2^{k-1}) + 2^k - 1                                   \\
+	       & = 2[2W(2^{k-2}) + 2^{k-1} - 1] + 2^k - 1                  \\
+	       & = 2[2[2W(2^{k-3}) + 2^{k-2} - 1] + 2^{k-1} - 1] + 2^k - 1 \\
+	       & = \dots                                                   \\
+	       & = 2^k W(1) + k2^k - (2^{k-1} + 2^{k-2} + \dots + 2 + 1)   \\
+	       & = k2^k - 2^k + 1                                          \\
+	       & = nlogn - n + 1                                           \\
+	       & = O(nlogn)
 \end{align*}
 
 \newpage
@@ -580,55 +602,57 @@ def hanoi(n, A, B, C):
 
 Master Theorem是算法分析中非常重要的定理。对一个规模为n的问题通过分治，得到a个规模为$ n \over b $的子问题，分解和合并子问题的时间是$ f(n) $。
 
+\vspace{-0.5cm}
+
 $$
-    T(n) = aT\left( {n \over b} \right) + f(n)
+	T(n) = aT\left( {n \over b} \right) + f(n)
 $$
 
 \begin{enumerate}
-    \item 若$ f(n) = O \left( n^{log_b{a-\epsilon}} \right),\ \epsilon > 0 $，那么$ T(n) = \Theta \left( n^{log_b{a}} \right) $。
+	\item 若$ f(n) = O \left( n^{log_b{a-\epsilon}} \right),\ \epsilon > 0 $，那么$ T(n) = \Theta \left( n^{log_b{a}} \right) $。
 
-    \item 若$ f(n) = \Theta \left( n^{log_b{a}} \right) $，那么$ T(n) = \Theta \left( n^{log_b{a}} * logn \right) $。
+	\item 若$ f(n) = \Theta \left( n^{log_b{a}} \right) $，那么$ T(n) = \Theta \left( n^{log_b{a}} * logn \right) $。
 
-    \item 若$ f(n) = \Omega \left( n^{log_b{a+\epsilon}} \right),\ \epsilon > 0 $，且对于某个常数$ c < 1 $和充分大的$ n $满足$ af\left( {n \over b} \right) \le cf(n) $，那么$ T(n) = \Theta(f(n)) $。
+	\item 若$ f(n) = \Omega \left( n^{log_b{a+\epsilon}} \right),\ \epsilon > 0 $，且对于某个常数$ c < 1 $和充分大的$ n $满足$ af\left( {n \over b} \right) \le cf(n) $，那么$ T(n) = \Theta(f(n)) $。
 \end{enumerate}
 
 \vspace{0.5cm}
 
 \mybox{$ T(n) = 9T(n/3) + n $}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-     & a = 9,\ b = 3,\ f(n) = n                                             \\
-     & n^{log_3{9}} = n^2                                                   \\
-     & \text{取}\epsilon = 1\text{，}f(n) = O \left( n^{log_3{9-1}} \right) \\
-     & \text{满足Master Theorem 1，}T(n) = \Theta(n^2)
+	 & a = 9,\ b = 3,\ f(n) = n                                             \\
+	 & n^{log_3{9}} = n^2                                                   \\
+	 & \text{取}\epsilon = 1\text{，}f(n) = O \left( n^{log_3{9-1}} \right) \\
+	 & \text{满足Master Theorem 1，}T(n) = \Theta(n^2)
 \end{align*}
 
 \vspace{0.5cm}
 
 \mybox{$ T(n) = T(2n / 3) + 1 $}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-     & a = 1,\ b = 3/2,\ f(n) = 1                       \\
-     & n^{log_{3/2}{1}} = n^0 = 1                       \\
-     & \text{满足Master Theorem 2，}T(n) = \Theta(logn)
+	 & a = 1,\ b = 3/2,\ f(n) = 1                       \\
+	 & n^{log_{3/2}{1}} = n^0 = 1                       \\
+	 & \text{满足Master Theorem 2，}T(n) = \Theta(logn)
 \end{align*}
 
 \vspace{0.5cm}
 
 \mybox{$ T(n) = 3T(n/4) + nlogn $}
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-     & a = 3,\ b = 4,\ f(n) = nlogn                                                                                                                                          \\
-     & \text{取}\epsilon = 0.2\text{，}f(n) = \Omega \left( n^{log_4{3+\epsilon}} \right) \approx \Omega \left( n^{0.793+\epsilon} \right) = \Omega \left( n^{0.993} \right) \\
-     & \text{要使}af\left( {n \over b} \right) \le cf(n)\text{成立：}3(n/4)log(n/4) \le cnlogn                                                                               \\
-     & \text{当}3/4 \le c < 1\text{，不等式对所有充分大的}n\text{成立}                                                                                                       \\
-     & \text{满足Master Theorem 3，}T(n) = \Theta(nlogn)
+	 & a = 3,\ b = 4,\ f(n) = nlogn                                                                                                                                          \\
+	 & \text{取}\epsilon = 0.2\text{，}f(n) = \Omega \left( n^{log_4{3+\epsilon}} \right) \approx \Omega \left( n^{0.793+\epsilon} \right) = \Omega \left( n^{0.993} \right) \\
+	 & \text{要使}af\left( {n \over b} \right) \le cf(n)\text{成立：}3(n/4)log(n/4) \le cnlogn                                                                               \\
+	 & \text{当}3/4 \le c < 1\text{，不等式对所有充分大的}n\text{成立}                                                                                                       \\
+	 & \text{满足Master Theorem 3，}T(n) = \Theta(nlogn)
 \end{align*}
 
 \newpage
@@ -637,50 +661,50 @@ $$
 
 \subsection{旅行商问题（TSP, Traveling Salesman Problem）}
 
-小灰最近在工作中遇到了一个棘手的问题。公司正在开发一个物流项目，其中一个需求是为快递员自动规划送快递的路线。 \\
+小灰最近在工作中遇到了一个棘手的问题。公司正在开发一个物流项目，其中一个需求是为快递员自动规划送快递的路线。\\
 
-有一个快递员，要分别给三家顾客送快递，他自己到达每个顾客家的路程各不相同，每个顾客之间的路程也各不相同。那么想要把快递依次送达这三家，并最终回到起点，哪一条路线所走的总距离是最短的呢？ \\
+有一个快递员，要分别给三家顾客送快递，他自己到达每个顾客家的路程各不相同，每个顾客之间的路程也各不相同。那么想要把快递依次送达这三家，并最终回到起点，哪一条路线所走的总距离是最短的呢？
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \begin{scope}[every node/.style={circle,thick,draw}]
-            \node (A) at (0,0) {出发};
-            \node (B) at (-4,3) {客户};
-            \node (C) at (1,7) {客户};
-            \node (D) at (3,3) {客户};
-        \end{scope}
+	\centering
+	\begin{tikzpicture}
+		\begin{scope}[every node/.style={circle,thick,draw}]
+			\node (A) at (0,0) {出发};
+			\node (B) at (-4,3) {客户};
+			\node (C) at (1,7) {客户};
+			\node (D) at (3,3) {客户};
+		\end{scope}
 
-        \begin{scope}[>={Stealth[black]},
-            every node/.style={fill=white,circle},
-            every edge/.style={draw=black,very thick}]
-            \path [-] (A) edge node {2} (B);
-            \path [-] (A) edge node {5} (C);
-            \path [-] (A) edge node {6} (D);
-            \path [-] (B) edge node {3} (C);
-            \path [-] (B) edge node {4} (D);
-            \path [-] (C) edge node {7} (D);
-        \end{scope}
-    \end{tikzpicture}
-    \caption{快递客户路线}
+		\begin{scope}[>={Stealth[black]},
+			every node/.style={fill=white,circle},
+			every edge/.style={draw=black,very thick}]
+			\path [-] (A) edge node {2} (B);
+			\path [-] (A) edge node {5} (C);
+			\path [-] (A) edge node {6} (D);
+			\path [-] (B) edge node {3} (C);
+			\path [-] (B) edge node {4} (D);
+			\path [-] (C) edge node {7} (D);
+		\end{scope}
+	\end{tikzpicture}
+	\caption{快递客户路线}
 \end{figure}
 
-为了寻求最优路线，小灰研究了好久，可惜还是没有找到一个高效率的解决方案。 \\
+为了寻求最优路线，小灰研究了好久，可惜还是没有找到一个高效率的解决方案。\\
 
 不只是小灰，当前的计算机科学家们也没有找到一个行之有效的优化方案，这是典型的旅行商问题。
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{img/C11/11-5/1.png}
+	\centering
+	\includegraphics[scale=0.4]{img/C11/11-5/1.png}
 \end{figure}
 
-有一个商品推销员，要去若干个城市推销商品。该推销员从一个城市出发，需要经过所有城市后，回到出发地。每个城市之间都有道路连通，且距离各不相同，推销员应该如何选择路线，使得总行程最短呢？ \\
+有一个商品推销员，要去若干个城市推销商品。该推销员从一个城市出发，需要经过所有城市后，回到出发地。每个城市之间都有道路连通，且距离各不相同，推销员应该如何选择路线，使得总行程最短呢？\\
 
-这个问题看起来很简单，却很难找到一个真正高效的求解算法。其中最容易想到的，是使用穷举法把所有可能的路线穷举出来，计算出每一条路线的总行程。 \\
+这个问题看起来很简单，却很难找到一个真正高效的求解算法。其中最容易想到的，是使用穷举法把所有可能的路线穷举出来，计算出每一条路线的总行程。\\
 
-通过排列组合，从所有路线中找出总行程最短的路线。显然，这个方法的时间复杂度是$ O(n!) $，随着城市数量的增长，花费的运算时间简直不可想象！ \\
+通过排列组合，从所有路线中找出总行程最短的路线。显然，这个方法的时间复杂度是$ O(n!) $，随着城市数量的增长，花费的运算时间简直不可想象！\\
 
-后来，人们想出了许多相对优化的解决方案，比如动态规划法和分枝定界法等。但是，这些算法的时间复杂度仍然是指数级的，并没有让性能问题得到根本的解决。 \\
+后来，人们想出了许多相对优化的解决方案，比如动态规划法和分枝定界法等。但是，这些算法的时间复杂度仍然是指数级的，并没有让性能问题得到根本的解决。\\
 
 像这样的问题有很多，旅行商问题仅仅是其中的一例。对于这类问题，我们统称为NP问题。
 
@@ -693,68 +717,68 @@ $$
 算法的设计与分析在计算机科学领域有着重要的应用背景。1966 $ \sim $ 2005年期间，Turing奖获奖50人，其中10人以算法设计，7人以计算理论、自动机和复杂性研究领域的杰出贡献获奖。计算复杂性理论中的P = NP?问题是世界七大数学难题之一。
 
 \begin{table}[H]
-    \centering
-    \setlength{\tabcolsep}{5mm}{
-        \begin{tabular}{|c|c|}
-            \hline
-            \textbf{算法} & \textbf{时间复杂度} \\
-            \hline
-            二分查找      & $ O(logn) $         \\
-            \hline
-            归并排序      & $ O(nlogn) $        \\
-            \hline
-            Floyd最短路径 & $ O(n^3) $          \\
-            \hline
-        \end{tabular}
-    }
-    \caption{常见算法时间复杂度}
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{算法} & \textbf{时间复杂度} \\
+			\hline
+			二分查找      & $ O(logn) $         \\
+			\hline
+			归并排序      & $ O(nlogn) $        \\
+			\hline
+			Floyd最短路径 & $ O(n^3) $          \\
+			\hline
+		\end{tabular}
+	}
+	\caption{常见算法时间复杂度}
 \end{table}
 
-尽管这些算法的运行时间有数量级上的差别，但是它们的时间复杂度都可以用$ O(n^k) $来表示，其中k是一个常数。因此，这些算法都是多项式时间算法，能用多项式时间算法解决的问题被称为P问题（Polynomial）。 \\
+尽管这些算法的运行时间有数量级上的差别，但是它们的时间复杂度都可以用$ O(n^k) $来表示，其中k是一个常数。因此，这些算法都是多项式时间算法，能用多项式时间算法解决的问题被称为P问题（Polynomial）。\\
 
-人们常说，能用钱解决的问题都不是问题，在计算机科学家眼中，能用多项式时间解决的问题都不是问题。 \\
+人们常说，能用钱解决的问题都不是问题，在计算机科学家眼中，能用多项式时间解决的问题都不是问题。\\
 
-然而，世间还存在许多变态的问题，是无法（至少是暂时无法）在多项式时间内解决的，比如一些算法的时间复杂度是$ O(2^n) $，甚至$ O(n!) $。随着问题规模$ n $的增长，计算量的增长速度是非常恐怖的。这类问题被称为NP问题（Non-deterministic Polynomial），意思是“不确定是否能用多项式时间解决”。 \\
+然而，世间还存在许多变态的问题，是无法（至少是暂时无法）在多项式时间内解决的，比如一些算法的时间复杂度是$ O(2^n) $，甚至$ O(n!) $。随着问题规模$ n $的增长，计算量的增长速度是非常恐怖的。这类问题被称为NP问题（Non-deterministic Polynomial），意思是“不确定是否能用多项式时间解决”。\\
 
 有些科学家认为，所有的NP问题终究都可以在多项式时间内解决，只是我们暂时还没有找到方法；也有些科学家认为，某些NP问题永远无法在多项式时间内解决。这个业界争论用NP=P?这个公式来表达。
 
-想不到计算机领域还有这么多难以解决的问题！ \\
+想不到计算机领域还有这么多难以解决的问题！\\
 
-这还不算完，在所有的NP问题当中，还存在着一些大BOSS，被称为NPC问题。
+这还不算完，在所有的NP问题当中，还存在着一些大BOSS，被称为NPC问题。\\
 
 \subsection{规约与NPC}
 
-这里所说的NPC问题可不是游戏当中的NPC，要想理解NPC问题，需要先了解归约的概念。 \\
+这里所说的NPC问题可不是游戏当中的NPC，要想理解NPC问题，需要先了解归约的概念。\\
 
-归约（reduction）可以简单理解成问题之间的转化。例如问题是一个一元一次方程的求解问题$ Q: 3x + 6 = 12 $，这个问题可以转化成一个一元二次问题$ Q': 0x^2 + 3x + 6 = 12 $。 \\
+归约（reduction）可以简单理解成问题之间的转化。例如问题是一个一元一次方程的求解问题$ Q: 3x + 6 = 12 $，这个问题可以转化成一个一元二次问题$ Q': 0x^2 + 3x + 6 = 12 $。\\
 
-显然，问题$ Q $并不比问题$ Q' $更难解决，只要有办法解决$ Q' $，就一定能够解决$ Q $。对于这种情况，我们可以说问题$ Q $归约于问题$ Q' $。 \\
+显然，问题$ Q $并不比问题$ Q' $更难解决，只要有办法解决$ Q' $，就一定能够解决$ Q $。对于这种情况，我们可以说问题$ Q $归约于问题$ Q' $。\\
 
-同时，这种归约可以逐级传递，比如问题A归约于问题B，问题B归约于问题C，问题C归约于问题D，那么可以说问题A归约于问题D。 \\
+同时，这种归约可以逐级传递，比如问题A归约于问题B，问题B归约于问题C，问题C归约于问题D，那么可以说问题A归约于问题D。\\
 
-在NP问题之间，也可以存在归约关系。我们把众多的NP问题层层归约，必定会得到一个或多个终极问题，这些归约的终点就是所谓的NPC问题（NP-Complete）。旅行商问题被科学家证明属于NPC问题。 \\
+在NP问题之间，也可以存在归约关系。我们把众多的NP问题层层归约，必定会得到一个或多个终极问题，这些归约的终点就是所谓的NPC问题（NP-Complete）。旅行商问题被科学家证明属于NPC问题。\\
 
-就数量上而言，NP问题远比P问题要多，而NP之中的NPC问题也仅占极少数。 \\
+就数量上而言，NP问题远比P问题要多，而NP之中的NPC问题也仅占极少数。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw (0,0) ellipse (4 and 2) node[yshift=1cm]{NP问题};
-        \draw (-1.75,-0.5) ellipse (1.5 and 0.75) node{P问题};
-        \draw (1.75,-0.5) ellipse (1.5 and 0.75) node{NPC问题};
-    \end{tikzpicture}
-    \caption{P、NP与NPC的关系}
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) ellipse (4 and 2) node[yshift=1cm]{NP问题};
+		\draw (-1.75,-0.5) ellipse (1.5 and 0.75) node{P问题};
+		\draw (1.75,-0.5) ellipse (1.5 and 0.75) node{NPC问题};
+	\end{tikzpicture}
+	\caption{P、NP与NPC的关系}
 \end{figure}
 
-俗话说擒贼先擒王，只要有朝一日，我们能够找到NPC问题的多项式时间算法，就能够解决掉所有的NP问题！但遗憾的是，至今还没有人能够找到可行的方法，很多人认为这些问题是无解的。
+俗话说擒贼先擒王，只要有朝一日，我们能够找到NPC问题的多项式时间算法，就能够解决掉所有的NP问题！但遗憾的是，至今还没有人能够找到可行的方法，很多人认为这些问题是无解的。\\
 
 \subsection{旅行商问题}
 
-回到最初的快递路线规划问题，既然是工程问题，我们与其钻牛角尖寻求最优解，不如用小得多的代价寻求次优解。 \\
+回到最初的快递路线规划问题，既然是工程问题，我们与其钻牛角尖寻求最优解，不如用小得多的代价寻求次优解。\\
 
-最简单的办法是使用贪心算法，先选择距离起点最近的地点A，再选择距离A最近的地点B，以此类推，每一步都保证局部最优。 \\
+最简单的办法是使用贪心算法，先选择距离起点最近的地点A，再选择距离A最近的地点B，以此类推，每一步都保证局部最优。\\
 
-这样规划出的路线未必是全局最优，但平均情况下也不会比最优方案差多少。 \\
+这样规划出的路线未必是全局最优，但平均情况下也不会比最优方案差多少。\\
 
 除此之外，人们还找到了许多近似的解决方案，比如遗传算法、蚁群算法等。Google有一款开源工具OR-TOOL，其中也包含路线规划的实现。
 

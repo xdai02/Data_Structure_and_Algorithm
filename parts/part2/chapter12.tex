@@ -4,67 +4,67 @@
 
 \subsection{最近点对}
 
-在一个平面上有n个点，找到所有点对中距离最短的点对。 \\
+在一个平面上有n个点，找到所有点对中距离最短的点对。\\
 
-暴力解法就是计算任意两点之间的距离，找到其中的最小值，因此时间复杂度为$ O(n^2) $。 \\
+暴力解法就是计算任意两点之间的距离，找到其中的最小值，因此时间复杂度为$ O(n^2) $。\\
 
-利用分治法，可以根据排序后的横坐标将点集分为左右两个部分，然后递归地对两个子问题进行求解。先求出左半部分的最短距离，再求出右半部分的最短距离。但是最短距离的点对也有可能会跨越边界，因此还需要计算一个点在左半部分、另一个点在右半部分的最短距离。三个距离中最短的就是原问题的最终解。 \\
+利用分治法，可以根据排序后的横坐标将点集分为左右两个部分，然后递归地对两个子问题进行求解。先求出左半部分的最短距离，再求出右半部分的最短距离。但是最短距离的点对也有可能会跨越边界，因此还需要计算一个点在左半部分、另一个点在右半部分的最短距离。三个距离中最短的就是原问题的最终解。\\
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw[->] (-5,0)--(5,0);
-        \draw[->] (0,-4)--(0,5);
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-5,0)--(5,0);
+		\draw[->] (0,-4)--(0,5);
 
-        \draw[fill=yellow] (-4,4.5) circle(0.2);
-        \draw[fill=yellow] (-3,3) circle(0.2);
-        \draw[fill=yellow] (-2,3.5) circle(0.2);
-        \draw[fill=yellow] (-2,-2) circle(0.2);
-        \draw[fill=yellow] (0.5,1) circle(0.2);
-        \draw[fill=yellow] (2,1.5) circle(0.2);
-        \draw[fill=yellow] (3.2,1) circle(0.2);
-        \draw[fill=yellow] (3,4) circle(0.2);
-        \draw[fill=yellow] (3,-1.5) circle(0.2);
-        \draw[fill=yellow] (4.2,-3) circle(0.2);
+		\draw[fill=yellow] (-4,4.5) circle(0.2);
+		\draw[fill=yellow] (-3,3) circle(0.2);
+		\draw[fill=yellow] (-2,3.5) circle(0.2);
+		\draw[fill=yellow] (-2,-2) circle(0.2);
+		\draw[fill=yellow] (0.5,1) circle(0.2);
+		\draw[fill=yellow] (2,1.5) circle(0.2);
+		\draw[fill=yellow] (3.2,1) circle(0.2);
+		\draw[fill=yellow] (3,4) circle(0.2);
+		\draw[fill=yellow] (3,-1.5) circle(0.2);
+		\draw[fill=yellow] (4.2,-3) circle(0.2);
 
-        \draw[-, red] (1,5) -- (1,-4.5);
+		\draw[-, red] (1,5) -- (1,-4.5);
 
-        \draw[-, blue] (-2.8,3.1) -- (-2.2,3.4);
-        \draw[-, blue] (0.7,1.1) -- (1.8,1.5);
-        \draw[-, blue] (2.2,1.5) -- (3,1.1);
-    \end{tikzpicture}
-    \caption{最近点对}
+		\draw[-, blue] (-2.8,3.1) -- (-2.2,3.4);
+		\draw[-, blue] (0.7,1.1) -- (1.8,1.5);
+		\draw[-, blue] (2.2,1.5) -- (3,1.1);
+	\end{tikzpicture}
+	\caption{最近点对}
 \end{figure}
 
-在计算出左右两边的最短距离后，两者较小的值d即为跨越边界的范围。 \\
+在计算出左右两边的最短距离后，两者较小的值d即为跨越边界的范围。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw (-2,2) rectangle (2,-2);
-        \draw[red] (0,2) -- (0,1) node[right]{d} -- (0,-1) node[right]{d} -- (0,-2);
-        \draw[red] (0,0) circle(2);
-        \draw[fill=yellow] (0,0) circle(0.1);
-    \end{tikzpicture}
-    \caption{跨越边界的范围}
+	\centering
+	\begin{tikzpicture}
+		\draw (-2,2) rectangle (2,-2);
+		\draw[red] (0,2) -- (0,1) node[right]{d} -- (0,-1) node[right]{d} -- (0,-2);
+		\draw[red] (0,0) circle(2);
+		\draw[fill=yellow] (0,0) circle(0.1);
+	\end{tikzpicture}
+	\caption{跨越边界的范围}
 \end{figure}
 
-对于处于左边的每个点而言，在右边的每个小长方形中至多存在1个点，即最多只需要比较右边的6个点。如果在右半边存在超过6个点的话，那么就存在一个比d更短的距离，就与之前的最短距离矛盾了。 \\
+对于处于左边的每个点而言，在右边的每个小长方形中至多存在1个点，即最多只需要比较右边的6个点。如果在右半边存在超过6个点的话，那么就存在一个比d更短的距离，就与之前的最短距离矛盾了。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw (-2,2) rectangle (2,-2);
-        \draw[red] (0,2.5) -- (0,-2.5);
-        \draw[red] (-0.5,0) circle(2);
-        \draw[black] (0,0.66) -- (2,0.66);
-        \draw[black] (0,-0.66) -- (2,-0.66);
-        \draw[black] (1,2) -- (1,-2);
-        \draw[fill=yellow] (-0.5,0) circle(0.1);
-        \draw (0.5,2.3) node{d};
-        \draw (2.5,0) node{2d};
-    \end{tikzpicture}
-    \caption{检查跨越边界的点}
+	\centering
+	\begin{tikzpicture}
+		\draw (-2,2) rectangle (2,-2);
+		\draw[red] (0,2.5) -- (0,-2.5);
+		\draw[red] (-0.5,0) circle(2);
+		\draw[black] (0,0.66) -- (2,0.66);
+		\draw[black] (0,-0.66) -- (2,-0.66);
+		\draw[black] (1,2) -- (1,-2);
+		\draw[fill=yellow] (-0.5,0) circle(0.1);
+		\draw (0.5,2.3) node{d};
+		\draw (2.5,0) node{2d};
+	\end{tikzpicture}
+	\caption{检查跨越边界的点}
 \end{figure}
 
 检查1个点是常数时间，检查n个点需要$ O(n) $的时间。分治算法中排序需要$ O(nlogn) $，递归处理子问题需要$ T(n/2) + O(n) $。总体时间复杂度为$ O(nlogn) $。
@@ -75,51 +75,51 @@
 
 \subsection{凸包（Convex Hull）}
 
-凸包是计算几何中的概念。在大量离散点的集合中，求一个最小的凸多边形，使得所有点都在该多边形的内部或边上。凸包在形状识别、字形识别、碰撞检测中都有所应用。 \\
+凸包是计算几何中的概念。在大量离散点的集合中，求一个最小的凸多边形，使得所有点都在该多边形的内部或边上。凸包在形状识别、字形识别、碰撞检测中都有所应用。\\
 
-利用分治算法，连接最大纵坐标和最小纵坐标的两点，将点集划分成左右两部分，并递归对两个子问题进行求解。 \\
+利用分治算法，连接最大纵坐标和最小纵坐标的两点，将点集划分成左右两部分，并递归对两个子问题进行求解。\\
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \filldraw (-1,4) circle (.1);
-        \filldraw (0.5,3) circle (.1);
-        \filldraw (-3,3) circle (.1);
-        \filldraw (-4.3,2) circle (.1);
-        \filldraw (-4,-1) circle (.1);
-        \filldraw (-3,-3) circle (.1);
-        \filldraw (3,4) circle (.1);
-        \filldraw (4,2) circle (.1);
-        \filldraw (2,-2.5) circle (.1);
-        \draw (-3,-3)node[right]{$ y_{min} $} -- (3,4)node[right]{$ y_{max} $};
-        \draw (0,0) node{d};
-    \end{tikzpicture}
-    \caption{划分点集}
+	\centering
+	\begin{tikzpicture}
+		\filldraw (-1,4) circle (.1);
+		\filldraw (0.5,3) circle (.1);
+		\filldraw (-3,3) circle (.1);
+		\filldraw (-4.3,2) circle (.1);
+		\filldraw (-4,-1) circle (.1);
+		\filldraw (-3,-3) circle (.1);
+		\filldraw (3,4) circle (.1);
+		\filldraw (4,2) circle (.1);
+		\filldraw (2,-2.5) circle (.1);
+		\draw (-3,-3)node[right]{$ y_{min} $} -- (3,4)node[right]{$ y_{max} $};
+		\draw (0,0) node{d};
+	\end{tikzpicture}
+	\caption{划分点集}
 \end{figure}
 
-例如在左半边中，先找到距离边界d最远的点P。落在形成的三角形内部的点全部排除。接着将边a外的点与a构成作左半边点集的子问题，将边b外的点与b构成另一个左半边点集的子问题。每次将距离边界最远的点加入凸包即可求解原问题。 \\
+例如在左半边中，先找到距离边界d最远的点P。落在形成的三角形内部的点全部排除。接着将边a外的点与a构成作左半边点集的子问题，将边b外的点与b构成另一个左半边点集的子问题。每次将距离边界最远的点加入凸包即可求解原问题。\\
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \filldraw (-1,4) circle (.1);
-        \filldraw (0.5,3) circle (.1);
-        \filldraw (-3,3) circle (.1) node[left]{P};
-        \filldraw (-4.3,2) circle (.1);
-        \filldraw (-4,-1) circle (.1);
-        \filldraw (-3,-3) circle (.1);
-        \filldraw (3,4) circle (.1);
-        \filldraw (4,2) circle (.1);
-        \filldraw (2,-2.5) circle (.1);
-        \draw (-3,-3)node[right]{$ y_{min} $} -- (3,4)node[right]{$ y_{max} $};
-        \draw (0,0) node{d};
+	\centering
+	\begin{tikzpicture}
+		\filldraw (-1,4) circle (.1);
+		\filldraw (0.5,3) circle (.1);
+		\filldraw (-3,3) circle (.1) node[left]{P};
+		\filldraw (-4.3,2) circle (.1);
+		\filldraw (-4,-1) circle (.1);
+		\filldraw (-3,-3) circle (.1);
+		\filldraw (3,4) circle (.1);
+		\filldraw (4,2) circle (.1);
+		\filldraw (2,-2.5) circle (.1);
+		\draw (-3,-3)node[right]{$ y_{min} $} -- (3,4)node[right]{$ y_{max} $};
+		\draw (0,0) node{d};
 
-        \draw[red,dashed] (-3,3) -- (-3,-3) -- (-4,-1) -- (-4.2,2) -- (-3,3);
-        \draw[blue,dashed] (-3,3) -- (3,4) -- (-1,4) -- (-3,3);
-        \draw[red] (-2.7,0.5) node{a};
-        \draw[blue] (0,3.2) node{b};
-    \end{tikzpicture}
-    \caption{子问题}
+		\draw[red,dashed] (-3,3) -- (-3,-3) -- (-4,-1) -- (-4.2,2) -- (-3,3);
+		\draw[blue,dashed] (-3,3) -- (3,4) -- (-1,4) -- (-3,3);
+		\draw[red] (-2.7,0.5) node{a};
+		\draw[blue] (0,3.2) node{b};
+	\end{tikzpicture}
+	\caption{子问题}
 \end{figure}
 
 每个子问题可以找到一个凸包上的点，使问题规模缩小1，寻找凸包顶点和划分子问题需要的时间$ O(n) $。当子问题的规模小于3时，可直接进行求解。因此分治算法的时间复杂度为：
@@ -127,10 +127,10 @@
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(n) = \begin{cases}
-        O(1)            & n = 3 \\
-        W(n - 1) + O(n) & n > 3
-    \end{cases}
+	W(n) = \begin{cases}
+		O(1)            & n = 3 \\
+		W(n - 1) + O(n) & n > 3
+	\end{cases}
 \end{align*}
 
 求解得到：
@@ -138,170 +138,172 @@
 \vspace{-0.5cm}
 
 $$
-    W(n) = O(n^2)
+	W(n) = O(n^2)
 $$
+
+\vspace{0.5cm}
 
 \subsection{Graham扫描法}
 
 Graham扫描法首先找到最靠近左下角的点，以这个点为极点，其它点按照极角排序。按照逆时针顺序进行扫描，先把点1压入凸包的栈中。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw[->] (-6,0)--(6,0);
-        \draw[->] (0,-5.2)--(0,5.2);
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-6,0)--(6,0);
+		\draw[->] (0,-5.2)--(0,5.2);
 
-        \foreach \x in {0,1,...,8}
-            {
-                \draw[xshift=\x cm] (-4,0) -- (-4,0.1);
-                \draw[yshift=\x cm] (0,-4) -- (0.1,-4);
-            };
+		\foreach \x in {0,1,...,8}
+			{
+				\draw[xshift=\x cm] (-4,0) -- (-4,0.1);
+				\draw[yshift=\x cm] (0,-4) -- (0.1,-4);
+			};
 
-        \node[below] at (0.2,0){0};
+		\node[below] at (0.2,0){0};
 
-        \foreach \x in {-4,-3,...,-1}
-        \node[below] at(\x,0){\x};
-        \foreach \y in {1,2,...,4}
-        \node[below] at(\y,0){\y};
+		\foreach \x in {-4,-3,...,-1}
+		\node[below] at(\x,0){\x};
+		\foreach \y in {1,2,...,4}
+		\node[below] at(\y,0){\y};
 
-        \foreach \y in {-4,-3,...,-1}
-        \node[left] at(0,\y){\y};
-        \foreach \y in {1,2,...,4}
-        \node[left] at(0,\y){\y};
+		\foreach \y in {-4,-3,...,-1}
+		\node[left] at(0,\y){\y};
+		\foreach \y in {1,2,...,4}
+		\node[left] at(0,\y){\y};
 
-        \filldraw[blue] (-5,-3.9) circle (.1);
-        \filldraw[red] (5.5,-4) circle (.1) node[right]{1};
-        \filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
-        \filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
-        \filldraw[red] (1,0) circle (.1) node[right]{4};
-        \filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
-        \filldraw[red] (0,0) circle (.1) node[right]{6};
-        \filldraw[red] (1,1) circle (.1) node[right]{7};
-        \filldraw[red] (-3.5,3) circle (.1) node[right]{8};
+		\filldraw[blue] (-5,-3.9) circle (.1);
+		\filldraw[red] (5.5,-4) circle (.1) node[right]{1};
+		\filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
+		\filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
+		\filldraw[red] (1,0) circle (.1) node[right]{4};
+		\filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
+		\filldraw[red] (0,0) circle (.1) node[right]{6};
+		\filldraw[red] (1,1) circle (.1) node[right]{7};
+		\filldraw[red] (-3.5,3) circle (.1) node[right]{8};
 
-        \draw[blue] (-5,-3.9) -- (5.5,-4);
-    \end{tikzpicture}
+		\draw[blue] (-5,-3.9) -- (5.5,-4);
+	\end{tikzpicture}
 \end{figure}
 
 检查点2是否在点1的一侧，发现点2满足，入栈。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw[->] (-6,0)--(6,0);
-        \draw[->] (0,-5.2)--(0,5.2);
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-6,0)--(6,0);
+		\draw[->] (0,-5.2)--(0,5.2);
 
-        \foreach \x in {0,1,...,8}
-            {
-                \draw[xshift=\x cm] (-4,0) -- (-4,0.1);
-                \draw[yshift=\x cm] (0,-4) -- (0.1,-4);
-            };
+		\foreach \x in {0,1,...,8}
+			{
+				\draw[xshift=\x cm] (-4,0) -- (-4,0.1);
+				\draw[yshift=\x cm] (0,-4) -- (0.1,-4);
+			};
 
-        \node[below] at (0.2,0){0};
+		\node[below] at (0.2,0){0};
 
-        \foreach \x in {-4,-3,...,-1}
-        \node[below] at(\x,0){\x};
-        \foreach \y in {1,2,...,4}
-        \node[below] at(\y,0){\y};
+		\foreach \x in {-4,-3,...,-1}
+		\node[below] at(\x,0){\x};
+		\foreach \y in {1,2,...,4}
+		\node[below] at(\y,0){\y};
 
-        \foreach \y in {-4,-3,...,-1}
-        \node[left] at(0,\y){\y};
-        \foreach \y in {1,2,...,4}
-        \node[left] at(0,\y){\y};
+		\foreach \y in {-4,-3,...,-1}
+		\node[left] at(0,\y){\y};
+		\foreach \y in {1,2,...,4}
+		\node[left] at(0,\y){\y};
 
-        \filldraw[blue] (-5,-3.9) circle (.1);
-        \filldraw[red] (5.5,-4) circle (.1) node[right]{1};
-        \filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
-        \filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
-        \filldraw[red] (1,0) circle (.1) node[right]{4};
-        \filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
-        \filldraw[red] (0,0) circle (.1) node[right]{6};
-        \filldraw[red] (1,1) circle (.1) node[right]{7};
-        \filldraw[red] (-3.5,3) circle (.1) node[right]{8};
+		\filldraw[blue] (-5,-3.9) circle (.1);
+		\filldraw[red] (5.5,-4) circle (.1) node[right]{1};
+		\filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
+		\filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
+		\filldraw[red] (1,0) circle (.1) node[right]{4};
+		\filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
+		\filldraw[red] (0,0) circle (.1) node[right]{6};
+		\filldraw[red] (1,1) circle (.1) node[right]{7};
+		\filldraw[red] (-3.5,3) circle (.1) node[right]{8};
 
-        \draw[blue] (-5,-3.9) -- (5.5,-4) -- (1.8,-1.2);
-    \end{tikzpicture}
+		\draw[blue] (-5,-3.9) -- (5.5,-4) -- (1.8,-1.2);
+	\end{tikzpicture}
 \end{figure}
 
 点3更加靠近外侧，点2出栈，点3入栈。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw[->] (-6,0)--(6,0);
-        \draw[->] (0,-5.2)--(0,5.2);
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-6,0)--(6,0);
+		\draw[->] (0,-5.2)--(0,5.2);
 
-        \foreach \x in {0,1,...,8}
-            {
-                \draw[xshift=\x cm] (-4,0) -- (-4,0.1);
-                \draw[yshift=\x cm] (0,-4) -- (0.1,-4);
-            };
+		\foreach \x in {0,1,...,8}
+			{
+				\draw[xshift=\x cm] (-4,0) -- (-4,0.1);
+				\draw[yshift=\x cm] (0,-4) -- (0.1,-4);
+			};
 
-        \node[below] at (0.2,0){0};
+		\node[below] at (0.2,0){0};
 
-        \foreach \x in {-4,-3,...,-1}
-        \node[below] at(\x,0){\x};
-        \foreach \y in {1,2,...,4}
-        \node[below] at(\y,0){\y};
+		\foreach \x in {-4,-3,...,-1}
+		\node[below] at(\x,0){\x};
+		\foreach \y in {1,2,...,4}
+		\node[below] at(\y,0){\y};
 
-        \foreach \y in {-4,-3,...,-1}
-        \node[left] at(0,\y){\y};
-        \foreach \y in {1,2,...,4}
-        \node[left] at(0,\y){\y};
+		\foreach \y in {-4,-3,...,-1}
+		\node[left] at(0,\y){\y};
+		\foreach \y in {1,2,...,4}
+		\node[left] at(0,\y){\y};
 
-        \filldraw[blue] (-5,-3.9) circle (.1);
-        \filldraw[red] (5.5,-4) circle (.1) node[right]{1};
-        \filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
-        \filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
-        \filldraw[red] (1,0) circle (.1) node[right]{4};
-        \filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
-        \filldraw[red] (0,0) circle (.1) node[right]{6};
-        \filldraw[red] (1,1) circle (.1) node[right]{7};
-        \filldraw[red] (-3.5,3) circle (.1) node[right]{8};
+		\filldraw[blue] (-5,-3.9) circle (.1);
+		\filldraw[red] (5.5,-4) circle (.1) node[right]{1};
+		\filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
+		\filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
+		\filldraw[red] (1,0) circle (.1) node[right]{4};
+		\filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
+		\filldraw[red] (0,0) circle (.1) node[right]{6};
+		\filldraw[red] (1,1) circle (.1) node[right]{7};
+		\filldraw[red] (-3.5,3) circle (.1) node[right]{8};
 
-        \draw[blue,dashed] (5.5,-4) -- (1.8,-1.2);
-        \draw[blue] (-5,-3.9) -- (5.5,-4) -- (4.8,1.8);
-    \end{tikzpicture}
+		\draw[blue,dashed] (5.5,-4) -- (1.8,-1.2);
+		\draw[blue] (-5,-3.9) -- (5.5,-4) -- (4.8,1.8);
+	\end{tikzpicture}
 \end{figure}
 
 依次判断，最终所有凸包上的点都会在栈中。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \draw[->] (-6,0)--(6,0);
-        \draw[->] (0,-5.2)--(0,5.2);
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-6,0)--(6,0);
+		\draw[->] (0,-5.2)--(0,5.2);
 
-        \foreach \x in {0,1,...,8}
-            {
-                \draw[xshift=\x cm] (-4,0) -- (-4,0.1);
-                \draw[yshift=\x cm] (0,-4) -- (0.1,-4);
-            };
+		\foreach \x in {0,1,...,8}
+			{
+				\draw[xshift=\x cm] (-4,0) -- (-4,0.1);
+				\draw[yshift=\x cm] (0,-4) -- (0.1,-4);
+			};
 
-        \node[below] at (0.2,0){0};
+		\node[below] at (0.2,0){0};
 
-        \foreach \x in {-4,-3,...,-1}
-        \node[below] at(\x,0){\x};
-        \foreach \y in {1,2,...,4}
-        \node[below] at(\y,0){\y};
+		\foreach \x in {-4,-3,...,-1}
+		\node[below] at(\x,0){\x};
+		\foreach \y in {1,2,...,4}
+		\node[below] at(\y,0){\y};
 
-        \foreach \y in {-4,-3,...,-1}
-        \node[left] at(0,\y){\y};
-        \foreach \y in {1,2,...,4}
-        \node[left] at(0,\y){\y};
+		\foreach \y in {-4,-3,...,-1}
+		\node[left] at(0,\y){\y};
+		\foreach \y in {1,2,...,4}
+		\node[left] at(0,\y){\y};
 
-        \filldraw[blue] (-5,-3.9) circle (.1);
-        \filldraw[red] (5.5,-4) circle (.1) node[right]{1};
-        \filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
-        \filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
-        \filldraw[red] (1,0) circle (.1) node[right]{4};
-        \filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
-        \filldraw[red] (0,0) circle (.1) node[right]{6};
-        \filldraw[red] (1,1) circle (.1) node[right]{7};
-        \filldraw[red] (-3.5,3) circle (.1) node[right]{8};
+		\filldraw[blue] (-5,-3.9) circle (.1);
+		\filldraw[red] (5.5,-4) circle (.1) node[right]{1};
+		\filldraw[red] (1.8,-1.2) circle (.1) node[right]{2};
+		\filldraw[red] (4.8,1.8) circle (.1) node[right]{3};
+		\filldraw[red] (1,0) circle (.1) node[right]{4};
+		\filldraw[red] (-1.8,-1.1) circle (.1) node[right]{5};
+		\filldraw[red] (0,0) circle (.1) node[right]{6};
+		\filldraw[red] (1,1) circle (.1) node[right]{7};
+		\filldraw[red] (-3.5,3) circle (.1) node[right]{8};
 
-        \draw[blue] (-5,-3.9) -- (5.5,-4) -- (4.8,1.8) -- (-3.5,3);
-    \end{tikzpicture}
+		\draw[blue] (-5,-3.9) -- (5.5,-4) -- (4.8,1.8) -- (-3.5,3);
+	\end{tikzpicture}
 \end{figure}
 
 Graham扫描法的时间复杂度为$ O(nlogn) $。
@@ -315,118 +317,120 @@ Graham扫描法的时间复杂度为$ O(nlogn) $。
 有两片芯片A和B，将两片芯片互相进行测试，测试报告是好或者坏。假设好芯片的报告一定是正确的，坏芯片的报告是不确定的（有可能会出错）。
 
 \begin{table}[H]
-    \centering
-    \setlength{\tabcolsep}{5mm}{
-        \begin{tabular}{|c|c|c|}
-            \hline
-            \textbf{A报告} & \textbf{B报告} & \textbf{结论}  \\
-            \hline
-            B是好的        & A是好的        & AB都好或AB都坏 \\
-            \hline
-            B是好的        & A是坏的        & 至少一片是坏的 \\
-            \hline
-            B是坏的        & A是好的        & 至少一片是坏的 \\
-            \hline
-            B是坏的        & A是坏的        & 至少一片是坏的 \\
-            \hline
-        \end{tabular}
-    }
-    \caption{测试结果}
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{A报告} & \textbf{B报告} & \textbf{结论}  \\
+			\hline
+			B是好的        & A是好的        & AB都好或AB都坏 \\
+			\hline
+			B是好的        & A是坏的        & 至少一片是坏的 \\
+			\hline
+			B是坏的        & A是好的        & 至少一片是坏的 \\
+			\hline
+			B是坏的        & A是坏的        & 至少一片是坏的 \\
+			\hline
+		\end{tabular}
+	}
+	\caption{测试结果}
 \end{table}
 
-芯片测试问题给定n片芯片，其中好芯片的数量比坏芯片的数量至少多1片，要求设计一种方法，用最少的测试次数，通过测试从n片芯片中挑出1片好芯片。 \\
+芯片测试问题给定n片芯片，其中好芯片的数量比坏芯片的数量至少多1片，要求设计一种方法，用最少的测试次数，通过测试从n片芯片中挑出1片好芯片。\\
 
-当需要测试某一片芯片A的好坏时，可以用其它n - 1片芯片对芯片A进行测试。 \\
+当需要测试某一片芯片A的好坏时，可以用其它n - 1片芯片对芯片A进行测试。\\
 
 假设n = 7（好芯片数$ \ge 4 $）：
 
 \begin{itemize}
-    \item 如果A为好芯片，那么6个报告中至少3个报好。
-    \item 如果A为坏芯片，那么6个报告状况至少4个报坏。
+	\item 如果A为好芯片，那么6个报告中至少3个报好。
+	\item 如果A为坏芯片，那么6个报告状况至少4个报坏。
 \end{itemize}
 
 当n为奇数时（好芯片数$ \ge (n + 1) / 2 $）：
 
 \begin{itemize}
-    \item 如果A为好芯片，至少有$ (n-1) / 2 $个报好。
-    \item 如果A为坏芯片，至少有$ (n+1) / 2 $个报坏。
+	\item 如果A为好芯片，至少有$ (n-1) / 2 $个报好。
+	\item 如果A为坏芯片，至少有$ (n+1) / 2 $个报坏。
 \end{itemize}
 
 假设n = 8（好芯片数$ \ge 5 $）：
 
 \begin{itemize}
-    \item 如果A为好芯片，那么7个报告中至少4个报好。
-    \item 如果A为坏芯片，那么7个报告状况至少5个报坏。
+	\item 如果A为好芯片，那么7个报告中至少4个报好。
+	\item 如果A为坏芯片，那么7个报告状况至少5个报坏。
 \end{itemize}
 
 当n为偶数时（好芯片数$ \ge n/2 + 1 $）：
 
 \begin{itemize}
-    \item 如果A为好芯片，至少有$ n / 2 $个报好。
-    \item 如果A为坏芯片，至少有$ n/2 + 1 $个报坏。
+	\item 如果A为好芯片，至少有$ n / 2 $个报好。
+	\item 如果A为坏芯片，至少有$ n/2 + 1 $个报坏。
 \end{itemize}
 
-使用暴力算法，任意一个芯片进行测试，如果是好芯片，则测试结束。如果是坏芯片，则抛弃，再从剩下的芯片中任取一片进行测试，直到找到好芯片。因此暴力算法的时间复杂度为$ \Theta(n) $。
+使用暴力算法，任意一个芯片进行测试，如果是好芯片，则测试结束。如果是坏芯片，则抛弃，再从剩下的芯片中任取一片进行测试，直到找到好芯片。因此暴力算法的时间复杂度为$ \Theta(n) $。\\
 
 \subsection{分治算法}
 
-假设n为偶数，将n个芯片两两一组做测试淘汰，剩下的芯片构成子问题，进行下一轮分组淘汰。 \\
+假设n为偶数，将n个芯片两两一组做测试淘汰，剩下的芯片构成子问题，进行下一轮分组淘汰。\\
 
 淘汰的规则为：
 
 \begin{table}[H]
-    \centering
-    \setlength{\tabcolsep}{5mm}{
-        \begin{tabular}{|c|c|}
-            \hline
-            \textbf{情况} & \textbf{操作} \\
-            \hline
-            好+好         & 任意保留1片   \\
-            \hline
-            其它情况      & 全部抛弃      \\
-            \hline
-        \end{tabular}
-    }
-    \caption{淘汰规则}
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{情况} & \textbf{操作} \\
+			\hline
+			好+好         & 任意保留1片   \\
+			\hline
+			其它情况      & 全部抛弃      \\
+			\hline
+		\end{tabular}
+	}
+	\caption{淘汰规则}
 \end{table}
 
-递归的截止条件为$ n \le 3 $，因为当$ n = 1 $或$ n = 2 $，所有芯片一定都为好芯片，无需进行测试。当$ n = 3 $时，只进行1次测试即可得到好芯片。 \\
+递归的截止条件为$ n \le 3 $，因为当$ n = 1 $或$ n = 2 $，所有芯片一定都为好芯片，无需进行测试。当$ n = 3 $时，只进行1次测试即可得到好芯片。\\
 
-分治算法要求子问题与原问题性质相同，原问题中在n个芯片中好芯片至少比坏芯片多1片，因此需要验证分治算法子问题的正确性，即证明：当n是偶数时，经过淘汰规则后，剩下的好芯片至少比坏芯片多1片。 \\
+分治算法要求子问题与原问题性质相同，原问题中在n个芯片中好芯片至少比坏芯片多1片，因此需要验证分治算法子问题的正确性，即证明：当n是偶数时，经过淘汰规则后，剩下的好芯片至少比坏芯片多1片。\\
 
-假设在分组中，A与B都为好芯片的有i组，A与B一好一坏的有j组，A与B都为坏芯片的有k组，初始芯片的总数为2i + 2j + 2k = n。 \\
+假设在分组中，A与B都为好芯片的有i组，A与B一好一坏的有j组，A与B都为坏芯片的有k组，初始芯片的总数为2i + 2j + 2k = n。\\
 
 根据淘汰规则：
 
 \begin{enumerate}
-    \item A与B都为好芯片，任留1片，因此淘汰后好芯片至少有i个。
-    \item A与B一好一坏，全部抛弃。
-    \item A与B都为坏芯片，有可能A和B同时错报为好，因此淘汰后坏芯片至多有k个。
+	\item A与B都为好芯片，任留1片，因此淘汰后好芯片至少有i个。
+
+	\item A与B一好一坏，全部抛弃。
+
+	\item A与B都为坏芯片，有可能A和B同时错报为好，因此淘汰后坏芯片至多有k个。
 \end{enumerate}
 
-\vspace{-1cm}
+\vspace{-1.5cm}
 
 \begin{align*}
-    \text{初始好芯片多于坏芯片：}   & 2i + j > 2k + j \\
-    \text{子问题好芯片多于坏芯片：} & i > k
+	\text{初始好芯片多于坏芯片：}   & 2i + j > 2k + j \\
+	\text{子问题好芯片多于坏芯片：} & i > k
 \end{align*}
 
-以上算法是基于芯片数量n为偶数情况下的，但是如果当n为奇数时，可能会出现问题。 \\
+以上算法是基于芯片数量n为偶数情况下的，但是如果当n为奇数时，可能会出现问题。\\
 
-例如初始芯片为“好、好、好、好、坏、坏、坏”，两两分组得到(好, 好)、(好, 好)、(坏、坏)、(坏)，根据规则淘汰后却得到“好、好、坏、坏”。 \\
+例如初始芯片为“好、好、好、好、坏、坏、坏”，两两分组得到(好, 好)、(好, 好)、(坏、坏)、(坏)，根据规则淘汰后却得到“好、好、坏、坏”。\\
 
-解决这个问题的处理办法就是额外增加一轮对多余的那个芯片单独测试。如果该芯片为好芯片，则算法结束。如果是坏芯片，则抛弃，将剩余芯片分组淘汰。 \\
+解决这个问题的处理办法就是额外增加一轮对多余的那个芯片单独测试。如果该芯片为好芯片，则算法结束。如果是坏芯片，则抛弃，将剩余芯片分组淘汰。\\
 
 每轮分组淘汰后，芯片数量至少减半。对芯片进行测试（包括对额外多余芯片单独测试）的处理时间为$ O(n) $。
 
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(n) = \begin{cases}
-        0             & n = 1\ or\ n = 2 \\
-        1             & n = 3            \\
-        W(n/2) + O(n) & n > 3
-    \end{cases}
+	W(n) = \begin{cases}
+		0             & n = 1\ or\ n = 2 \\
+		1             & n = 3            \\
+		W(n/2) + O(n) & n > 3
+	\end{cases}
 \end{align*}
 
 求解得到：
@@ -434,7 +438,7 @@ Graham扫描法的时间复杂度为$ O(nlogn) $。
 \vspace{-0.5cm}
 
 $$
-    W(n) = O(n)
+	W(n) = O(n)
 $$
 
 \newpage
@@ -446,30 +450,30 @@ $$
 起初对于大整数乘法，认为只要按照大整数相加的思路稍微做一下变形，就可以轻松实现。但是随着深入的学习，才发现事情并没有那么简单。如果沿用大整数加法的思路，通过列竖式求解……
 
 \begin{table}[H]
-    \centering
-    \begin{tabular}{cD{.}{.}{3}}
-                   & 93281           \\
-        $ \times $ & 2034            \\
-        \hline
-                   & 373124          \\
-                   & 279843\ \       \\
-                   & 000000\ \ \     \\
-                   & 186562\ \ \ \ \ \\
-        \hline
-                   & 189733554
-    \end{tabular}
+	\centering
+	\begin{tabular}{cD{.}{.}{3}}
+		           & 93281         \\
+		$ \times $ & 2034          \\
+		\hline
+		           & 373124        \\
+		           & 279843\ \     \\
+		           & 000000\ \ \   \\
+		           & 186562\ \ \ \ \\
+		\hline
+		           & 189733554
+	\end{tabular}
 \end{table}
 
 乘法竖式的计算过程可以大体分为两步：
 
 \begin{enumerate}
-    \item 整数B的每一个数位和整数A所有数位依次相乘，得到中间结果。
-    \item 所有中间结果相加，得到最终结果。
+	\item 整数B的每一个数位和整数A所有数位依次相乘，得到中间结果。
+	\item 所有中间结果相加，得到最终结果。
 \end{enumerate}
 
-这样的做法确实可以实现大整数乘法，由于两个大整数的所有数位都需要一一彼此相乘。如果整数A的长度为m，整数B的长度为n，那么时间复杂度就是$ O(m * n) $。如果两个大整数的长度接近，那么时间复杂度也可以写为$ O(n^2) $。 \\
+这样的做法确实可以实现大整数乘法，由于两个大整数的所有数位都需要一一彼此相乘。如果整数A的长度为m，整数B的长度为n，那么时间复杂度就是$ O(m * n) $。如果两个大整数的长度接近，那么时间复杂度也可以写为$ O(n^2) $。\\
 
-那么有没有优化方法，可以让时间复杂度低于$ O(n^2) $呢？ \\
+那么有没有优化方法，可以让时间复杂度低于$ O(n^2) $呢？\\
 
 \subsection{分治法}
 
@@ -478,8 +482,8 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-    \text{整数1} & = \underbrace{81325}_{A}\underbrace{79076}_{B} \\
-    \text{整数2} & = \underbrace{9213}_{C}\underbrace{52184}_{D}
+	\text{整数1} & = \underbrace{81325}_{A}\underbrace{79076}_{B} \\
+	\text{整数2} & = \underbrace{9213}_{C}\underbrace{52184}_{D}
 \end{align*}
 
 即：
@@ -487,8 +491,8 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-    \text{整数1} & = A \times 10^5 + B \\
-    \text{整数2} & = C \times 10^5 + D
+	\text{整数1} & = A \times 10^5 + B \\
+	\text{整数2} & = C \times 10^5 + D
 \end{align*}
 
 如果把两个大整数的长度抽象为m和n，那么：
@@ -496,8 +500,8 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-    \text{整数1} & = A \times 10^{m/2} + B \\
-    \text{整数2} & = C \times 10^{n/2} + D
+	\text{整数1} & = A \times 10^{m/2} + B \\
+	\text{整数2} & = C \times 10^{n/2} + D
 \end{align*}
 
 因此：
@@ -505,52 +509,52 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-     & \text{整数1} \times \text{整数2}                                                        \\
-     & = (A \times 10^{m/2} + B) \times (C \times 10^{n/2} + D)                                \\
-     & = AC \times 10^{m+n \over 2} + AD \times 10^{n \over 2} + BC \times 10^{m \over 2} + BD
+	 & \text{整数1} \times \text{整数2}                                                        \\
+	 & = (A \times 10^{m/2} + B) \times (C \times 10^{n/2} + D)                                \\
+	 & = AC \times 10^{m+n \over 2} + AD \times 10^{n \over 2} + BC \times 10^{m \over 2} + BD
 \end{align*}
 
-如此一来，原本长度为n的大整数的1次乘积，被转化成了长度为$ n / 2 $的大整数的4次乘积。 \\
+如此一来，原本长度为n的大整数的1次乘积，被转化成了长度为$ n / 2 $的大整数的4次乘积。\\
 
 通过递归把大整数不断地对半拆分，一直拆分到可以直接计算为止。
 
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[
-            level distance=2cm,
-            level 1/.style={sibling distance=8cm},
-            level 2/.style={sibling distance=4cm},
-            level 3/.style={sibling distance=2cm}
-        ]
-        \node {100位}
-        child {
-                node {50位}
-                child {
-                        node {25位}
-                        child {node {12位}}
-                        child {node {13位}}
-                    }
-                child {
-                        node {25位}
-                        child {node {12位}}
-                        child {node {13位}}
-                    }
-            }
-        child {
-                node {50位}
-                child {
-                        node {25位}
-                        child {node {12位}}
-                        child {node {13位}}
-                    }
-                child {
-                        node {25位}
-                        child {node {12位}}
-                        child {node {13位}}
-                    }
-            };
-    \end{tikzpicture}
-    \caption{大整数拆分}
+	\centering
+	\begin{tikzpicture}[
+			level distance=2cm,
+			level 1/.style={sibling distance=8cm},
+			level 2/.style={sibling distance=4cm},
+			level 3/.style={sibling distance=2cm}
+		]
+		\node {100位}
+		child {
+				node {50位}
+				child {
+						node {25位}
+						child {node {12位}}
+						child {node {13位}}
+					}
+				child {
+						node {25位}
+						child {node {12位}}
+						child {node {13位}}
+					}
+			}
+		child {
+				node {50位}
+				child {
+						node {25位}
+						child {node {12位}}
+						child {node {13位}}
+					}
+				child {
+						node {25位}
+						child {node {12位}}
+						child {node {13位}}
+					}
+			};
+	\end{tikzpicture}
+	\caption{大整数拆分}
 \end{figure}
 
 但是先别高兴地太早，这个方法真的提高了效率吗？
@@ -558,10 +562,10 @@ $$
 \vspace{-0.5cm}
 
 \begin{align*}
-    T(n) = \begin{cases}
-        O(1)           & n = 1 \\
-        4T(n/2) + O(n) & n > 1
-    \end{cases}
+	T(n) = \begin{cases}
+		O(1)           & n = 1 \\
+		4T(n/2) + O(n) & n > 1
+	\end{cases}
 \end{align*}
 
 求解得到：
@@ -569,43 +573,43 @@ $$
 \vspace{-0.5cm}
 
 $$
-    T(n) = O(n^2)
+	T(n) = O(n^2)
 $$
 
-闹了半天，时间复杂度还是$ O(n^2) $啊，白高兴一场。但是努力的方向并没有白费，这里还是有优化的方法的。 \\
+闹了半天，时间复杂度还是$ O(n^2) $啊，白高兴一场。但是努力的方向并没有白费，这里还是有优化的方法的。\\
 
 \subsection{优化方法}
 
-在大整数乘法运算中，如果只简单地利用分治法将大整数的位置减半，并不能降低时间复杂度的阶。分治法把两个大整数相乘到的问题转化为四个较小整数相乘，性能的瓶颈仍旧在乘法上。 \\
+在大整数乘法运算中，如果只简单地利用分治法将大整数的位置减半，并不能降低时间复杂度的阶。分治法把两个大整数相乘到的问题转化为四个较小整数相乘，性能的瓶颈仍旧在乘法上。\\
 
-分治算法的时间复杂度方程为$ W(n) = aW(n/b) + f(n) $，其中$ a $为子问题数，$ n / b $为子问题规模，$ f(n) $为划分与合并工作量。当$ a $较大、$ b $较小、$ f(n) $不大时，$ W(n) = \Theta(n^{log_ba}) $。减少$ a $是降低$ W(n) $的阶的一种途径。利用子问题的依赖问题，可以使某些子问题的解通过组合其它子问题的解而得到。 \\
+分治算法的时间复杂度方程为$ W(n) = aW(n/b) + f(n) $，其中$ a $为子问题数，$ n / b $为子问题规模，$ f(n) $为划分与合并工作量。当$ a $较大、$ b $较小、$ f(n) $不大时，$ W(n) = \Theta(n^{log_ba}) $。减少$ a $是降低$ W(n) $的阶的一种途径。利用子问题的依赖问题，可以使某些子问题的解通过组合其它子问题的解而得到。\\
 
 那么，怎样才能减少乘法运算的次数呢？哪怕由四次乘法变成三次乘法也好呀。通过对之前的乘法等式做一些调整，可以减少乘法的次数。
 
 \vspace{-1cm}
 
 \begin{align*}
-     & \text{整数1} \times \text{整数2}                                      \\
-     & = (A \times 10^{n/2} + B) \times (C \times 10^{n/2} + D)              \\
-     & = AC \times 10^n + AD \times 10^{n/2} + BC \times 10^{n/2} + BD       \\
-     & = AC \times 10^n + (AD + BC) \times 10^{n/2} + BD                     \\
-     & = AC \times 10^n + (AD - AC - BD + BC + AC + BD) \times 10^{n/2} + BD \\
-     & = AC \times 10^n + ((A - B)(D - C) + AC + BD) \times 10^{n/2} + BD
+	 & \text{整数1} \times \text{整数2}                                      \\
+	 & = (A \times 10^{n/2} + B) \times (C \times 10^{n/2} + D)              \\
+	 & = AC \times 10^n + AD \times 10^{n/2} + BC \times 10^{n/2} + BD       \\
+	 & = AC \times 10^n + (AD + BC) \times 10^{n/2} + BD                     \\
+	 & = AC \times 10^n + (AD - AC - BD + BC + AC + BD) \times 10^{n/2} + BD \\
+	 & = AC \times 10^n + ((A - B)(D - C) + AC + BD) \times 10^{n/2} + BD
 \end{align*}
 
-这样一来，原本的4次乘法和3次加法，转变成了3次乘法和6次加法。 \\
+这样一来，原本的4次乘法和3次加法，转变成了3次乘法和6次加法。\\
 
-骗人！最后式子里明明包含五次乘法啊！ \\
+骗人！最后式子里明明包含五次乘法啊！\\
 
 AC出现了两次，BD也出现了两次，这两个乘积分别只需计算一次就行了，所以总共只需要三次乘法。
 
 \vspace{-0.5cm}
 
 \begin{align*}
-    T(n) = \begin{cases}
-        O(1)           & n = 1 \\
-        3T(n/2) + O(n) & n > 1
-    \end{cases}
+	T(n) = \begin{cases}
+		O(1)           & n = 1 \\
+		3T(n/2) + O(n) & n > 1
+	\end{cases}
 \end{align*}
 
 求解得到：
@@ -613,7 +617,7 @@ AC出现了两次，BD也出现了两次，这两个乘积分别只需计算一�
 \vspace{-0.5cm}
 
 $$
-    T(n) = O(n^{log_2{3}}) \approx O(n^{1.59})
+	T(n) = O(n^{log_2{3}}) \approx O(n^{1.59})
 $$
 
 \vspace{0.5cm}
@@ -686,21 +690,21 @@ def big_int_mul(num1, num2):
 \vspace{-0.5cm}
 
 \begin{align*}
-    a^n = \begin{cases}
-        a^{n/2} * a^{n/2}             & n\text{为偶数} \\
-        a^{(n-1)/2} * a^{(n-1)/2} * a & n\text{为奇数}
-    \end{cases}
+	a^n = \begin{cases}
+		a^{n/2} * a^{n/2}             & n\text{为偶数} \\
+		a^{(n-1)/2} * a^{(n-1)/2} * a & n\text{为奇数}
+	\end{cases}
 \end{align*}
 
 例如计算$ 2^{18} $只需要4步即可：
 
-\vspace{-0.5cm}
+\vspace{-1cm}
 
 \begin{align*}
-    2^{18} & = 2^9 * 2^9     \\
-    2^9    & = 2^4 * 2^4 * 2 \\
-    2^4    & = 2^2 * 2^2     \\
-    2^2    & = 2^1 * 2
+	2^{18} & = 2^9 * 2^9     \\
+	2^9    & = 2^4 * 2^4 * 2 \\
+	2^4    & = 2^2 * 2^2     \\
+	2^2    & = 2^1 * 2
 \end{align*}
 
 \mybox{快速幂}
@@ -722,26 +726,28 @@ int fastExp(int a, int n) {
 }
 \end{lstlisting}
 
+\vspace{0.5cm}
+
 \subsection{矩阵快速幂}
 
-Fibonacci数列$ \{0, 1, 1, 2, 3, 5, 8, 13, 21, \dots \} $可以通过递归公式$ F_n = F_{n-1} + F_{n-2} $计算出第n项的值，时间复杂度为$ \Theta(n) $。但是利用矩阵快速幂的算法可以在将时间复杂度降低为$ \Theta(logn) $。 \\
+Fibonacci数列$ \{0, 1, 1, 2, 3, 5, 8, 13, 21, \dots \} $可以通过递归公式$ F_n = F_{n-1} + F_{n-2} $计算出第n项的值，时间复杂度为$ \Theta(n) $。但是利用矩阵快速幂的算法可以在将时间复杂度降低为$ \Theta(logn) $。\\
 
-令$ M = \left[\begin{matrix} 1 & 1 \\ 1 & 0\end{matrix} \right] $，通过计算$ M^n $即可计算出$ F_n $的值。即：
+令$ M = \left[\begin{matrix} 1 & 1\\ 1 & 0\end{matrix} \right] $，通过计算$ M^n $即可计算出$ F_n $的值。即：
 
 $$
-    \left[\begin{matrix} F_{n+1} & F_n \\ F_n & F_{n-1} \end{matrix} \right]
-    = \left[\begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right]^n
+	\left[\begin{matrix} F_{n+1} & F_n\\ F_n & F_{n-1} \end{matrix} \right]
+	= \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]^n
 $$
 
-通过数学归纳法可以证明该性质： \\
+通过数学归纳法可以证明该性质：\\
 
 当$ n = 1 $时，
 
 \vspace{-1cm}
 
 \begin{align*}
-     & \left[\begin{matrix} F_2 & F_1 \\ F_1 & F_0 \end{matrix} \right]
-    = \left[\begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right]  \\
+	 & \left[\begin{matrix} F_2 & F_1\\ F_1 & F_0 \end{matrix} \right]
+	= \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]  \\
 \end{align*}
 
 \vspace{-1cm}
@@ -751,12 +757,12 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-     & \left[\begin{matrix} F_{n+2} & F_{n+1} \\ F_{n+1} & F_n \end{matrix} \right]         \\
-     & = \left[\begin{matrix} F_{n+1} & F_{n} \\ F_{n} & F_{n-1} \end{matrix} \right]
-    \left[\begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right]            \\
-     & = \left[\begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right]^n
-    \left[\begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right]            \\
-     & = \left[\begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right]^{n+1}
+	 & \left[\begin{matrix} F_{n+2} & F_{n+1}\\ F_{n+1} & F_n \end{matrix} \right]         \\
+	 & = \left[\begin{matrix} F_{n+1} & F_{n}\\ F_{n} & F_{n-1} \end{matrix} \right]
+	\left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]            \\
+	 & = \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]^n
+	\left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]            \\
+	 & = \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]^{n+1}
 \end{align*}
 
 \mybox{矩阵快速幂}
@@ -800,26 +806,26 @@ def matrix_fast_exp(n):
 
 \subsection{矩阵乘法}
 
-假设A和B为n阶矩阵（$ n = 2^k $），计算时，对于C中$ n^2 $个元素，每个元素都需要做n次乘法，因此$ W(n) = O(n^3) $。 \\
+假设A和B为n阶矩阵（$ n = 2^k $），计算时，对于C中$ n^2 $个元素，每个元素都需要做n次乘法，因此$ W(n) = O(n^3) $。\\
 
 利用简单的分治策略，可以将矩阵分块计算计算。
 
 \vspace{-0.5cm}
 
 \begin{align*}
-    \left( \begin{matrix}
-        A_{11} & A_{12} \\
-        A_{21} & A_{22}
-    \end{matrix} \right)
-    \left( \begin{matrix}
-        B_{11} & B_{12} \\
-        B_{21} & B_{22}
-    \end{matrix} \right)
-    =
-    \left( \begin{matrix}
-        C_{11} & C_{12} \\
-        C_{21} & C_{22}
-    \end{matrix} \right)
+	\left( \begin{matrix}
+		A_{11} & A_{12} \\
+		A_{21} & A_{22}
+	\end{matrix} \right)
+	\left( \begin{matrix}
+		B_{11} & B_{12} \\
+		B_{21} & B_{22}
+	\end{matrix} \right)
+	=
+	\left( \begin{matrix}
+		C_{11} & C_{12} \\
+		C_{21} & C_{22}
+	\end{matrix} \right)
 \end{align*}
 
 其中，
@@ -827,10 +833,10 @@ def matrix_fast_exp(n):
 \vspace{-1cm}
 
 \begin{align*}
-    C_{11} = A_{11}B_{11} + A_{12}B_{21} \\
-    C_{12} = A_{12}B_{12} + A_{12}B_{22} \\
-    C_{21} = A_{21}B_{11} + A_{22}B_{21} \\
-    C_{22} = A_{21}B_{12} + A_{21}B_{22}
+	C_{11} = A_{11}B_{11} + A_{12}B_{21} \\
+	C_{12} = A_{12}B_{12} + A_{12}B_{22} \\
+	C_{21} = A_{21}B_{11} + A_{22}B_{21} \\
+	C_{22} = A_{21}B_{12} + A_{21}B_{22}
 \end{align*}
 
 这样就把原问题转换为了8个子问题，递推方程为：
@@ -838,10 +844,10 @@ def matrix_fast_exp(n):
 \vspace{-0.5cm}
 
 \begin{align*}
-    W(n) = \begin{cases}
-        1              & n = 1 \\
-        8W(n/2) + cn^2 & n > 1
-    \end{cases}
+	W(n) = \begin{cases}
+		1              & n = 1 \\
+		8W(n/2) + cn^2 & n > 1
+	\end{cases}
 \end{align*}
 
 求解得到：
@@ -849,10 +855,10 @@ def matrix_fast_exp(n):
 \vspace{-0.5cm}
 
 $$
-    W(n) - O(n^3)
+	W(n) - O(n^3)
 $$
 
-简单的分治算法并不能降低时间复杂度的阶，但是矩阵乘法可以通过减少子问题的个数进行优化。
+简单的分治算法并不能降低时间复杂度的阶，但是矩阵乘法可以通过减少子问题的个数进行优化。\\
 
 \subsection{Strassen矩阵乘法}
 
@@ -861,13 +867,13 @@ $$
 \vspace{-0.5cm}
 
 \begin{align*}
-    M_1 & = A_{11}(B_{12} - B_{22})            \\
-    M_2 & = (A_{11} + A_{12})B_{22}            \\
-    M_3 & = (A_{21} + A_{22})B_{11}            \\
-    M_4 & = A_{22}(B_{21} - B_{11})            \\
-    M_5 & = (A_{11} + A_{22})(B_{11} + B_{22}) \\
-    M_6 & = (A_{12} - A_{22})(B_{21} + B_{22}) \\
-    M_7 & = (A_{11} - A_{21})(B_{11} + B_{12})
+	M_1 & = A_{11}(B_{12} - B_{22})            \\
+	M_2 & = (A_{11} + A_{12})B_{22}            \\
+	M_3 & = (A_{21} + A_{22})B_{11}            \\
+	M_4 & = A_{22}(B_{21} - B_{11})            \\
+	M_5 & = (A_{11} + A_{22})(B_{11} + B_{22}) \\
+	M_6 & = (A_{12} - A_{22})(B_{21} + B_{22}) \\
+	M_7 & = (A_{11} - A_{21})(B_{11} + B_{12})
 \end{align*}
 
 利用这些中间矩阵，可以得到结果矩阵：
@@ -875,10 +881,10 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-    C_{11} & = M_5 + M_4 - M_2 + M_6 \\
-    C_{12} & = M_1 + M_2             \\
-    C_{21} & = M_3 + M_4             \\
-    C_{22} & = M_5 + M_1 - M_3 - M_7
+	C_{11} & = M_5 + M_4 - M_2 + M_6 \\
+	C_{12} & = M_1 + M_2             \\
+	C_{21} & = M_3 + M_4             \\
+	C_{22} & = M_5 + M_1 - M_3 - M_7
 \end{align*}
 
 在这些运算中，一共有7个子问题和18次矩阵加减法，时间复杂度为：
@@ -886,10 +892,10 @@ $$
 \vspace{-1cm}
 
 \begin{align*}
-    W(n) = \begin{cases}
-        1                   & n = 1 \\
-        7W(n/2) + 18(n/2)^2 & n > 1
-    \end{cases}
+	W(n) = \begin{cases}
+		1                   & n = 1 \\
+		7W(n/2) + 18(n/2)^2 & n > 1
+	\end{cases}
 \end{align*}
 
 求解得到：
@@ -897,7 +903,7 @@ $$
 \vspace{-0.5cm}
 
 $$
-    W(n) = O(n^{log7}) \approx O(n^{2.8075})
+	W(n) = O(n^{log7}) \approx O(n^{2.8075})
 $$
 
 Coppersmith-Winograd算法是目前已知最好的矩阵乘法算法，时间复杂度为$ O(n^{2.376}) $。矩阵乘法可以应用在科学计算、图形处理、数据挖掘等方面，在回归、聚类、主成分分析、决策树等挖掘算法中常常涉及大规模矩阵运算。

@@ -32,7 +32,6 @@
 \usepackage{tkz-graph}
 \usepackage{drawstack}
 \usepackage{dcolumn}
-% \usepackage{minted}
 
 \usetikzlibrary{calc,trees,positioning,arrows,fit,shapes}
 \usetikzlibrary{shapes.multipart,chains}
@@ -57,7 +56,6 @@ size=20pt,inner sep=0pt,text=black}}
         rectangle split horizontal,
         rectangle split parts=#1,
         outer sep=0pt},
-        %
         gblock/.style={
             block,
             rectangle split parts=#1,
@@ -111,9 +109,9 @@ size=20pt,inner sep=0pt,text=black}}
 \tikzstyle{arrow}     = [thick,->,>=stealth]
 
 \def\rlwd{.5pt} \def\rlht{2.2ex} \def\rldp{.5ex}
-\def\mydiv#1{~%
-  \rule[-\rldp]{\rlwd}{\rlht}%
-  \setbox0=\hbox{~#1}%
+\def\mydiv#1{~
+  \rule[-\rldp]{\rlwd}{\rlht}
+  \setbox0=\hbox{~#1}
   \stackunder[\dimexpr\rldp-\rlwd]{~#1}{\rule{\wd0}{\rlwd}}%
 }
 
@@ -245,35 +243,12 @@ size=20pt,inner sep=0pt,text=black}}
 		transform canvas ={rotate around ={45:($(current page.north west)+(20,-9)$)}}]
 	($(current page.north west)+(20,-9)$) rectangle ++(14,1.2);
 
-	% Year
-	% \draw[ultra thick,gray]
-	% ($(current page.center)+(5,2)$) -- ++(0,-3cm)
-	node[
-			midway,
-			left=0.25cm,
-			text width=5cm,
-			align=right,
-			black!75
-		]
-		{
-			% {\fontsize{25}{30} \selectfont \bf ANNUAL \\[10pt] REPORT}
-		}
-	node[
-			midway,
-			right=0.25cm,
-			text width=6cm,
-			align=left,
-			orange]
-		{
-			% {\fontsize{72}{86.4} \selectfont 2020}
-		};
-
 	% Title
-	\node[align=center] at ($(current page.center)+(0,-6)$)
+	\node[align=center] at ($(current page.center)+(0,-7)$)
 	{
-	{\fontsize{60}{60} \selectfont {{数据结构与算法}}} \\[1cm]
-	{\fontsize{40}{40} \selectfont {{Data Structure and Algorithm}}} \\[2cm]
-	{\fontsize{20}{19.2} \selectfont \textcolor{orange}{ \bf 极夜酱}} \\[4pt]
+	{\fontsize{60}{60} \selectfont {{数据结构与算法}}}\\[1cm]
+	{\fontsize{40}{40} \selectfont {{Data Structure and Algorithm}}}\\[2cm]
+	{\fontsize{20}{19.2} \selectfont \textcolor{orange}{ \bf 极夜酱}}\\[4pt]
 	};
 \end{tikzpicture}
 

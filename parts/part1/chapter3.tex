@@ -961,14 +961,10 @@ public static Node reverseListIterative(LinkedList list) {
 	\begin{tikzpicture}
 		\SetGraphUnit{1.5}
 		\SetVertexNormal[Shape    = rectangle,MinSize=.8 cm]
-		%%%%%%%%%%%%%%%%% vertices %%%%%%%%%%%%%%%%%%% 
-		%  name of node x;y  x row y column
 
 		\Vertex[L=$-\infty$] {0;0}
-
 		\foreach \num [count=\n from 0] in  {1,2,3}
 			{\NO[L=$-\infty$](0;\n){0;\num}}
-		% No = north (initial node) {new node}  L=label 
 		\foreach \num/\label [count=\n from 0] in
 			{1/11,2/15,3/17,4/28,5/31,6/55,7/56,8/61,9/+\infty}
 			{\EA[L=$\label$](\n;0){\num;0}}
@@ -981,7 +977,6 @@ public static Node reverseListIterative(LinkedList list) {
 		\foreach \no/\label  in  {1/11,2/15,6/55,7/56} {%
 				\NO[L=$\label$](\no;0){\no;1} }
 
-		%%%%%%%%%%%%%%%%% edges %%%%%%%%%%%%%%%%%%%%%%%
 		\foreach \num [count=\n from 1] in  {0,...,8}  {\Edge(\num;0)(\n;0)}
 
 		\foreach \num [count=\n from 1] in  {0,...,2}

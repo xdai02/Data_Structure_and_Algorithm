@@ -3,24 +3,24 @@ import java.util.Arrays;
 public class BubbleSort {
 	public static void main(String[] args) {
 		int[] arr = {5, 8, 6, 3, 9, 2, 1, 7};
-		System.out.print("ÅÅÐòÇ°£º");
+		System.out.print("ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½");
 	    System.out.println(Arrays.toString(arr));
 	    
-		// Î´ÓÅ»¯
+		// Î´ï¿½Å»ï¿½
 		bubbleSort(arr);
-		// µÚÒ»´ÎÓÅ»¯
+		// ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Å»ï¿½
 		// bubbleSortOptimize1(arr);
-		// µÚ¶þ´ÎÓÅ»¯
+		// ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½Å»ï¿½
 		// bubbleSortOptimize2(arr);
 
-	    System.out.print("ÅÅÐòºó£º");
+	    System.out.print("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 	    System.out.println(Arrays.toString(arr));
 	}
 	
 	/**
-	 * @brief  Ã°ÅÝÅÅÐò
-	 * @param  arr: Êý×é
-	 * @param  n: Êý×é³¤¶È
+	 * @brief  Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * @param  arr: ï¿½ï¿½ï¿½ï¿½
+	 * @param  n: ï¿½ï¿½ï¿½é³¤ï¿½ï¿½
 	 * @retval None
 	 */
 	public static void bubbleSort(int[] arr) {
@@ -37,41 +37,41 @@ public class BubbleSort {
 
 	public static void bubbleSortOptimize1(int[] arr) {
         for(int i = 0; i < arr.length - 1; i++) {
-            boolean isSorted = false;   // ±ê¼ÇÊÇ·ñ·¢Éú½»»»
+            boolean hasSwapped = false;   // ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             for(int j = 0; j < arr.length - i - 1; j++) {
                 if(arr[j] > arr[j+1]) {
                     arr[j] ^= arr[j+1];
                     arr[j+1] ^= arr[j];
                     arr[j] ^= arr[j+1];
-                    isSorted = true;    // ·¢Éú½»»»
+                    hasSwapped = true;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 }
             }
-            // ¸ÃÂÖÎ´·¢Éú½»»»£¬ÒÑ¾­ÓÐÐò
-            if(!isSorted) {
+            // ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+            if(!hasSwapped) {
                 return;
             }
         }
     }
 
     public static void bubbleSortOptimize2(int[] arr) {
-        int len = arr.length - 1;   // ÄÚ²ãÑ­»·Ö´ÐÐ´ÎÊý
+        int len = arr.length - 1;   // ï¿½Ú²ï¿½Ñ­ï¿½ï¿½Ö´ï¿½Ð´ï¿½ï¿½ï¿½
         for(int i = 0; i < arr.length - 1; i++) {
-            boolean isSorted = false;   // ±ê¼ÇÊÇ·ñ·¢Éú½»»»
-            int last = 0;           // ±ê¼Ç×îºóÒ»´Î·¢Éú½»»»µÄÎ»ÖÃ
+            boolean hasSwapped = false;   // ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            int last = 0;           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             for(int j = 0; j < len; j++) {
                 if(arr[j] > arr[j+1]) {
                     arr[j] ^= arr[j+1];
                     arr[j+1] ^= arr[j];
                     arr[j] ^= arr[j+1];
-                    isSorted = true;    // ·¢Éú½»»»
+                    hasSwapped = true;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     last = j;
                 }
             }
-            // ¸ÃÂÖÎ´·¢Éú½»»»£¬ÒÑ¾­ÓÐÐò
-            if(!isSorted) {
+            // ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+            if(!hasSwapped) {
                 return;
             }
-            len = last;             // ×îºóÒ»´Î·¢Éú½»»»µÄÎ»ÖÃ
+            len = last;             // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         }
     }
 }

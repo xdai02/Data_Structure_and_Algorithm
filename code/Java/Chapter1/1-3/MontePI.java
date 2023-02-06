@@ -3,11 +3,6 @@ public class MontePI {
 		System.out.println("PI = " + montePI(10000000));
 	}
 	
-	/**
-	 * @brief  蒙特卡洛算法计算PI
-	 * @param  n: 样本数量
-	 * @retval PI的近似值
-	 */
 	public static double montePI(int n) {
 		int cnt = 0;
 		for(int i = 0; i < n; i++) {

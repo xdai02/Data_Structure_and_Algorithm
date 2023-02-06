@@ -60,64 +60,6 @@ $$
 	\item 可行性（effectiveness）：算法中执行的任何计算步骤都是可以被分解为基本的可执行的操作步。
 \end{enumerate}
 
-\vspace{0.5cm}
-
-\subsection{算法描述}
-
-算法是可完成特定任务的一系列步骤，算法的计算过程定义明确，通过一些值作为输入并产生一些值作为输出。\\
-
-流程图（flow chart）是算法的一种图形化表示方式，使用一组预定义的符号来说明如何执行特定任务。
-
-\begin{itemize}
-	\item 圆角矩形：开始和结束
-	\item 矩形：数据处理
-	\item 平行四边形：输入/输出
-	\item 菱形：分支判断条件
-	\item 流程线：步骤
-\end{itemize}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[node distance=2cm]
-		\node (start) [startend] {Start};
-		\node (init)   [io, below of=start] {$ i = 0 $, $ sum = 0 $};
-		\node (decision)  [decision, below of=init] {$ i \le 100 $?};
-		\node (accumulation) [process, below of=decision] {$ sum = sum + i $};
-		\node (update) [process, below of=accumulation] {$ i = i + 1 $};
-		\node (output) [io, right of=decision, xshift=2.5cm] {print $ sum $};
-		\node (end) [startend, below of=update] {End};
-
-		\draw [arrow] (start) -- (init);
-		\draw [arrow] (init) -- (decision);
-		\draw [arrow] (decision) -- node[anchor=east] {yes } (accumulation);
-		\draw [arrow] (accumulation) -- (update);
-		\draw [arrow] (update) -- (-3,-8) -- (-3,-4) -- (decision);
-		\draw [arrow] (decision) -- node[anchor=south] {no} (output);
-		\draw [arrow] (output) |- (end);
-	\end{tikzpicture}
-	\caption{计算$ \sum_{i=1}^{100} i $的流程图}
-\end{figure}
-
-伪代码（pseudocode）是一种非正式的，类似于英语结构的，用于描述模块结构图的语言。使用伪代码的目的是使被描述的算法可以容易地以任何一种编程语言实现。
-
-\begin{algorithm}[H]
-	\caption{插入排序}
-	\begin{algorithmic}[1]
-		\Procedure{insertionSort}{A[0..n-1]}
-		\For {j = 2 to n - 1}
-		\State key = A[j]
-		\State i = j - 1
-		\While {i > 0 and A[i] > key}
-		\State A[i+1] = A[i]
-		\State i = i - 1
-		\EndWhile
-		\State A[i+1] = key
-		\EndFor
-		\State \Return A
-		\EndProcedure
-	\end{algorithmic}
-\end{algorithm}
-
 \newpage
 
 \section{算法效率}
@@ -184,10 +126,10 @@ $$
 
 \begin{lstlisting}[language=C]
 void count(int head, int foot) {
-	for(int chicken = 0; chicken <= head; chicken++) {
+	for (int chicken = 0; chicken <= head; chicken++) {
 		int rabbit = head - chicken;
-		if(chicken*2 + rabbit*4 == foot) {
-			printf("鸡：%2d\t兔：%2d\n", chicken, rabbit);
+		if (chicken * 2 + rabbit * 4 == foot) {
+			printf("Chicken: %d, Rabbit: %d\n", chicken, rabbit);
 		}
 	}
 }
@@ -201,35 +143,13 @@ void count(int head, int foot) {
 
 \begin{lstlisting}[language=C]
 void buy(int n, int money) {
-	for(int x = 0; x <= n/5; x++) {
-		for(int y = 0; y <= n/3; y++) {
+	for (int x = 0; x <= n / 5; x++) {
+		for (int y = 0; y <= n / 3; y++) {
 			int z = n - x - y;
-			if(z > 0 && z % 3 == 0 && 5*x + 3*y + z/3 == money) {
-				printf("公鸡：%3d\t母鸡：%3d\t小鸡：%3d\n", x, y, z);
+			if (z > 0 && z % 3 == 0 && 5 * x + 3 * y + z / 3 == money) {
+				printf("x = %d, y = %d, z = %d\n", x, y, z);
 			}
 		}
-	}
-}
-\end{lstlisting}
-
-\vspace{0.5cm}
-
-\subsection{字符串逆序}
-
-将一个字符串中的字符顺序颠倒过来实现逆序。\\
-
-\mybox{字符串逆序}
-
-\begin{lstlisting}[language=C]
-void reverse(char *str) {
-	int i = 0;
-	int j = strlen(str) - 1;
-	while(i < j) {
-		char temp = str[i];
-		str[i] = str[j];
-		str[j] = temp;
-		i++;
-		j--;
 	}
 }
 \end{lstlisting}
@@ -280,7 +200,7 @@ $$
 
 \begin{lstlisting}[language=C]
 double montePI(int n) {
-	int cnt = 0;        // 圆内点的数量
+	int cnt = 0;
 	for(int i = 0; i < n; i++) {
 		double x = rand() / (RAND_MAX + 1.0);   // [0, 1]
 		double y = rand() / (RAND_MAX + 1.0);   // [0, 1]
@@ -291,19 +211,5 @@ double montePI(int n) {
 	return 4.0 * cnt / n;
 }
 \end{lstlisting}
-
-\newpage
-
-\section{数据结构}
-
-\subsection{数据结构（Data Structure）}
-
-数据结构是算法基石，是计算机数据的组织、管理和存储的方式，数据结构指的是相互之间存在一种或多种特定关系的数据元素的集合。一个好的数据结构可以带来更高的运行或者存储效率。\\
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[]{img/C1/1-4/1.png}
-	\caption{常用数据结构}
-\end{figure}
 
 \newpage

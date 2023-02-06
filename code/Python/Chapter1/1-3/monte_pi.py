@@ -1,12 +1,7 @@
 import random
 import math
 
-def montePI(n):
-    """
-        蒙特卡洛算法计算PI
-        Args:
-            n (int): 样本数量
-    """
+def monte_pi(n):
     cnt = 0
     for _ in range(n):
         x = random.random()     # [0, 1)
@@ -15,8 +10,4 @@ def montePI(n):
             cnt += 1
     return 4.0 * cnt / n
 
-def main():
-    print(montePI(10000000))
-
-if __name__ == "__main__":
-    main()
+print(monte_pi(10000000))

@@ -3,13 +3,8 @@
 #include <time.h>
 #include <math.h>
 
-/**
- * @brief  蒙特卡洛算法计算PI
- * @param  n: 样本数量
- * @retval PI的近似值
- */
-double montePI(int n) {
-    int cnt = 0;        // 圆内点的数量
+double monte_pi(int n) {
+    int cnt = 0;
     for(int i = 0; i < n; i++) {
         double x = rand() / (RAND_MAX + 1.0);   // [0, 1]
         double y = rand() / (RAND_MAX + 1.0);   // [0, 1]
@@ -22,6 +17,6 @@ double montePI(int n) {
 
 int main() {
     srand(time(NULL));
-    printf("PI = %f\n", montePI(10000000));
+    printf("PI = %f\n", monte_pi(10000000));
     return 0;
 }

@@ -17,7 +17,7 @@
 \mybox{更新数组元素}
 
 \begin{lstlisting}[language=Python]
-arr = {3, 1, 2, 5, 4, 9, 7, 2}
+arr = [3, 1, 2, 5, 4, 9, 7, 2]
 arr[5] = 10
 print(arr[5])
 \end{lstlisting}
@@ -41,9 +41,9 @@ print(arr[5])
 \mybox{顺序查找}
 
 \begin{lstlisting}[language=C]
-int sequenceSearch(int *arr, int n, int key) {
-    for(int i = 0; i < n; i++) {
-        if(arr[i] == key) {
+int sequence_search(int *arr, int n, int key) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == key) {
             return i;
         }
     }
@@ -64,14 +64,14 @@ int sequenceSearch(int *arr, int n, int key) {
 \mybox{二分查找}
 
 \begin{lstlisting}[language=C]
-int binarySearch(int *arr, int n, int key) {
+int binary_search(int *arr, int n, int key) {
     int start = 0;
     int end = n - 1;
-    while(start <= end) {
+    while (start <= end) {
         int mid = (start + end) / 2;
-        if(arr[mid] == key) {
+        if (arr[mid] == key) {
             return mid;
-        } else if(arr[mid] < key) {
+        } else if (arr[mid] < key) {
             start = mid + 1;
         } else {
             end = mid - 1;

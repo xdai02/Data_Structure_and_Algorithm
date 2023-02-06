@@ -448,18 +448,21 @@ int fibonacci(int n) {
 
 \subsection{汉诺塔（Hanoi Tower）}
 
-给定三根柱子，其中A柱子从大到小套有n个圆盘，问题是如何借助B柱子，将圆盘从A搬到C。\\
-
-规则：
-
-\begin{itemize}
-	\item 一次只能搬动一个圆盘。
-	\item 不能将大圆盘放在小圆盘上面。
-\end{itemize}
+有三根柱子A、B、C，A柱子上从下到上套有n个圆盘，要求将A柱子上的圆盘移动到C柱子上。每次只能移动一个圆盘，且大圆盘始终不能叠在小圆盘上面。\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.4]{img/C11/11-3/1.png}
+	\begin{tikzpicture}[scale=0.5]
+		\draw[-, gray] (0,0) -- (24,0);
+		\draw[-, very thick] (4,0) -- (4,7);
+		\draw[-, very thick] (12,0) -- (12,7);
+		\draw[-, very thick] (20,0) -- (20,7);
+
+		\draw[fill=red] (2.5,3) rectangle (5.5,4);
+		\draw[fill=green] (2,2) rectangle (6,3);
+		\draw[fill=blue] (1.5,1) rectangle (6.5,2);
+		\draw[fill=yellow] (1,0) rectangle (7,1);
+	\end{tikzpicture}
 	\caption{汉诺塔}
 \end{figure}
 
@@ -485,7 +488,7 @@ def hanoi(n, A, B, C):
         hanoi(n-1, B, A, C)
 \end{lstlisting}
 
-当圆盘数为64时，假设每次移动花费1秒，总共大约需要5800亿年。\\
+假设每次移动花费1秒，解决一个64层的汉诺塔问题大约需要5800亿年。\\
 
 汉诺塔递归算法的递推公式：
 
@@ -520,7 +523,7 @@ def hanoi(n, A, B, C):
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[]{img/C11/11-3/2.png}
+	\includegraphics[]{img/Chapter11/11-3/1.png}
 \end{figure}
 
 \vspace{0.5cm}
@@ -695,7 +698,7 @@ $$
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.4]{img/C11/11-5/1.png}
+	\includegraphics[scale=0.4]{img/Chapter11/11-5/1.png}
 \end{figure}
 
 有一个商品推销员，要去若干个城市推销商品。该推销员从一个城市出发，需要经过所有城市后，回到出发地。每个城市之间都有道路连通，且距离各不相同，推销员应该如何选择路线，使得总行程最短呢？\\

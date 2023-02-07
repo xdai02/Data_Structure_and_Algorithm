@@ -1,4 +1,4 @@
-public class HundredChicken {
+public class Chicken {
 	public static void main(String[] args) {
 		buy(100, 100);
 	}

@@ -19,15 +19,15 @@ class SinglyLinkedList {
 
     Node *head;
     Node *tail;
-    int size;
+    int length;
 
     void reverse_recursive(Node node);
 
     public:
     SinglyLinkedList();
     ~SinglyLinkedList();
-    int get_size();
-    bool is_empty();
+    int size();
+    bool empty();
     void clear();
     void add(T elem);
     void insert(int index, T elem);
@@ -58,7 +58,7 @@ template <typename T>
 SinglyLinkedList<T>::SinglyLinkedList() {
     head = nullptr;
     tail = nullptr;
-    size = 0;
+    length = 0;
 }
 
 template <typename T>
@@ -67,13 +67,13 @@ SinglyLinkedList<T>::~SinglyLinkedList() {
 }
 
 template <typename T>
-int SinglyLinkedList<T>::get_size() {
-    return size;
+int SinglyLinkedList<T>::size() {
+    return length;
 }
 
 template <typename T>
-bool SinglyLinkedList<T>::is_empty() {
-    return size == 0;
+bool SinglyLinkedList<T>::empty() {
+    return length == 0;
 }
 
 template <typename T>
@@ -86,7 +86,7 @@ void SinglyLinkedList<T>::clear() {
     }
     head = nullptr;
     tail = nullptr;
-    size = 0;
+    length = 0;
 }
 
 template <typename T>
@@ -98,12 +98,12 @@ void SinglyLinkedList<T>::add(T elem) {
         tail->next = new_node;
     }
     tail = new_node;
-    size++;
+    length++;
 }
 
 template <typename T>
 void SinglyLinkedList<T>::insert(int index, T elem) {
-    if (index < 0 || index > size) {
+    if (index < 0 || index > length) {
         throw "Index out of bounds";
     }
 
@@ -125,12 +125,12 @@ void SinglyLinkedList<T>::insert(int index, T elem) {
             tail = new_node;
         }
     }
-    size++;
+    length++;
 }
 
 template <typename T>
 T SinglyLinkedList<T>::remove(int index) {
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= length) {
         throw "Index out of bounds";
     }
 
@@ -154,13 +154,13 @@ T SinglyLinkedList<T>::remove(int index) {
     }
     T del_elem = del_node->data;
     delete del_node;
-    size--;
+    length--;
     return del_elem;
 }
 
 template <typename T>
 T SinglyLinkedList<T>::get(int index) {
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= length) {
         throw "Index out of bounds";
     }
 
@@ -173,7 +173,7 @@ T SinglyLinkedList<T>::get(int index) {
 
 template <typename T>
 T SinglyLinkedList<T>::set(int index, T elem) {
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= length) {
         throw "Index out of bounds";
     }
 
@@ -201,7 +201,7 @@ bool SinglyLinkedList<T>::contains(T elem) {
 template <typename T>
 int SinglyLinkedList<T>::index_of(T elem) {
     Node *cur = head;
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < length; i++) {
         if (cur->data == elem) {
             return i;
         }

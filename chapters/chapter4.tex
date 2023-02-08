@@ -180,43 +180,6 @@ dataType pop(Stack *stack) {
 
 \newpage
 
-\section{最小栈}
-
-\subsection{最小栈}
-
-设计一个支持push()、pop()、peek()和getMin()操作的栈，并能在常数时间内检索到最小元素。\\
-
-对于栈来说，如果一个元素a在入栈时，栈里有其它的元素b、c、d，那么无论这个栈在之后经历了什么操作，只要a在栈中，b、c、d就一定在栈中。因此，在操作过程中的任意一个时刻，只要栈顶的元素是a，那么就可以确定栈里面现在的元素一定是a、b、c、d。\\
-
-那么可以在每个元素a入栈时把当前栈的最小值m存储起来。在这之后无论何时，如果栈顶元素是a，就可以直接返回存储的最小值m。\\
-
-当一个元素要入栈时，取辅助栈的栈顶存储的最小值，与当前元素比较得出最小值，将这个最小值插入辅助栈中。当一个元素要出栈时，把辅助栈的栈顶元素也一并弹出。这样在任意一个时刻，栈内元素的最小值就存储在辅助栈的栈顶元素中。\\
-
-\mybox{最小栈}
-
-\begin{lstlisting}[language=Python]
-class MinStack:
-    def __init__(self):
-        self.stack = []
-        self.min_stack = [math.inf]
-    
-    def push(self, data):
-        self.stack.append(data)
-        self.min_stack.append(min(data, self.min_stack[-1]))
-    
-    def pop(self):
-        self.stack.pop()
-        self.min_stack.pop()
-    
-    def peek(self):
-        return self.stack[-1]
-    
-    def get_min(self):
-        return self.min_stack[-1]
-\end{lstlisting}
-
-\newpage
-
 \section{括号匹配}
 
 \subsection{括号匹配}

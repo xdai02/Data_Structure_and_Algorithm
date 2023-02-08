@@ -120,13 +120,13 @@ singly_linked_list_t *singly_linked_list_insert(singly_linked_list_t *list, int 
     return list;
 }
 
-singly_linked_list_t *singly_linked_list_remove(singly_linked_list_t *list, int index) {
+T singly_linked_list_remove(singly_linked_list_t *list, int index) {
     if (index < 0 || index >= list->size) {
         fprintf(stderr, "Error: index out of bound.\n");
         exit(1);
     }
 
-    node_t *node = NULL;
+    node_t *node;
     if (index == 0) {
         node = list->head;
         list->head = node->next;
@@ -140,13 +140,14 @@ singly_linked_list_t *singly_linked_list_remove(singly_linked_list_t *list, int 
         }
         node = prev->next;
         prev->next = node->next;
-        if (node->next == NULL) {
+        if (list->tail == node) {
             list->tail = prev;
         }
     }
+    T elem = node->data;
     free(node);
     list->size--;
-    return list;
+    return elem;
 }
 
 T singly_linked_list_get(singly_linked_list_t *list, int index) {

@@ -21,15 +21,15 @@ class DoublyLinkedList {
 
     Node *head;
     Node *tail;
-    int size;
+    int length;
 
     void reverse_recursive(Node *node);
 
     public:
     DoublyLinkedList();
     ~DoublyLinkedList();
-    int get_size();
-    bool is_empty();
+    int size();
+    bool empty();
     void clear();
     void add(T elem);
     void insert(int index, T elem);
@@ -60,7 +60,7 @@ template <typename T>
 DoublyLinkedList<T>::DoublyLinkedList() {
     head = nullptr;
     tail = nullptr;
-    size = 0;
+    length = 0;
 }
 
 template <typename T>
@@ -69,13 +69,13 @@ DoublyLinkedList<T>::~DoublyLinkedList() {
 }
 
 template <typename T>
-int DoublyLinkedList<T>::get_size() {
-    return size;
+int DoublyLinkedList<T>::size() {
+    return length;
 }
 
 template <typename T>
-bool DoublyLinkedList<T>::is_empty() {
-    return size == 0;
+bool DoublyLinkedList<T>::empty() {
+    return length == 0;
 }
 
 template <typename T>
@@ -88,7 +88,7 @@ void DoublyLinkedList<T>::clear() {
     }
     head = nullptr;
     tail = nullptr;
-    size = 0;
+    length = 0;
 }
 
 template <typename T>
@@ -101,12 +101,12 @@ void DoublyLinkedList<T>::add(T elem) {
     if (head == nullptr) {
         head = new_node;
     }
-    size++;
+    length++;
 }
 
 template <typename T>
 void DoublyLinkedList<T>::insert(int index, T elem) {
-    if (index < 0 || index > size) {
+    if (index < 0 || index > length) {
         throw "Index out of bounds";
     }
 
@@ -119,7 +119,7 @@ void DoublyLinkedList<T>::insert(int index, T elem) {
         if (tail == nullptr) {
             tail = new_node;
         }
-    } else if (index == size) {
+    } else if (index == length) {
         Node *new_node = new Node(elem, tail, nullptr);
         tail->next = new_node;
         tail = new_node;
@@ -132,12 +132,12 @@ void DoublyLinkedList<T>::insert(int index, T elem) {
         cur->prev->next = new_node;
         cur->prev = new_node;
     }
-    size++;
+    length++;
 }
 
 template <typename T>
 T DoublyLinkedList<T>::remove(int index) {
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= length) {
         throw "Index out of bounds";
     }
 
@@ -151,7 +151,7 @@ T DoublyLinkedList<T>::remove(int index) {
         if (tail == del_node) {
             tail = nullptr;
         }
-    } else if (index == size - 1) {
+    } else if (index == length - 1) {
         del_node = tail;
         tail = tail->prev;
         if (tail != nullptr) {
@@ -171,13 +171,13 @@ T DoublyLinkedList<T>::remove(int index) {
     }
     T del_data = del_node->data;
     delete del_node;
-    size--;
+    length--;
     return del_data;
 }
 
 template <typename T>
 T DoublyLinkedList<T>::get(int index) {
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= length) {
         throw "Index out of bounds";
     }
 
@@ -190,7 +190,7 @@ T DoublyLinkedList<T>::get(int index) {
 
 template <typename T>
 T DoublyLinkedList<T>::set(int index, T elem) {
-    if (index < 0 || index >= size) {
+    if (index < 0 || index >= length) {
         throw "Index out of bounds";
     }
 

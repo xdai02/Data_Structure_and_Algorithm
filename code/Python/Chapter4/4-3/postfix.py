@@ -1,14 +1,6 @@
 import stack
 
 def priority(op):
-    """
-        运算符的优先级
-        乘除法优先级高于加减法
-        Args:
-            op (str): 运算符
-        Returns:
-            (int): 优先级
-    """
     if op == "*" or op == "/":
         return 2
     elif op == "+" or op == "-":
@@ -17,14 +9,6 @@ def priority(op):
         return 0
 
 def infix_to_postfix(exp):
-    """
-        中缀表达式转换后缀表达式
-        转换后的后缀表达式操作数之前带空格
-        Args:
-            exp (str): 中缀表达式
-        Returns:
-            (str): 后缀表达式
-    """
     postfix = ""    # 保存生成的后缀表达式
     s = stack.Stack()
 

@@ -18,7 +18,7 @@ singly_linked_list_t *singly_linked_list_clear(singly_linked_list_t *list);
 void singly_linked_list_print(singly_linked_list_t *list);
 singly_linked_list_t *singly_linked_list_add(singly_linked_list_t *list, T elem);
 singly_linked_list_t *singly_linked_list_insert(singly_linked_list_t *list, int index, T elem);
-singly_linked_list_t *singly_linked_list_remove(singly_linked_list_t *list, int index);
+T singly_linked_list_remove(singly_linked_list_t *list, int index);
 T singly_linked_list_get(singly_linked_list_t *list, int index);
 singly_linked_list_t *singly_linked_list_set(singly_linked_list_t *list, int index, T elem);
 bool singly_linked_list_contains(singly_linked_list_t *list, T elem);

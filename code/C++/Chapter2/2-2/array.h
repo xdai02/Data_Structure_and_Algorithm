@@ -16,7 +16,7 @@ class Array {
     Array();
     ~Array();
     int length();
-    bool is_empty();
+    bool empty();
     void clear();
     void append(T elem);
     void insert(int index, T elem);
@@ -59,7 +59,7 @@ int Array<T>::length() {
 }
 
 template <typename T>
-bool Array<T>::is_empty() {
+bool Array<T>::empty() {
     return size == 0;
 }
 

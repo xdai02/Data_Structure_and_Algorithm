@@ -57,11 +57,36 @@ doubly_linked_list_t *doubly_linked_list_clear(doubly_linked_list_t *list) {
 
 void doubly_linked_list_print(doubly_linked_list_t *list) {
     node_t *node = list->head;
+    printf("[");
     while (node != NULL) {
-        printf("%d ", node->data);
+        printf("%d", node->data);
         node = node->next;
+        if (node != NULL) {
+            printf(", ");
+        }
     }
-    printf("\n");
+    printf("]\n");
+}
+
+doubly_linked_list_t *doubly_linked_list_add(doubly_linked_list_t *list, T elem) {
+    node_t *node = (node_t *)malloc(sizeof(node_t));
+    if (node == NULL) {
+        fprintf(stderr, "Error: memory allocation failed.\n");
+        return NULL;
+    }
+    node->data = elem;
+    node->prev = list->tail;
+    node->next = NULL;
+
+    if (list->tail != NULL) {
+        list->tail->next = node;
+    }
+    list->tail = node;
+    if (list->head == NULL) {
+        list->head = node;
+    }
+    list->size++;
+    return list;
 }
 
 doubly_linked_list_t *doubly_linked_list_insert(doubly_linked_list_t *list, int index, T elem) {
@@ -191,4 +216,38 @@ int doubly_linked_list_index_of(doubly_linked_list_t *list, T elem) {
         index++;
     }
     return -1;
+}
+
+static doubly_linked_list_t *__doubly_linked_list_reverse_recursive(doubly_linked_list_t *list, node_t *node) {
+    if (node == NULL) {
+        return list;
+    }
+    node_t *next = node->next;
+    node->next = node->prev;
+    node->prev = next;
+    if (node->prev == NULL) {
+        list->head = node;
+    }
+    if (node->next == NULL) {
+        list->tail = node;
+    }
+    return __doubly_linked_list_reverse_recursive(list, next);
+}
+
+doubly_linked_list_t *doubly_linked_list_reverse_recursive(doubly_linked_list_t *list) {
+    return __doubly_linked_list_reverse_recursive(list, list->head);
+}
+
+doubly_linked_list_t *doubly_linked_list_reverse(doubly_linked_list_t *list) {
+    node_t *node = list->head;
+    while (node != NULL) {
+        node_t *next = node->next;
+        node->next = node->prev;
+        node->prev = next;
+        node = next;
+    }
+    node_t *temp = list->head;
+    list->head = list->tail;
+    list->tail = temp;
+    return list;
 }

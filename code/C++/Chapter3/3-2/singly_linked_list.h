@@ -4,23 +4,24 @@
 #include <iostream>
 
 template <typename T>
-class Node {
-    public:
-    T data;
-    Node<T> *next;
-
-    Node(T data, Node<T> *next = nullptr) {
-        this->data = data;
-        this->next = next;
-    }
-};
-
-template <typename T>
 class SinglyLinkedList {
     private:
-    Node<T> *head;
-    Node<T> *tail;
+    class Node {
+        public:
+        T data;
+        Node *next;
+
+        Node(T data) {
+            this->data = data;
+            this->next = nullptr;
+        }
+    };
+
+    Node *head;
+    Node *tail;
     int size;
+
+    void reverse_recursive(Node node);
 
     public:
     SinglyLinkedList();
@@ -28,16 +29,19 @@ class SinglyLinkedList {
     int get_size();
     bool is_empty();
     void clear();
+    void add(T elem);
     void insert(int index, T elem);
     T remove(int index);
     T get(int index);
     T set(int index, T elem);
     bool contains(T elem);
     int index_of(T elem);
+    void reverse_recursive();
+    void reverse();
 
     friend std::ostream &operator<<(std::ostream &out, SinglyLinkedList<T> &list) {
         out << "[";
-        Node<T> *cur = list.head;
+        Node *cur = list.head;
         while (cur != nullptr) {
             out << cur->data;
             if (cur->next != nullptr) {
@@ -74,9 +78,9 @@ bool SinglyLinkedList<T>::is_empty() {
 
 template <typename T>
 void SinglyLinkedList<T>::clear() {
-    Node<T> *cur = head;
+    Node *cur = head;
     while (cur != nullptr) {
-        Node<T> *del_node = cur;
+        Node *del_node = cur;
         cur = cur->next;
         delete del_node;
     }
@@ -86,24 +90,39 @@ void SinglyLinkedList<T>::clear() {
 }
 
 template <typename T>
+void SinglyLinkedList<T>::add(T elem) {
+    Node *new_node = new Node(elem);
+    if (tail == nullptr) {
+        head = new_node;
+    } else {
+        tail->next = new_node;
+    }
+    tail = new_node;
+    size++;
+}
+
+template <typename T>
 void SinglyLinkedList<T>::insert(int index, T elem) {
     if (index < 0 || index > size) {
         throw "Index out of bounds";
     }
 
+    Node *new_node = new Node(elem);
     if (index == 0) {
-        head = new Node<T>(elem, head);
+        new_node->next = head;
+        head = new_node;
         if (tail == nullptr) {
-            tail = head;
+            tail = new_node;
         }
     } else {
-        Node<T> *prev = head;
+        Node *prev = head;
         for (int i = 0; i < index - 1; i++) {
             prev = prev->next;
         }
-        prev->next = new Node<T>(elem, prev->next);
-        if (prev == tail) {
-            tail = prev->next;
+        new_node->next = prev->next;
+        prev->next = new_node;
+        if (new_node->next == nullptr) {
+            tail = new_node;
         }
     }
     size++;
@@ -115,7 +134,7 @@ T SinglyLinkedList<T>::remove(int index) {
         throw "Index out of bounds";
     }
 
-    Node<T> *del_node;
+    Node *del_node;
     if (index == 0) {
         del_node = head;
         head = head->next;
@@ -123,7 +142,7 @@ T SinglyLinkedList<T>::remove(int index) {
             tail = nullptr;
         }
     } else {
-        Node<T> *prev = head;
+        Node *prev = head;
         for (int i = 0; i < index - 1; i++) {
             prev = prev->next;
         }
@@ -145,7 +164,7 @@ T SinglyLinkedList<T>::get(int index) {
         throw "Index out of bounds";
     }
 
-    Node<T> *cur = head;
+    Node *cur = head;
     for (int i = 0; i < index; i++) {
         cur = cur->next;
     }
@@ -158,7 +177,7 @@ T SinglyLinkedList<T>::set(int index, T elem) {
         throw "Index out of bounds";
     }
 
-    Node<T> *cur = head;
+    Node *cur = head;
     for (int i = 0; i < index; i++) {
         cur = cur->next;
     }
@@ -169,7 +188,7 @@ T SinglyLinkedList<T>::set(int index, T elem) {
 
 template <typename T>
 bool SinglyLinkedList<T>::contains(T elem) {
-    Node<T> *cur = head;
+    Node *cur = head;
     while (cur != nullptr) {
         if (cur->data == elem) {
             return true;
@@ -181,7 +200,7 @@ bool SinglyLinkedList<T>::contains(T elem) {
 
 template <typename T>
 int SinglyLinkedList<T>::index_of(T elem) {
-    Node<T> *cur = head;
+    Node *cur = head;
     for (int i = 0; i < size; i++) {
         if (cur->data == elem) {
             return i;
@@ -189,6 +208,43 @@ int SinglyLinkedList<T>::index_of(T elem) {
         cur = cur->next;
     }
     return -1;
+}
+
+template <typename T>
+void SinglyLinkedList<T>::reverse_recursive(Node node) {
+    if (node.next == nullptr) {
+        head = &node;
+        return;
+    }
+    reverse_recursive(*node.next);
+    node.next->next = &node;
+    node.next = nullptr;
+}
+
+template <typename T>
+void SinglyLinkedList<T>::reverse_recursive() {
+    if (head == nullptr) {
+        return;
+    }
+    reverse_recursive(*head);
+    tail = head;
+}
+
+template <typename T>
+void SinglyLinkedList<T>::reverse() {
+    if (head == nullptr) {
+        return;
+    }
+    Node *prev = nullptr;
+    Node *cur = head;
+    while (cur != nullptr) {
+        Node *next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+    }
+    tail = head;
+    head = prev;
 }
 
 #endif

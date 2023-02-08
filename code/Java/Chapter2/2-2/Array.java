@@ -27,13 +27,14 @@ public class Array<T> {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("[");
         for (int i = 0; i < size; i++) {
             sb.append(data[i]);
-            if (i != size - 1) {
+            if (i < size - 1) {
                 sb.append(", ");
             }
         }
+        sb.append("]");
         return sb.toString();
     }
 
@@ -51,7 +52,7 @@ public class Array<T> {
 
     public void add(int index, T elem) throws IndexOutOfBoundsException {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + size);
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
         if (size == capacity) {
@@ -68,7 +69,7 @@ public class Array<T> {
 
     public T remove(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + size);
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
         T elem = data[index];
@@ -81,14 +82,14 @@ public class Array<T> {
 
     public T get(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + size);
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
         return data[index];
     }
 
     public void set(int index, T elem) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + size);
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
         data[index] = elem;
     }

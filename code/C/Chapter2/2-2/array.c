@@ -38,10 +38,14 @@ array_t *array_clear(array_t *arr) {
 }
 
 void array_print(array_t *arr) {
+    printf("[");
     for (int i = 0; i < arr->size; i++) {
-        printf("%d ", arr->data[i]);
+        printf("%d", arr->data[i]);
+        if (i != arr->size - 1) {
+            printf(", ");
+        }
     }
-    printf("\n");
+    printf("]\n");
 }
 
 static array_t *resize(array_t *arr) {

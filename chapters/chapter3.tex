@@ -1,6 +1,6 @@
 \chapter{链表}
 
-\section{链表}
+\section{链表种类}
 
 \subsection{单向链表（Singly Linked List）}
 
@@ -10,14 +10,14 @@
 
 \vspace{-0.5cm}
 
-\begin{lstlisting}[language=C]
-typedef struct Node {
-    dataType data;          // 数据域
-    struct Node *next;		// 指针域
-} Node;
+\begin{lstlisting}[language=Python]
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 \end{lstlisting}
 
-链表的第一个结点被称为头结点，最后一个节点被称为尾结点，尾结点的next指针指向空NULL。\\
+链表的第一个结点被称为头结点，最后一个节点被称为尾结点，尾结点的next指针指向NULL。\\
 
 \begin{figure}[H]
 	\centering
@@ -44,7 +44,17 @@ typedef struct Node {
 
 那么，通过链表的一个结点，如何能快速找到它的前一个结点呢？要想让每个结点都能回溯到它的前置结点，可以使用双向链表。\\
 
-双向链表比单向链表稍微复杂一点，它的每一个结点除了拥有data和next指针，还拥有指向前置结点的prev指针。\\
+双向链表比单向链表稍微复杂一点，它的每一个结点除了拥有data和next指针，还拥有指向前置结点的prev指针。
+
+\vspace{-0.5cm}
+
+\begin{lstlisting}[language=Python]
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+\end{lstlisting}
 
 \begin{figure}[H]
 	\centering
@@ -119,7 +129,7 @@ typedef struct Node {
 
 \newpage
 
-\section{链表的增删改查}
+\section{链表}
 
 \subsection{查找结点}
 
@@ -129,17 +139,17 @@ typedef struct Node {
 
 \mybox{查找结点}
 
-\begin{lstlisting}[language=C]
-Node* search(List *head, dataType val) {
-    // 查找元素位置
-    Node *temp = head;
-    while(temp) {
-        if(temp->data == val) {
-            return temp;
-        }
-        temp = temp->next;
-    }
-    return NULL;        // 未找到
+\begin{lstlisting}[language=Java]
+public T get(int index) throws IndexOutOfBoundsException {
+	if (index < 0 || index >= size) {
+		throw new IndexOutOfBoundsException("Index out of bounds");
+	}
+
+	Node<T> current = head;
+	for (int i = 0; i < index; i++) {
+		current = current.next;
+	}
+	return current.data;
 }
 \end{lstlisting}
 
@@ -151,14 +161,17 @@ Node* search(List *head, dataType val) {
 
 \mybox{更新结点}
 
-\begin{lstlisting}[language=C]
-void replace(List *head, int pos, dataType val) {
-    // 找到元素位置
-    Node *temp = head;
-    for(int i = 0; i < pos; i++) {
-        temp = temp->next;
-    }
-    temp->data = val;
+\begin{lstlisting}[language=Java]
+public void set(int index, T data) throws IndexOutOfBoundsException {
+	if (index < 0 || index >= size) {
+		throw new IndexOutOfBoundsException("Index out of bounds");
+	}
+
+	Node<T> current = head;
+	for (int i = 0; i < index; i++) {
+		current = current.next;
+	}
+	current.data = data;
 }
 \end{lstlisting}
 
@@ -299,6 +312,44 @@ void replace(List *head, int pos, dataType val) {
 
 只要内存空间允许，能够插入链表的元素是无穷无尽的，不需要像数组考虑扩容的问题。如果不考虑插入之前的查找元素的过程，只考虑纯粹的插入操作，时间复杂度是$ O(1) $。\\
 
+\mybox{插入结点}
+
+\begin{lstlisting}[language=Java]
+public void add(T data) {
+	Node<T> newNode = new Node<T>(data, null);
+	if (isEmpty()) {
+		head = newNode;
+		tail = newNode;
+	} else {
+		tail.next = newNode;
+		tail = newNode;
+	}
+	size++;
+}
+
+public void add(int index, T data) throws IndexOutOfBoundsException {
+	if (index < 0 || index > size) {
+		throw new IndexOutOfBoundsException("Index out of bounds");
+	}
+
+	Node<T> newNode = new Node<T>(data, null);
+	if (index == 0) {
+		newNode.next = head;
+		head = newNode;
+	} else {
+		Node<T> prev = head;
+		for (int i = 0; i < index - 1; i++) {
+			prev = prev.next;
+		}
+		newNode.next = prev.next;
+		prev.next = newNode;
+	}
+	size++;
+}
+\end{lstlisting}
+
+\vspace{0.5cm}
+
 \subsection{删除结点}
 
 链表的删除操作也分3种情况：
@@ -419,205 +470,30 @@ void replace(List *head, int pos, dataType val) {
 
 许多高级语言，如Java，拥有自动化的垃圾回收机制，所以不用刻意去释放被删除的结点，只要没有外部引用指向它们，被删除的结点会被自动回收。\\
 
-如果不考虑删除操作之前的查找的过程，只考虑纯粹的删除操作，时间复杂度是$ O(1) $。
-
-\newpage
-
-\section{带头结点的链表}
-
-\subsection{带头结点的链表}
-
-为了方便链表的插入、删除操作，在链表加上头结点之后，无论链表是否为空，头指针始终指向头结尾。因此对于空表和非空表的处理也统一了，方便了链表的操作，也减少了程序的复杂性和出现bug的机会。\\
-
-\mybox{插入结点}
-
-\begin{lstlisting}[language=C]
-void insert(List *head, int pos, dataType val) {
-    Node *newNode = (Node *)malloc(sizeof(Node));
-    newNode->data = val;
-    newNode->next =  NULL;
-    
-    // 找到插入位置
-    Node *temp = head;
-    for(int i = 0; i < pos; i++) {
-        temp = temp->next;
-    }
-    newNode->next = temp->next;
-    temp->next = newNode;
-}
-\end{lstlisting}
-
-\vspace{0.5cm}
+如果不考虑删除操作之前的查找的过程，只考虑纯粹的删除操作，时间复杂度是$ O(1) $。\\
 
 \mybox{删除结点}
 
-\begin{lstlisting}[language=C]
-void delete(List *head, int pos) {
-    Node *temp = head;
-    for(int i = 0; i < pos; i++) {
-        temp = temp->next;
-    }
-    Node *del = temp->next;
-    temp->next = del->next;
-    free(del);
-    del = NULL;
-}
-\end{lstlisting}
-
-\vspace{0.5cm}
-
-\subsection{数组VS链表}
-
-数据结构没有绝对的好与坏，数组和链表各有千秋。
-
-\begin{table}[H]
-	\centering
-	\setlength{\tabcolsep}{5mm}{
-		\begin{tabular}{|c|l|l|}
-			\hline
-			\textbf{比较内容} & \textbf{数组}          & \textbf{链表}                \\
-			\hline
-			基本              & 一组固定数量的数据项   & 可变数量的数据项             \\
-			\hline
-			大小              & 声明期间指定           & 无需指定，执行期间增长或收缩 \\
-			\hline
-			存储分配          & 元素位置在编译期间分配 & 元素位置在运行时分配         \\
-			\hline
-			元素顺序          & 连续存储               & 随机存储                     \\
-			\hline
-			访问元素          & 直接访问：索引、下标   & 顺序访问：指针遍历           \\
-			\hline
-			插入/删除         & 速度慢                 & 快速、高效                   \\
-			\hline
-			查找              & 线性查找、二分查找     & 线性查找                     \\
-			\hline
-			内存利用率        & 低效                   & 高效                         \\
-			\hline
-		\end{tabular}
+\begin{lstlisting}[language=Java]
+public T remove(int index) throws IndexOutOfBoundsException {
+	if (index < 0 || index >= size) {
+		throw new IndexOutOfBoundsException("Index out of bounds");
 	}
-	\caption{数组VS链表}
-\end{table}
 
-数组的优势在于能够快速定位元素，对于读操作多、写操作少的场景来说，用数组更合适一些。\\
-
-相反，链表的优势在于能够灵活地进行插入和删除操作，如果需要频繁地插入、删除元素，用链表更合适一些。
-
-\newpage
-
-\section{倒数第k个结点}
-
-\subsection{倒数第k个结点}
-
-输入一个链表，输出该链表中倒数第k个结点。例如一个链表有6个结点[0, 1, 2, 3, 4, 5]，这个链表的倒数第3个结点是值为3的结点。\\
-
-算法的思路是设置两个指针p1和p2，它们都从头开始出发，p2指针先出发k个结点，然后p1指针再进行出发，当p2指针到达链表的尾结点时，则p1指针的位置就是链表的倒数第k个结点。\\
-
-\mybox{倒数第k个结点}
-
-\begin{lstlisting}[language=Java]
-public static Node findLastKth(LinkedList list, int k) {
-    Node p1 = list.getHead();
-    Node p2 = list.getHead();
-
-    int i = 0;
-    while(p2 != null && i < k) {
-        p2 = p2.next;
-        i++;
-    }
-    while(p2 != null) {
-        p1 = p1.next;
-        p2 = p2.next;
-    }
-    return p1;
-}
-\end{lstlisting}
-
-\newpage
-
-\section{环形链表}
-
-\subsection{环形链表}
-
-一个单向链表中有可能出现环，不允许修改链表结构，如何在时间复杂度$ O(n) $、空间复杂度$ O(1) $内判断出这个链表是有环链表？如果带环，环的长度是多少？环的入口结点是哪个？\\
-
-暴力算法首先从头结点开始，依次遍历单链表的每一个结点。对于每个结点都从头重新遍历之前的所有结点。如果发现当前结点与之前结点存在相同ID，则说明该结点被遍历过两次，链表有环。但是这种方法的时间复杂度太高。\\
-
-另一种方法就是利用快慢指针，首先创建两个指针p1和p2，同时指向头结点，然后让p1每次向后移动一个位置，让p2每次向后移动两个位置。在环中，快指针一定会反复遇到慢指针。比如在一个环形跑道上，两个运动员在同一地点起跑，一个运动员速度快，一个运动员速度慢。当两人跑了一段时间，速度快的运动员必然会从速度慢的运动员身后再次追上并超过。\\
-
-环的长度可以通过从快慢指针相遇的结点开始再走一圈，下一次回到该点的时的移动步数，即环的长度n。\\
-
-环的入口可以利用类似获取链表倒数第k个结点的方法，准备两个指针p1和p2，让p2先走n步，然后p1和p2一块走。当两者相遇时，即为环的入口处。\\
-
-\mybox{环形链表}
-
-\begin{lstlisting}[language=Java]
-public static Node cycleNode(LinkedList list) {
-    Node p1 = list.getHead();
-    Node p2 = list.getHead();
-
-    while(p1 != null && p2 != null) {
-        if(p2.next == null || p2.next.next == null) {
-            return null;
-        }
-        p1 = p1.next;
-        p2 = p2.next.next;
-        if(p1 == p2) {
-            return p1;
-        }
-    }
-    return null;
-}
-
-public static int cycleLength(LinkedList list) {
-    Node node = cycleNode(list);
-    if(node == null) {
-        return 0;
-    }
-    int len = 1;
-    Node cur = node.next;
-    while(cur != node) {
-        cur = cur.next;
-        len++;
-    }
-    return len;
-}
-
-public static Node cycleEntrance(LinkedList list) {
-    int n = cycleLength(list);
-    if(n == 0) {
-        return null;
-    }
-
-    Node p1 = list.getHead();
-    Node p2 = list.getHead();
-    for(int i = 0; i < n; i++) {
-        p2 = p2.next;
-    }
-
-    while(p1 != p2) {
-        p1 = p1.next;
-        p2 = p2.next;
-    }
-    return p1;
-}
-\end{lstlisting}
-
-\newpage
-
-\section{反转链表}
-
-\subsection{逆序输出链表}
-
-输入一个单链表，从尾到头打印链表每个结点的值。由于单链表的遍历只能从头到尾，所以可以通过递归达到链表尾部，然后在回溯时输出每个结点的值。\\
-
-\mybox{逆序输出链表}
-
-\begin{lstlisting}[language=Java]
-public static void inverse(Node head) {
-    if(head != null) {
-        inverse(head.next);
-        System.out.print(head.data + " ");
-    }
+	T data;
+	if (index == 0) {
+		data = head.data;
+		head = head.next;
+	} else {
+		Node<T> prev = head;
+		for (int i = 0; i < index - 1; i++) {
+			prev = prev.next;
+		}
+		data = prev.next.data;
+		prev.next = prev.next.next;
+	}
+	size--;
+	return data;
 }
 \end{lstlisting}
 
@@ -672,15 +548,18 @@ public static void inverse(Node head) {
 \mybox{反转链表（递归）}
 
 \begin{lstlisting}[language=Java]
-public static Node reverseList(Node head) {
-    if(head == null || head.next == null) {
-        return head;
-    }
-    Node next = head.next;
-    head.next = null;
-    Node newHead = reverseList(next);
-    next.next = head;
-    return newHead;
+private Node<T> reverseRecursive(Node<T> current) {
+	if (current == null || current.next == null) {
+		return current;
+	}
+	Node<T> newHead = reverse(current.next);
+	current.next.next = current;
+	current.next = null;
+	return newHead;
+}
+
+public void reverseRecursive() {
+	head = reverseRecursive(head);
 }
 \end{lstlisting}
 
@@ -689,16 +568,17 @@ public static Node reverseList(Node head) {
 \mybox{反转链表（迭代）}
 
 \begin{lstlisting}[language=Java]
-public static Node reverseListIterative(LinkedList list) {
-    Node newHead = new Node(-1);
-    Node head = list.getHead();
-    while(head != null) {
-        Node next = head.next;
-        head.next = newHead.next;
-        newHead.next = head;
-        head = next;
-    }
-    return newHead.next;
+public void reverse() {
+	Node<T> prev = null;
+	Node<T> current = head;
+	Node<T> next = null;
+	while (current != null) {
+		next = current.next;
+		current.next = prev;
+		prev = current;
+		current = next;
+	}
+	head = prev;
 }
 \end{lstlisting}
 

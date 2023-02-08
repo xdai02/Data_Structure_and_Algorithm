@@ -4,25 +4,26 @@
 #include <iostream>
 
 template <typename T>
-class Node {
-    public:
-    T data;
-    Node<T> *prev;
-    Node<T> *next;
-
-    Node(T data, Node<T> *prev = nullptr, Node<T> *next = nullptr) {
-        this->data = data;
-        this->prev = prev;
-        this->next = next;
-    }
-};
-
-template <typename T>
 class DoublyLinkedList {
     private:
-    Node<T> *head;
-    Node<T> *tail;
+    class Node {
+        public:
+        T data;
+        Node *prev;
+        Node *next;
+
+        Node(T data, Node *prev = nullptr, Node *next = nullptr) {
+            this->data = data;
+            this->prev = prev;
+            this->next = next;
+        }
+    };
+
+    Node *head;
+    Node *tail;
     int size;
+
+    void reverse_recursive(Node *node);
 
     public:
     DoublyLinkedList();
@@ -30,16 +31,19 @@ class DoublyLinkedList {
     int get_size();
     bool is_empty();
     void clear();
+    void add(T elem);
     void insert(int index, T elem);
     T remove(int index);
     T get(int index);
     T set(int index, T elem);
     bool contains(T elem);
     int index_of(T elem);
+    void reverse_recursive();
+    void reverse();
 
     friend std::ostream &operator<<(std::ostream &out, DoublyLinkedList<T> &list) {
         out << "[";
-        Node<T> *cur = list.head;
+        Node *cur = list.head;
         while (cur != nullptr) {
             out << cur->data;
             if (cur->next != nullptr) {
@@ -76,9 +80,9 @@ bool DoublyLinkedList<T>::is_empty() {
 
 template <typename T>
 void DoublyLinkedList<T>::clear() {
-    Node<T> *cur = head;
+    Node *cur = head;
     while (cur != nullptr) {
-        Node<T> *del_node = cur;
+        Node *del_node = cur;
         cur = cur->next;
         delete del_node;
     }
@@ -88,13 +92,26 @@ void DoublyLinkedList<T>::clear() {
 }
 
 template <typename T>
+void DoublyLinkedList<T>::add(T elem) {
+    Node *new_node = new Node(elem, tail, nullptr);
+    if (tail != nullptr) {
+        tail->next = new_node;
+    }
+    tail = new_node;
+    if (head == nullptr) {
+        head = new_node;
+    }
+    size++;
+}
+
+template <typename T>
 void DoublyLinkedList<T>::insert(int index, T elem) {
     if (index < 0 || index > size) {
         throw "Index out of bounds";
     }
 
     if (index == 0) {
-        Node<T> *new_node = new Node<T>(elem, nullptr, head);
+        Node *new_node = new Node(elem, nullptr, head);
         if (head != nullptr) {
             head->prev = new_node;
         }
@@ -103,15 +120,15 @@ void DoublyLinkedList<T>::insert(int index, T elem) {
             tail = new_node;
         }
     } else if (index == size) {
-        Node<T> *new_node = new Node<T>(elem, tail, nullptr);
+        Node *new_node = new Node(elem, tail, nullptr);
         tail->next = new_node;
         tail = new_node;
     } else {
-        Node<T> *cur = head;
+        Node *cur = head;
         for (int i = 0; i < index; i++) {
             cur = cur->next;
         }
-        Node<T> *new_node = new Node<T>(elem, cur->prev, cur);
+        Node *new_node = new Node(elem, cur->prev, cur);
         cur->prev->next = new_node;
         cur->prev = new_node;
     }
@@ -124,7 +141,7 @@ T DoublyLinkedList<T>::remove(int index) {
         throw "Index out of bounds";
     }
 
-    Node<T> *del_node = nullptr;
+    Node *del_node = nullptr;
     if (index == 0) {
         del_node = head;
         head = head->next;
@@ -144,7 +161,7 @@ T DoublyLinkedList<T>::remove(int index) {
             head = nullptr;
         }
     } else {
-        Node<T> *cur = head;
+        Node *cur = head;
         for (int i = 0; i < index; i++) {
             cur = cur->next;
         }
@@ -164,7 +181,7 @@ T DoublyLinkedList<T>::get(int index) {
         throw "Index out of bounds";
     }
 
-    Node<T> *cur = head;
+    Node *cur = head;
     for (int i = 0; i < index; i++) {
         cur = cur->next;
     }
@@ -177,7 +194,7 @@ T DoublyLinkedList<T>::set(int index, T elem) {
         throw "Index out of bounds";
     }
 
-    Node<T> *cur = head;
+    Node *cur = head;
     for (int i = 0; i < index; i++) {
         cur = cur->next;
     }
@@ -188,7 +205,7 @@ T DoublyLinkedList<T>::set(int index, T elem) {
 
 template <typename T>
 bool DoublyLinkedList<T>::contains(T elem) {
-    Node<T> *cur = head;
+    Node *cur = head;
     while (cur != nullptr) {
         if (cur->data == elem) {
             return true;
@@ -200,7 +217,7 @@ bool DoublyLinkedList<T>::contains(T elem) {
 
 template <typename T>
 int DoublyLinkedList<T>::index_of(T elem) {
-    Node<T> *cur = head;
+    Node *cur = head;
     int index = 0;
     while (cur != nullptr) {
         if (cur->data == elem) {
@@ -210,6 +227,44 @@ int DoublyLinkedList<T>::index_of(T elem) {
         index++;
     }
     return -1;
+}
+
+template <typename T>
+void DoublyLinkedList<T>::reverse_recursive(Node *node) {
+    if (node == nullptr) {
+        return;
+    }
+    if (node->next == nullptr) {
+        head = node;
+        return;
+    }
+    reverse_recursive(node->next);
+    node->next->next = node;
+    node->next = nullptr;
+    tail = node;
+}
+
+template <typename T>
+void DoublyLinkedList<T>::reverse_recursive() {
+    reverse_recursive(head);
+}
+
+template <typename T>
+void DoublyLinkedList<T>::reverse() {
+    Node *cur = head;
+    while (cur != nullptr) {
+        Node *temp = cur->next;
+        cur->next = cur->prev;
+        cur->prev = temp;
+        if (temp == nullptr) {
+            head = cur;
+        }
+        cur = temp;
+    }
+    tail = head;
+    while (tail->next != nullptr) {
+        tail = tail->next;
+    }
 }
 
 #endif

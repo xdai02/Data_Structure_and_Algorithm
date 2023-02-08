@@ -56,11 +56,34 @@ singly_linked_list_t *singly_linked_list_clear(singly_linked_list_t *list) {
 
 void singly_linked_list_print(singly_linked_list_t *list) {
     node_t *node = list->head;
+    printf("[");
     while (node != NULL) {
-        printf("%d ", node->data);
+        printf("%d", node->data);
         node = node->next;
+        if (node != NULL) {
+            printf(", ");
+        }
     }
-    printf("\n");
+    printf("]\n");
+}
+
+singly_linked_list_t *singly_linked_list_add(singly_linked_list_t *list, T elem) {
+    node_t *node = (node_t *)malloc(sizeof(node_t));
+    if (node == NULL) {
+        fprintf(stderr, "Error: memory allocation failed.\n");
+        exit(1);
+    }
+    node->data = elem;
+    node->next = NULL;
+
+    if (list->tail == NULL) {
+        list->head = node;
+    } else {
+        list->tail->next = node;
+    }
+    list->tail = node;
+    list->size++;
+    return list;
 }
 
 singly_linked_list_t *singly_linked_list_insert(singly_linked_list_t *list, int index, T elem) {
@@ -175,4 +198,35 @@ int singly_linked_list_index_of(singly_linked_list_t *list, T elem) {
         index++;
     }
     return -1;
+}
+
+static node_t *__singly_linked_list_reverse_recursive(node_t *node) {
+    if (node == NULL || node->next == NULL) {
+        return node;
+    }
+    node_t *new_head = __singly_linked_list_reverse_recursive(node->next);
+    node->next->next = node;
+    node->next = NULL;
+    return new_head;
+}
+
+singly_linked_list_t *singly_linked_list_reverse_recursive(singly_linked_list_t *list) {
+    list->tail = list->head;
+    list->head = __singly_linked_list_reverse_recursive(list->head);
+    return list;
+}
+
+singly_linked_list_t *singly_linked_list_reverse(singly_linked_list_t *list) {
+    node_t *prev = NULL;
+    node_t *current = list->head;
+    node_t *next = NULL;
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    list->tail = list->head;
+    list->head = prev;
+    return list;
 }

@@ -1,4 +1,4 @@
-class Stack:
+class Queue:
     def __init__(self):
         self.__data = []
     
@@ -8,11 +8,8 @@ class Stack:
     def __len__(self):
         return len(self.__data)
     
-    def push(self, data):
+    def enqueue(self, data):
         self.__data.append(data)
     
-    def pop(self):
-        return self.__data.pop()
-    
-    def peek(self):
-        return self.__data[-1]
+    def dequeue(self):
+        return self.__data.pop(0)

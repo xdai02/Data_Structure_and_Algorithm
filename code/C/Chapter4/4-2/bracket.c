@@ -23,7 +23,10 @@ bool is_valid_bracket(char *bracket) {
         i++;
     }
 
-    return stack_is_empty(stack);
+    bool is_empty = stack_is_empty(stack);
+    stack_destroy(stack);
+
+    return is_empty;
 }
 
 int main() {

@@ -112,42 +112,6 @@
 
 动态栈的元素内存是动态分配的，避免了静态栈可能会浪费空间的问题，但是对申请和释放空间的调用开销会比较大。\\
 
-\subsection{栈的应用}
-
-栈的输出顺序和输入顺序相反，所以栈同行用于对历史的回溯。例如实现递归的逻辑，就可以用栈回溯调用链。\\
-
-\begin{figure}[H]
-	\centering
-	\begin{drawstack}
-		\startframe
-		\cell{N = 1}
-		\cell{...}
-		\finishframe{fact(1)}
-		\startframe
-		\cell{N = 2}
-		\cell{...}
-		\finishframe{fact(2)}
-		\cell{$ \vdots $}
-		\startframe
-		\cell{N = 5}
-		\cell{...}
-		\finishframe{fact(5)}
-	\end{drawstack}
-	\caption{函数调用栈}
-\end{figure}
-
-栈还有一个著名的应用场景就是面包屑导航，使用户在流浪页面时可以轻松地回溯到上一级更更上一级页面。
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[]{img/Chapter4/4-1/1.png}
-	\caption{面包屑导航}
-\end{figure}
-
-\newpage
-
-\section{入栈与出栈}
-
 \subsection{入栈（Push）}
 
 入栈操作就是把新元素放入栈中，只允许从栈顶一侧放入元素，新元素的位置将会成为新的栈顶。最初，栈为空，栈顶的初始值为-1。每当向栈中添加元素时，栈顶指针+1。\\
@@ -157,8 +121,9 @@
 \mybox{入栈}
 
 \begin{lstlisting}[language=C]
-void push(Stack *stack, dataType val) {
-    stack->data[++stack->top] = val;
+stack_t *stack_push(stack_t *stack, T elem) {
+	array_append(stack->data, elem);
+	return stack;
 }
 \end{lstlisting}
 
@@ -173,8 +138,8 @@ void push(Stack *stack, dataType val) {
 \mybox{出栈}
 
 \begin{lstlisting}[language=C]
-dataType pop(Stack *stack) {
-    return stack->data[stack->top--];
+T stack_pop(stack_t *stack) {
+	return array_remove(stack->data, stack_size(stack) - 1);
 }
 \end{lstlisting}
 
@@ -220,507 +185,40 @@ def valid_paratheses(s):
 
 逆波兰表达式的优点在于去掉了中缀表达式中的括号后表达式无歧义，因此适合用栈操作运算。遇到数字则入栈，遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。\\
 
-在对中缀表达式求值时，一般都会将其转换为后缀表达式的形式，转换过程同样需要用到栈，规则如下：
-
-\begin{enumerate}
-	\item 如果遇到操作数，就直接将其输出。
-
-	\item 如果遇到左括号，将其放入栈中。
-
-	\item 如果遇到右括号，则一直出栈并输出，直到遇到左括号为止。注意，左括号只出栈并不输出。
-
-	\item 如果遇到任何其它的运算符，如果为栈为空，则直接入栈。否则从栈中出栈元素并输出，直到遇到优先级更低的元素（或者栈为空）位置。在出栈完这些元素后，再将当前遇到的运算符入栈。有一点需要注意，只有在遇到右括号的情况下才将左括号出栈，其它情况都不会出栈左括号。
-
-	\item 如果读取到了表达式的末尾，则将栈中所有元素依次出栈输出。
-\end{enumerate}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw[->, red] (0.5,0) to[bend right] (8,-1.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw[->, red] (1.5,0) to[bend right] (10,-1.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw (10.5,-0.5) node{(};
-		\draw[->, red] (2.5,0) to[bend right] (10,-0.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw (10.5,-0.5) node{(};
-		\draw (8.5,-0.5) node{2};
-		\draw[->, red] (3.5,0) to[bend right] (8,-0.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw (10.5,-0.5) node{(};
-		\draw (8.5,-0.5) node{2};
-		\draw (10.5,0.5) node{+};
-		\draw[->, red] (4.5,0) to[bend right] (10,0.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw (10.5,-0.5) node{(};
-		\draw (8.5,-0.5) node{2};
-		\draw (10.5,0.5) node{+};
-		\draw (8.5,0.5) node{3};
-		\draw[->, red] (5.5,1) to[bend left] (8,0.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw (10.5,-0.5) node{(};
-		\draw (8.5,-0.5) node{2};
-		\draw (10.5,0.5) node{+};
-		\draw (8.5,0.5) node{3};
-		\draw[->, red] (6.5,2) -- (6.5,1);
-		\draw[->, red] (10,0.5) -- (9,1.5);
-		\draw[->, red] (11,-0.5) -- (12,-0.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (10.5,-1.5) node{*};
-		\draw (8.5,-0.5) node{2};
-		\draw (8.5,0.5) node{3};
-		\draw (8.5,1.5) node{+};
-		\draw[->, red] (10,-1.5) -- (9,2.5);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[]
-		\draw[-] (0,0) rectangle (7,1);
-		\draw[-] (1,0) -- (1,1);
-		\draw[-] (2,0) -- (2,1);
-		\draw[-] (3,0) -- (3,1);
-		\draw[-] (4,0) -- (4,1);
-		\draw[-] (5,0) -- (5,1);
-		\draw[-] (6,0) -- (6,1);
-		\draw[-] (7,0) -- (7,1);
-
-		\draw (0.5,0.5) node{1};
-		\draw (1.5,0.5) node{*};
-		\draw (2.5,0.5) node{(};
-		\draw (3.5,0.5) node{2};
-		\draw (4.5,0.5) node{+};
-		\draw (5.5,0.5) node{3};
-		\draw (6.5,0.5) node{)};
-
-		\draw[-] (8,3) rectangle (9,-2);
-		\draw[-] (8,2) -- (9,2);
-		\draw[-] (8,1) -- (9,1);
-		\draw[-] (8,0) -- (9,0);
-		\draw[-] (8,-1) -- (9,-1);
-		\draw (8.5,-2.5) node{num};
-
-		\draw[-] (10,3) rectangle (11,-2);
-		\draw[-] (10,2) -- (11,2);
-		\draw[-] (10,1) -- (11,1);
-		\draw[-] (10,0) -- (11,0);
-		\draw[-] (10,-1) -- (11,-1);
-		\draw (10.5,-2.5) node{op};
-
-		\draw (8.5,-1.5) node{1};
-		\draw (8.5,-0.5) node{2};
-		\draw (8.5,0.5) node{3};
-		\draw (8.5,1.5) node{+};
-		\draw (8.5,2.5) node{*};
-	\end{tikzpicture}
-\end{figure}
-
 \mybox{表达式求值}
 
 \begin{lstlisting}[language=Python]
-def priority(op):
-    """
-        运算符的优先级
-        乘除法优先级高于加减法
-        Args:
-            op (str): 运算符
-        Returns:
-            (int): 优先级
-    """
-    if op == "*" or op == "/":
-        return 2
-    elif op == "+" or op == "-":
-        return 1
-    else:
-        return 0
+def calculate(expression):
+    stack = []
+    tokens = expression.split()
 
-def infix_to_postfix(exp):
-    """
-        中缀表达式转换后缀表达式
-        转换后的后缀表达式操作数之前带空格
-        Args:
-            exp (str): 中缀表达式
-        Returns:
-            (str): 后缀表达式
-    """
-    postfix = ""    # 保存生成的后缀表达式
-    s = stack.Stack()
-
-    number = ""
-    for ch in exp:
-        # 如果是数字，保存每一位数字
-        if ch.isdigit():
-            number += ch
-            continue
-        
-        # 如果读取一个完整数字，直接输出
-        if len(number) > 0:
-            postfix += number + " "
-            number = ""
-        
-        # 空格忽略
-        if ch == " ":
-            continue
-        
-        # 如果是运算符，并且空栈，则直接入栈
-        if s.is_empty():
-            s.push(ch)
-        # 如果遇到左括号，将其放入栈中
-        elif ch == "(":
-            s.push(ch)
-        # 如果遇到右括号，则一直出栈并输出，直到遇到左括号为止
-        # 注意，左括号只出栈并不输出
-        elif ch == ")":
-            while s.peek() != "(":
-                postfix += s.pop() + " "
-            s.pop()
-        # 如果遇到任何其它的运算符，如果为栈为空，则直接入栈
-        # 否则从栈中出栈元素并输出，直到遇到优先级更低的元素（或为空）
-        # 在出栈完这些元素后，再将当前遇到的运算符入栈
-        # 只有遇到右括号的情况下才将左括号出栈
-        else:
-            while not s.is_empty() 
-                    and priority(ch) <= priority(s.peek()):
-                postfix += s.pop() + " "
-            s.push(ch)
-    
-    # 如果读取一个完整数字，直接输出
-    if len(number) > 0:
-        postfix += number + " "
-        number = ""
-    
-    while not s.is_empty():
-        postfix += s.pop() + " "
-    
-    return postfix.rstrip()
-
-def calculate(postfix):
-    """
-    表达式求值
-    Args:
-        postfix (str): 后缀表达式
-    Returns:
-        (int): 表达式结果
-    """
-    s = stack.Stack()
-
-    tokens = postfix.split()
     for token in tokens:
-        # 数字则入栈
-        try:
-            s.push(int(token))
-        # 运算符则出栈2次，将计算结果入栈
-        except ValueError:
-            num2 = s.pop()
-            num1 = s.pop()
-            if token == '+':
-                s.push(num1 + num2)
-            elif token == '-':
-                s.push(num1 - num2)
-            elif token == '*':
-                s.push(num1 * num2)
-            elif token == '/':
-                s.push(int(num1 / num2))
-    return s.pop()
+        if token in "+-*/":
+            right = stack.pop()
+            left = stack.pop()
+            if token == "+":
+                stack.append(left + right)
+            elif token == "-":
+                stack.append(left - right)
+            elif token == "*":
+                stack.append(left * right)
+            elif token == "/":
+                stack.append(left / right)
+        else:
+            stack.append(int(token))
+    
+    return stack.pop()
+
+expressions = [
+    "1 2 +",            # 1 + 2 = 3
+    "2 3 4 + *",        # 2 * (3 + 4) = 14
+    "1 2 + 3 4 + *",    # (1 + 2) * (3 + 4) = 21
+    "3 4 2 + * 5 *",    # 3 * (4 + 2) * 5 = 90
+    "50 20 - 2 /",      # (50 - 20) / 2 = 15
+]
+
+for expression in expressions:
+    print(expression, "=", calculate(expression))
 \end{lstlisting}
 
 \newpage

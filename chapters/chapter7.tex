@@ -55,7 +55,7 @@
 
 \newpage
 
-\section{大整数加法}
+\section{大整数运算}
 
 \subsection{大整数加法}
 
@@ -89,35 +89,23 @@ C/C++中的int类型能表示的范围是$ -2^{31} \sim 2^{31} - 1 $，unsigned�
 
 \begin{lstlisting}[language=Python]
 def big_int_add(num1, num2):
-    # 其中一个数为0，直接返回另一个数
-    if num1 == "0":
-        return num2
-    elif num2 == "0":
-        return num1
-    
-    # 计算两个数中较长的整数位数
-    max_len = max(len(num1), len(num2))
-    # 让位数较短的整数前面补0对齐
-    num1 = '0' * (max_len - len(num1)) + num1
-    num2 = '0' * (max_len - len(num2)) + num2
+    # pad the shorter number with leading zeros
+    if len(num1) > len(num2):
+        num2 = num2.zfill(len(num1))
+    else:
+        num1 = num1.zfill(len(num2))
 
-    result = ""         # 结果
-    carry = 0           # 保存进位
-    # 从右往左逐位相加
-    for i in range(max_len - 1, -1, -1):
-        s = int(num1[i]) + int(num2[i]) + carry
-        result = str(s % 10) + result
-        carry = s // 10
+    result = ""
+    carry = 0
+    for i in range(len(num1) - 1, -1, -1):
+        digit_sum = int(num1[i]) + int(num2[i]) + carry
+        carry = digit_sum // 10
+        digit = digit_sum % 10
+        result = str(digit) + result
     
-    # 判断最高位是否有进位
     if carry > 0:
         result = str(carry) + result
-    
-    # 去除结果前面多余的0
-    i = 0
-    while result[i] == '0':
-        i += 1
-    return result[i:]
+    return result
 \end{lstlisting}
 
 这种思路其实还存在一个可优化的地方。我们之前是把大整数按照每一个十进制数位来拆分，比如较大整数的长度有50位，那么需要创建一个51位的数组，数组的每个元素存储其中一位。\\
@@ -141,13 +129,9 @@ def big_int_add(num1, num2):
 	\caption{大整数加法优化}
 \end{figure}
 
-在Java中，工具类BigInteger和BidDecimal的底层实现也是把大整数拆分成数组进行运算，与此处的思路大体类似。
+在Java中，工具类BigInteger和BidDecimal的底层实现也是把大整数拆分成数组进行运算，与此处的思路大体类似。\\
 
-\newpage
-
-\section{大整数乘法}
-
-\subsection{逐位相乘}
+\subsection{大整数乘法}
 
 起初对于大整数乘法，认为只要按照大整数相加的思路稍微做一下变形，就可以轻松实现。但是随着深入的学习，才发现事情并没有那么简单。如果沿用大整数加法的思路，通过列竖式求解……
 
@@ -176,8 +160,6 @@ def big_int_add(num1, num2):
 这样的做法确实可以实现大整数乘法，由于两个大整数的所有数位都需要一一彼此相乘。如果整数A的长度为m，整数B的长度为n，那么时间复杂度就是$ O(m * n) $。如果两个大整数的长度接近，那么时间复杂度也可以写为$ O(n^2) $。\\
 
 那么有没有优化方法，可以让时间复杂度低于$ O(n^2) $呢？\\
-
-\subsection{分治法}
 
 利用分治法可以简化问题的规模，可以把大整数按照数位拆分成两部分。
 
@@ -280,8 +262,6 @@ $$
 
 闹了半天，时间复杂度还是$ O(n^2) $啊，白高兴一场。但是努力的方向并没有白费，这里还是有优化的方法的。\\
 
-\subsection{优化方法}
-
 在大整数乘法运算中，如果只简单地利用分治法将大整数的位置减半，并不能降低时间复杂度的阶。分治法把两个大整数相乘到的问题转化为四个较小整数相乘，性能的瓶颈仍旧在乘法上。\\
 
 分治算法的时间复杂度方程为$ W(n) = aW(n/b) + f(n) $，其中$ a $为子问题数，$ n / b $为子问题规模，$ f(n) $为划分与合并工作量。当$ a $较大、$ b $较小、$ f(n) $不大时，$ W(n) = \Theta(n^{log_ba}) $。减少$ a $是降低$ W(n) $的阶的一种途径。利用子问题的依赖问题，可以使某些子问题的解通过组合其它子问题的解而得到。\\
@@ -322,79 +302,20 @@ $$
 	T(n) = O(n^{log_2{3}}) \approx O(n^{1.59})
 $$
 
-\vspace{0.5cm}
-
-\mybox{大整数乘法}
-
-\begin{lstlisting}[language=Python]
-def big_int_mul(num1, num2):
-    # 有一个为空，结果为0
-    if not num1 or not num2:
-        return '0'
-    # 终止条件
-    elif len(num1) == 1 and len(num2) == 1:
-        return str(int(num1) * int(num2))
-    
-    mid1 = len(num1) // 2
-    mid2 = len(num2) // 2
-
-    # 将num1分成两部分
-    a = num1[:mid1]
-    b = num1[mid1:]
-    # 将num2分成两部分
-    c = num2[:mid2]
-    d = num2[mid2:]
-
-    m = len(b)      # m次幂
-    n = len(d)      # n次幂
-
-    # 分治计算，分别补上幂次
-    x1 = big_int_mul(a, c) + '0' * (m + n)
-    x2 = big_int_mul(b, c) + '0' * n
-    x3 = big_int_mul(a, d) + '0' * m
-    x4 = big_int_mul(b, d)
-
-    # 将计算结果根据最长的补零，方便之后直接相加
-    max_len = max(len(x1), len(x2), len(x3), len(x4))
-    x1 = '0' * (max_len - len(x1)) + x1
-    x2 = '0' * (max_len - len(x2)) + x2
-    x3 = '0' * (max_len - len(x3)) + x3
-    x4 = '0' * (max_len - len(x4)) + x4
-
-    # 计算x1 + x2 + x3 + x4的值，也就是原问题的解
-    result = ""
-    carry = 0           # 保存进位
-    for i in range(max_len - 1, -1, -1):
-        s = int(x1[i]) + int(x2[i]) 
-            + int(x3[i]) + int(x4[i])
-            + carry
-        result = str(s % 10) + result
-        carry = s // 10
-    # 判断是否存在进位
-    if carry > 0:
-        result = str(carry) + result
-    
-    # 去除结果前面多余的0
-    i = 0
-    while i < len(result) and result[i] == '0':
-        i += 1
-    return result[i:]
-\end{lstlisting}
-
 \newpage
 
 \section{快速幂}
 
 \subsection{快速幂（Fast Exponentiation）}
 
-使用传统算法计算$ a^n $的时间复杂度为$ \Theta(n) $，然而利用快速幂的算法时间复杂度为$ \Theta(logn) $。
+使用传统算法计算$ x^n $的时间复杂度为$ \Theta(n) $，然而利用快速幂的算法时间复杂度为$ \Theta(logn) $。
 
 \vspace{-0.5cm}
 
 \begin{align*}
-	a^n = \begin{cases}
-		a^{n/2} * a^{n/2}             & n\text{为偶数} \\
-		a^{(n-1)/2} * a^{(n-1)/2} * a & n\text{为奇数}
+	x^n = \begin{cases}
+		x^{n/2} * x^{n/2}             & n\text{为偶数} \\
+		x^{(n-1)/2} * x^{(n-1)/2} * x & n\text{为奇数}
 	\end{cases}
 \end{align*}
 
@@ -411,95 +332,17 @@ def big_int_mul(num1, num2):
 
 \mybox{快速幂}
 
-\begin{lstlisting}[language=C]
-/**
- * @brief  快速幂计算a^n
- */
-int fastExp(int a, int n) {
-    int result = 1;
-    while(n) {
-        if(n & 1) {
-            result *= a;
-        }
-        a *= a;
-        n >>= 1;
-    }
-    return result;
-}
-\end{lstlisting}
-
-\vspace{0.5cm}
-
-\subsection{矩阵快速幂}
-
-Fibonacci数列$ \{0, 1, 1, 2, 3, 5, 8, 13, 21, \dots \} $可以通过递归公式$ F_n = F_{n-1} + F_{n-2} $计算出第n项的值，时间复杂度为$ \Theta(n) $。但是利用矩阵快速幂的算法可以在将时间复杂度降低为$ \Theta(logn) $。\\
-
-令$ M = \left[\begin{matrix} 1 & 1\\ 1 & 0\end{matrix} \right] $，通过计算$ M^n $即可计算出$ F_n $的值。即：
-
-$$
-	\left[\begin{matrix} F_{n+1} & F_n\\ F_n & F_{n-1} \end{matrix} \right]
-	= \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]^n
-$$
-
-通过数学归纳法可以证明该性质：\\
-
-当$ n = 1 $时，
-
-\vspace{-1cm}
-
-\begin{align*}
-	 & \left[\begin{matrix} F_2 & F_1\\ F_1 & F_0 \end{matrix} \right]
-	= \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]  \\
-\end{align*}
-
-\vspace{-1cm}
-
-当$ n \ge 2 $时，
-
-\vspace{-1cm}
-
-\begin{align*}
-	 & \left[\begin{matrix} F_{n+2} & F_{n+1}\\ F_{n+1} & F_n \end{matrix} \right]         \\
-	 & = \left[\begin{matrix} F_{n+1} & F_{n}\\ F_{n} & F_{n-1} \end{matrix} \right]
-	\left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]            \\
-	 & = \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]^n
-	\left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]            \\
-	 & = \left[\begin{matrix} 1 & 1\\ 1 & 0 \end{matrix} \right]^{n+1}
-\end{align*}
-
-\mybox{矩阵快速幂}
-
 \begin{lstlisting}[language=Python]
-N = 2
-
-def matrix_multiply(a, b):
-    c = [
-        [0, 0],
-        [0, 0]
-    ]
-    for i in range(N):
-        for j in range(N):
-            for k in range(N):
-                c[i][j] += a[i][k] * b[k][j]
-    return c
-
-def matrix_fast_exp(n):
-    result = [
-        [1, 1],
-        [1, 0]
-    ]
-    M = [
-        [1, 1],
-        [1, 0]
-    ]
-
-    while n > 0:
-        if n & 1:
-            result = matrix_multiply(result, M)
-        M = matrix_multiply(M, M)
-        n >>= 1
+def fast_exponentiation(x, n):
+    if n == 0:
+        return 1
     
-    return result[0][0]
+    if n % 2 == 0:
+        half = fast_exponentiation(x, n // 2)
+        return half * half
+    else:
+        half = fast_exponentiation(x, (n - 1) // 2)
+        return half * half * x
 \end{lstlisting}
 
 \newpage

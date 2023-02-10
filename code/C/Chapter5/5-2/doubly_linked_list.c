@@ -189,7 +189,7 @@ T doubly_linked_list_get(doubly_linked_list_t *list, int index) {
     if (index == list->size - 1) {
         return list->tail->data;
     }
-    
+
     node_t *node = list->head;
     for (int i = 0; i < index; i++) {
         node = node->next;

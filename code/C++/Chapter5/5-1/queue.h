@@ -12,8 +12,9 @@ class Queue {
     public:
     bool empty();
     int size();
-    void enqueue(T item);
+    void enqueue(T elem);
     T dequeue();
+    T front();
 };
 
 template <typename T>
@@ -27,15 +28,20 @@ int Queue<T>::size() {
 }
 
 template <typename T>
-void Queue<T>::enqueue(T item) {
-    data.push_back(item);
+void Queue<T>::enqueue(T elem) {
+    data.push_back(elem);
 }
 
 template <typename T>
 T Queue<T>::dequeue() {
-    T item = data.front();
+    T elem = data.front();
     data.pop_front();
-    return item;
+    return elem;
+}
+
+template <typename T>
+T Queue<T>::front() {
+    return data.front();
 }
 
 #endif

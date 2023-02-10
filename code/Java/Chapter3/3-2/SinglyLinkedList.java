@@ -5,9 +5,9 @@ public class SinglyLinkedList<T> {
         T data;
         Node<T> next;
 
-        Node(T data, Node<T> next) {
+        Node(T data) {
             this.data = data;
-            this.next = next;
+            this.next = null;
         }
     }
 
@@ -35,24 +35,23 @@ public class SinglyLinkedList<T> {
         size = 0;
     }
 
-    public void add(T data) {
-        Node<T> newNode = new Node<T>(data, null);
-        if (isEmpty()) {
+    public void add(T elem) {
+        Node<T> newNode = new Node<T>(elem);
+        if (head == null) {
             head = newNode;
             tail = newNode;
         } else {
             tail.next = newNode;
             tail = newNode;
         }
-        size++;
     }
 
-    public void add(int index, T data) throws IndexOutOfBoundsException {
+    public void add(int index, T elem) throws IndexOutOfBoundsException {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
-        Node<T> newNode = new Node<T>(data, null);
+        Node<T> newNode = new Node<T>(elem);
         if (index == 0) {
             newNode.next = head;
             head = newNode;
@@ -72,20 +71,20 @@ public class SinglyLinkedList<T> {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
-        T data;
+        T elem;
         if (index == 0) {
-            data = head.data;
+            elem = head.data;
             head = head.next;
         } else {
             Node<T> prev = head;
             for (int i = 0; i < index - 1; i++) {
                 prev = prev.next;
             }
-            data = prev.next.data;
+            elem = prev.next.data;
             prev.next = prev.next.next;
         }
         size--;
-        return data;
+        return elem;
     }
 
     public T get(int index) throws IndexOutOfBoundsException {
@@ -100,7 +99,7 @@ public class SinglyLinkedList<T> {
         return current.data;
     }
 
-    public void set(int index, T data) throws IndexOutOfBoundsException {
+    public void set(int index, T elem) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
@@ -109,7 +108,7 @@ public class SinglyLinkedList<T> {
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        current.data = data;
+        current.data = elem;
     }
 
     @Override
@@ -139,9 +138,9 @@ public class SinglyLinkedList<T> {
 
             @Override
             public T next() {
-                T data = current.data;
+                T elem = current.data;
                 current = current.next;
-                return data;
+                return elem;
             }
         };
     }

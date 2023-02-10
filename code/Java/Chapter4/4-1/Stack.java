@@ -15,8 +15,8 @@ public class Stack<T> {
         return data.size() == 0;
     }
 
-    public void push(T item) {
-        data.add(item);
+    public void push(T elem) {
+        data.add(elem);
     }
 
     public T pop() {

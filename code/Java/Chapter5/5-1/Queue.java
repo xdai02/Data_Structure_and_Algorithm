@@ -15,11 +15,15 @@ public class Queue<T> {
         return data.size();
     }
 
-    public void enqueue(T item) {
-        data.addLast(item);
+    public void enqueue(T elem) {
+        data.addLast(elem);
     }
 
     public T dequeue() {
         return data.removeFirst();
+    }
+
+    public T front() {
+        return data.getFirst();
     }
 }

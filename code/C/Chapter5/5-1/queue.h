@@ -15,5 +15,6 @@ int queue_size(queue_t *queue);
 bool queue_is_empty(queue_t *queue);
 queue_t *queue_enqueue(queue_t *queue, T elem);
 T queue_dequeue(queue_t *queue);
+T queue_front(queue_t *queue);
 
 #endif

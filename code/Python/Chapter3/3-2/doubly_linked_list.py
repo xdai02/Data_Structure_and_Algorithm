@@ -1,10 +1,10 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.prev = None
-        self.next = None
-
 class DoublyLinkedList:
+    class Node:
+        def __init__(self, data):
+            self.data = data
+            self.prev = None
+            self.next = None
+
     def __init__(self):
         self.__head = None
         self.__tail = None
@@ -16,17 +16,18 @@ class DoublyLinkedList:
     def __len__(self):
         return self.__len
 
-    def add(self, data):
-        node = Node(data)
-        if self.is_empty():
+    def add(self, elem):
+        node = Node(elem)
+        if self.__head == None:
             self.__head = node
+            self.__tail = node
         else:
-            self.__tail.next = node
             node.prev = self.__tail
-        self.__tail = node
+            self.__tail.next = node
+            self.__tail = node
         self.__len += 1
     
-    def insert(self, index, data):
+    def insert(self, index, elem):
         if index < 0 or index > self.__len:
             raise IndexError("Index out of range")
 

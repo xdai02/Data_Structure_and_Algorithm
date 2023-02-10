@@ -12,10 +12,10 @@ class DoublyLinkedList {
         Node *prev;
         Node *next;
 
-        Node(T data, Node *prev = nullptr, Node *next = nullptr) {
+        Node(T data) {
             this->data = data;
-            this->prev = prev;
-            this->next = next;
+            this->prev = nullptr;
+            this->next = nullptr;
         }
     };
 
@@ -93,15 +93,15 @@ void DoublyLinkedList<T>::clear() {
 
 template <typename T>
 void DoublyLinkedList<T>::add(T elem) {
-    Node *new_node = new Node(elem, tail, nullptr);
-    if (tail != nullptr) {
-        tail->next = new_node;
-    }
-    tail = new_node;
+    Node *new_node = new Node(elem);
     if (head == nullptr) {
         head = new_node;
+        tail = new_node;
+    } else {
+        tail->next = new_node;
+        new_node->prev = tail;
+        tail = new_node;
     }
-    length++;
 }
 
 template <typename T>
@@ -110,25 +110,27 @@ void DoublyLinkedList<T>::insert(int index, T elem) {
         throw "Index out of bounds";
     }
 
+    Node *new_node = new Node(elem);
     if (index == 0) {
-        Node *new_node = new Node(elem, nullptr, head);
-        if (head != nullptr) {
-            head->prev = new_node;
-        }
-        head = new_node;
-        if (tail == nullptr) {
+        if (head == nullptr) {
+            head = new_node;
             tail = new_node;
+        } else {
+            new_node->next = head;
+            head->prev = new_node;
+            head = new_node;
         }
     } else if (index == length) {
-        Node *new_node = new Node(elem, tail, nullptr);
         tail->next = new_node;
+        new_node->prev = tail;
         tail = new_node;
     } else {
         Node *cur = head;
         for (int i = 0; i < index; i++) {
             cur = cur->next;
         }
-        Node *new_node = new Node(elem, cur->prev, cur);
+        new_node->next = cur;
+        new_node->prev = cur->prev;
         cur->prev->next = new_node;
         cur->prev = new_node;
     }
@@ -169,10 +171,10 @@ T DoublyLinkedList<T>::remove(int index) {
         cur->prev->next = cur->next;
         cur->next->prev = cur->prev;
     }
-    T del_data = del_node->data;
+    T elem = del_node->data;
     delete del_node;
     length--;
-    return del_data;
+    return elem;
 }
 
 template <typename T>
@@ -198,9 +200,9 @@ T DoublyLinkedList<T>::set(int index, T elem) {
     for (int i = 0; i < index; i++) {
         cur = cur->next;
     }
-    T old_data = cur->data;
+    T elem = cur->data;
     cur->data = elem;
-    return old_data;
+    return elem;
 }
 
 template <typename T>

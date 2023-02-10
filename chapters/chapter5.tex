@@ -71,9 +71,7 @@
 	\caption{出队}
 \end{figure}
 
-\newpage
-
-\section{循环队列}
+\vspace{0.5cm}
 
 \subsection{循环队列（Circular Queue）}
 
@@ -136,9 +134,10 @@
 \mybox{入队}
 
 \begin{lstlisting}[language=C]
-void enqueue(Queue *queue, dataType val) {
-    queue->data[queue->rear] = val;
-    queue->rear = (queue->rear + 1) % queue->max;
+queue_t *queue_enqueue(queue_t *quque, T elem) {
+	queue->data[queue->rear] = elem;
+	queue->rear = (queue->rear + 1) % queue->max;
+	return queue;
 }
 \end{lstlisting}
 
@@ -147,10 +146,10 @@ void enqueue(Queue *queue, dataType val) {
 \mybox{出队}
 
 \begin{lstlisting}[language=C]
-dataType dequeue(Queue *queue) {
-    dataType ret = queue->data[queue->front];
-    queue->front = (queue->front + 1) % queue->max;
-    return ret;
+T queue_enqueue(queue_t *queue) {
+	T elem = queue->data[queue->front];
+	queue->front = (queue->front + 1) % queue->max;
+	return elem;
 }
 \end{lstlisting}
 
@@ -186,32 +185,31 @@ dataType dequeue(Queue *queue) {
 \begin{lstlisting}[language=Python]
 class Deque:
     def __init__(self):
-        self.data = []
-
+        self.__data = []
+    
     def is_empty(self):
-        return not self.data
-
-    def add_front(self, val):
-        self.data.insert(0, val)
-
-    def add_rear(self, val):
-        self.data.append(val)
-
-    def remove_front(self):
-        if not self.is_empty():
-            return self.data.pop(0)
-
-    def remove_rear(self):
-        if not self.is_empty():
-            return self.data.pop()
-
-    def get_front(self):
-        if not self.is_empty():
-            return self.data[0]
-
-    def get_rear(self):
-        if not self.is_empty():
-            return self.data[len(self.data)-1]
+        return self.__data == []
+    
+    def __len__(self):
+        return len(self.__data)
+    
+    def push_front(self, elem):
+        self.__data.insert(0, elem)
+    
+    def push_back(self, elem):
+        self.__data.append(elem)
+    
+    def pop_front(self):
+        return self.__data.pop(0)
+    
+    def pop_back(self):
+        return self.__data.pop()
+    
+    def front(self):
+        return self.__data[0]
+    
+    def back(self):
+        return self.__data[-1]
 \end{lstlisting}
 
 \newpage

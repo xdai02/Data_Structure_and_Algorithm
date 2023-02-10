@@ -13,13 +13,13 @@
 			\hline
 			\textbf{学号} & \textbf{姓名} \\
 			\hline
-			001121        & 张三          \\
+			001121        & Alice         \\
 			\hline
-			002123        & 李四          \\
+			002123        & Bob           \\
 			\hline
-			002931        & 王五          \\
+			002931        & Charlie       \\
 			\hline
-			003278        & 赵六          \\
+			003278        & Daniel        \\
 			\hline
 		\end{tabular}
 	}
@@ -59,9 +59,7 @@
 	\item 解决冲突：应用某种策略解决多个关键字位置相同的问题。
 \end{enumerate}
 
-\newpage
-
-\section{哈希函数}
+\vspace{0.5cm}
 
 \subsection{哈希函数（Hash Function）}
 
@@ -78,10 +76,10 @@
 		\draw[-] (-5,0) rectangle (-3,-1);
 		\draw[-] (-5,-2) rectangle (-3,-3);
 
-		\draw (-4,3.5) node{张三};
-		\draw (-4,1.5) node{李四};
-		\draw (-4,-0.5) node{王五};
-		\draw (-4,-2.5) node{赵六};
+		\draw (-4,3.5) node{Alice};
+		\draw (-4,1.5) node{Bob};
+		\draw (-4,-0.5) node{Charlie};
+		\draw (-4,-2.5) node{Daniel};
 
 		\draw (4,5) node{hash table};
 		\draw (3,4) rectangle (5,-3);
@@ -92,10 +90,10 @@
 		\draw (3,-1) -- (5,-1);
 		\draw (3,-2) -- (5,-2);
 
-		\draw (4,-0.5) node{张三};
-		\draw (4,3.5) node{李四};
-		\draw (4,0.5) node{王五};
-		\draw (4,-2.5) node{赵六};
+		\draw (4,-0.5) node{Alice};
+		\draw (4,3.5) node{Bob};
+		\draw (4,0.5) node{Charlie};
+		\draw (4,-2.5) node{Daniel};
 
 		\draw[dashed, ->] (-3,3.5) -- (-1,0.5);
 		\draw[dashed, ->] (-3,1.5) -- (-1,0.5);
@@ -286,63 +284,9 @@ $$
 	h(key) = \left( \sum_{i=0}^{n-1} key[n-i-1] \times 32^i \right)\ mod\ N
 $$
 
-\mybox{哈希函数}\\
-
-快速计算$ h(abcde) = a * 32^4 + b * 32^3 + c * 32^2 + d * 32 + e $
-
-\begin{lstlisting}[language=C]
-int hash(char *key, int tableSize) {
-    int h = 0;          // hash value
-    int i = 0;
-    while(key[i] != '\0') {
-        h = (h << 5) + key[i];
-        i++;
-    }
-    return h % tableSize;
-}
-\end{lstlisting}
-
-\vspace{0.5cm}
-
-\mybox{凯撒加密}
-
-\begin{lstlisting}[language=C]
-/**
-* @brief  凯撒加密
-* @note  加密算法：ciphertext[i] = (plaintext[i] + Key) % 128
-* @param  plaintext: 明文
-* @retval 密文
-*/
-char* encrypt(char *plaintext) {
-    int n = strlen(plaintext);
-    char *ciphertext = (char *)malloc((n + 1) * sizeof(char));
-    for(int i = 0; i < n; i++) {
-        ciphertext[i] = (plaintext[i] + KEY) % 128;
-    }
-    ciphertext[n] = '\0';
-    return ciphertext;
-}
-
-/**
-* @brief  凯撒解密
-* @note   解密算法：plaintext[i] = (ciphertext[i] - key + 128) % 128
-* @param  ciphertext: 密文
-* @retval 明文
-*/
-char* decrypt(char *ciphertext) {
-    int n = strlen(ciphertext);
-    char *plaintext = (char *)malloc((n + 1) * sizeof(char));
-    for(int i = 0; i < n; i++) {
-        plaintext[i] = (ciphertext[i] - KEY + 128) % 128;
-    }
-    plaintext[n] = '\0';
-    return plaintext;
-}
-\end{lstlisting}
-
 \newpage
 
-\section{冲突处理}
+\section{哈希冲突}
 
 \subsection{装填因子（Load Factor）}
 
@@ -557,9 +501,7 @@ $$
 	\caption{分离链接法}
 \end{figure}
 
-\newpage
-
-\section{性能分析}
+\vspace{0.5cm}
 
 \subsection{性能分析}
 

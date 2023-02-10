@@ -8,8 +8,11 @@ class Queue:
     def __len__(self):
         return len(self.__data)
     
-    def enqueue(self, data):
-        self.__data.append(data)
+    def enqueue(self, elem):
+        self.__data.append(elem)
     
     def dequeue(self):
         return self.__data.pop(0)
+    
+    def front(self):
+        return self.__data[0]

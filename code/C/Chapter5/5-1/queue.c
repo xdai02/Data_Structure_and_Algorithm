@@ -36,3 +36,7 @@ queue_t *queue_enqueue(queue_t *queue, T elem) {
 T queue_dequeue(queue_t *queue) {
     return singly_linked_list_remove(queue->data, 0);
 }
+
+T queue_front(queue_t *queue) {
+    return singly_linked_list_get(queue->data, 0);
+}

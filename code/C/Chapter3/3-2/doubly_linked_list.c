@@ -14,7 +14,7 @@ typedef struct doubly_linked_list_t {
 
 doubly_linked_list_t *doubly_linked_list_create() {
     doubly_linked_list_t *list = (doubly_linked_list_t *)malloc(sizeof(doubly_linked_list_t));
-    if (list == NULL) {
+    if (!list) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
@@ -70,7 +70,7 @@ void doubly_linked_list_print(doubly_linked_list_t *list) {
 
 doubly_linked_list_t *doubly_linked_list_add(doubly_linked_list_t *list, T elem) {
     node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (node == NULL) {
+    if (!node) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         exit(1);
     }
@@ -96,7 +96,7 @@ doubly_linked_list_t *doubly_linked_list_insert(doubly_linked_list_t *list, int 
     }
 
     node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (node == NULL) {
+    if (!node) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         exit(1);
     }
@@ -236,7 +236,7 @@ int doubly_linked_list_index_of(doubly_linked_list_t *list, T elem) {
 }
 
 static doubly_linked_list_t *__doubly_linked_list_reverse_recursive(doubly_linked_list_t *list, node_t *node) {
-    if (node == NULL) {
+    if (!node) {
         return list;
     }
     node_t *next = node->next;

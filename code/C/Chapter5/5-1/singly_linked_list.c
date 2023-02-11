@@ -13,7 +13,7 @@ typedef struct singly_linked_list_t {
 
 singly_linked_list_t *singly_linked_list_create() {
     singly_linked_list_t *list = (singly_linked_list_t *)malloc(sizeof(singly_linked_list_t));
-    if (list == NULL) {
+    if (!list) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
@@ -69,7 +69,7 @@ void singly_linked_list_print(singly_linked_list_t *list) {
 
 singly_linked_list_t *singly_linked_list_add(singly_linked_list_t *list, T elem) {
     node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (node == NULL) {
+    if (!node) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         exit(1);
     }
@@ -93,7 +93,7 @@ singly_linked_list_t *singly_linked_list_insert(singly_linked_list_t *list, int 
     }
 
     node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (node == NULL) {
+    if (!node) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         exit(1);
     }
@@ -206,7 +206,7 @@ int singly_linked_list_index_of(singly_linked_list_t *list, T elem) {
 }
 
 static node_t *__singly_linked_list_reverse_recursive(node_t *node) {
-    if (node == NULL || node->next == NULL) {
+    if (!node || !node->next) {
         return node;
     }
     node_t *new_head = __singly_linked_list_reverse_recursive(node->next);

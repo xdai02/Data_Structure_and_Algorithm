@@ -7,7 +7,7 @@ typedef struct stack_t {
 
 stack_t *stack_create() {
     stack_t *stack = (stack_t *)malloc(sizeof(stack_t));
-    if (stack == NULL) {
+    if (!stack) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }

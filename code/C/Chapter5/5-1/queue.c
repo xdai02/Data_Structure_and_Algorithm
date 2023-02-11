@@ -7,7 +7,7 @@ typedef struct queue_t {
 
 queue_t *queue_create() {
     queue_t *queue = (queue_t *)malloc(sizeof(queue_t));
-    if (queue == NULL) {
+    if (!queue) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }

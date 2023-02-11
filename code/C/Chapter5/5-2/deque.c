@@ -7,7 +7,7 @@ typedef struct deque_t {
 
 deque_t *deque_create() {
     deque_t *deque = (deque_t *)malloc(sizeof(deque_t));
-    if (deque == NULL) {
+    if (!deque) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }

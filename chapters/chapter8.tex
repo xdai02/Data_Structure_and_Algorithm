@@ -200,15 +200,16 @@
 
 \mybox{冒泡排序}
 
-\begin{lstlisting}[language=C]
-void bubbleSort(int *arr, int n) {
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n-i-1; j++) {
-            if(arr[j] > arr[j+1]) {
-                swap(&arr[j], &arr[j+1]);
-            }
-        }
-    }
+\begin{lstlisting}[language=C++]
+int *bubble_sort(int *arr, int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n - i - 1; j++) {
+			if (arr[j] > arr[j + 1]) {
+				swap(arr[j], arr[j + 1]);
+			}
+		}
+	}
+	return arr;
 }
 \end{lstlisting}
 
@@ -218,17 +219,17 @@ void bubbleSort(int *arr, int n) {
 
 假设数组有n个元素，如果A[i] > A[j], i < j，那么A[i]和A[j]就被称为逆序对（inversion）。
 
-\begin{lstlisting}[language=C]
-int countInversions(int *arr, int n) {
-    int cnt = 0;        // 逆序对数
-    for(int i = 0; i < n-1; i++) {
-        for(int j = i+1; j < n; j++) {
-            if(arr[i] > arr[j]) {
-                cnt++;
-            }
-        }
-    }
-    return cnt;
+\begin{lstlisting}[language=C++]
+int count_inverses(int *arr, int n) {
+	int count = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if (arr[i] > arr[j]) {
+				count++;
+			}
+		}
+	}
+	return count;
 }
 \end{lstlisting}
 
@@ -242,21 +243,22 @@ int countInversions(int *arr, int n) {
 
 \mybox{冒泡排序第一次优化}
 
-\begin{lstlisting}[language=C]
-void bubbleSortOptimize1(int *arr, int n) {
-    for(int i = 0; i < n - 1; i++) {
-        bool hasSwapped = false;  // 标记是否发生交换
-        for(int j = 0; j < n - i - 1; j++) {
-            if(arr[j] > arr[j+1]) {
-                swap(&arr[j], &arr[j+1]);
-                hasSwapped = true;    // 发生交换
-            }
-        }
-        // 该轮未发生交换，已经有序
-        if(!hasSwapped) {
-            return;
-        }
-    }
+\begin{lstlisting}[language=C++]
+int *bubble_sort(int *arr, int n) {
+	for (int i = 0; i < n; i++) {
+		bool swapped = false;
+		for (int j = 0; j < n - i - 1; j++) {
+			if (arr[j] > arr[j + 1]) {
+				swap(arr[j], arr[j + 1]);
+				swapped = true;
+			}
+		}
+		if (!swapped) {
+			break;
+		}
+	}
+
+	return arr;
 }
 \end{lstlisting}
 
@@ -270,25 +272,26 @@ void bubbleSortOptimize1(int *arr, int n) {
 
 \mybox{冒泡排序第二次优化}
 
-\begin{lstlisting}[language=C]
-void bubbleSortOptimize2(int *arr, int n) {
-    int len = n - 1;        // 内层循环执行次数
-    for(int i = 0; i < n - 1; i++) {
-        bool hasSwapped = false;  // 标记是否发生交换
-        int last = 0;       // 标记最后一次发生交换的位置
-        for(int j = 0; j < len; j++) {
-            if(arr[j] > arr[j+1]) {
-                swap(&arr[j], &arr[j+1]);
-                hasSwapped = true;    // 发生交换
-                last = j;
-            }
-        }
-        // 该轮未发生交换，已经有序
-        if(!hasSwapped) {
-            return;
-        }
-        len = last;         // 最后一次发生交换的位置
-    }
+\begin{lstlisting}[language=C++]
+int *bubble_sort(int *arr, int n) {
+	int right = n - 1;
+	for (int i = 0; i < n; i++) {
+		bool swapped = false;
+		int last = 0;
+		for (int j = 0; j < right; j++) {
+			if (arr[j] > arr[j + 1]) {
+				swap(arr[j], arr[j + 1]);
+				swapped = true;
+				last = j;
+			}
+		}
+		if (!swapped) {
+			break;
+		}
+		right = last;
+	}
+
+	return arr;
 }
 \end{lstlisting}
 
@@ -371,19 +374,19 @@ void bubbleSortOptimize2(int *arr, int n) {
 
 \mybox{选择排序}
 
-\begin{lstlisting}[language=C]
-void selectionSort(int *arr, int n) {
-    for(int i = 0; i < n-1; i++) {
-        int minIndex = i;
-        for(int j = i+1; j < n; j++) {
-            if(arr[j] < arr[minIndex]) {
-                minIndex = j;
-            }
-        }
-        if(i != minIndex) {
-            swap(&arr[i], &arr[minIndex]);
-        }
-    }
+\begin{lstlisting}[language=C++]
+int* selection_sort(int* arr, int n) {
+	for (int i = 0; i < n - 1; i++) {
+		int minIndex = i;
+		for (int j = i + 1; j < n; j++) {
+			if (arr[j] < arr[minIndex]) {
+				minIndex = j;
+			}
+		}
+		swap(arr[i], arr[minIndex]);
+	}
+
+	return arr;
 }
 \end{lstlisting}
 
@@ -395,30 +398,32 @@ void selectionSort(int *arr, int n) {
 
 \mybox{选择排序优化}
 
-\begin{lstlisting}[language=C]
-void selectionSortOptimize(int *arr, int n) {
-    int left = 0;
-    int right = n - 1;
-    while(left < right) {
-        int min = left;
-        int max = right;
-        for(int i = left; i <= right; i++) {
-            if(arr[i] < arr[min]) {
-                min = i;
-            }
-            if(arr[i] > arr[max]) {
-                max = i;
-            }
-        }
-        swap(&arr[max], &arr[right]);
-        // 考虑特殊情况，最小值在最右位置
-        if(min == right) {
-            min = max;
-        }
-        swap(&arr[min], &arr[left]);
-        left++;
-        right--;
-    }
+\begin{lstlisting}[language=C++]
+int* selection_sort(int* arr, int n) {
+	for (int i = 0; i < n / 2; i++) {
+		int minIndex = i;
+		int maxIndex = n - i - 1;
+
+		for (int j = i; j < n - i; j++) {
+			if (arr[j] < arr[minIndex]) {
+				minIndex = j;
+			}
+			if (arr[j] > arr[maxIndex]) {
+				maxIndex = j;
+			}
+		}
+
+		swap(arr[i], arr[minIndex]);
+
+		// In case of i == maxIndex before swap(arr[i], arr[minIndex]), it's now at minIndex.
+		if (i == maxIndex) {
+			maxIndex = minIndex;
+		}
+
+		swap(arr[n - i - 1], arr[maxIndex]);
+	}
+
+	return arr;
 }
 \end{lstlisting}
 
@@ -435,7 +440,6 @@ void selectionSortOptimize(int *arr, int n) {
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.4]{img/Chapter8/8-4/1.png}
-	\caption{理牌}
 \end{figure}
 
 例如一个有8个数字组成的无序序列，进行升序排序。
@@ -504,17 +508,19 @@ void selectionSortOptimize(int *arr, int n) {
 
 \mybox{插入排序}
 
-\begin{lstlisting}[language=C]
-void insertionSort(int *arr, int n) {
-    for(int i = 1; i < n; i++) {
-        int temp = arr[i];
-        int j = i - 1;
-        while(j >= 0 && temp < arr[j]) {
-            arr[j+1] = arr[j];
-            j--;
-        }
-        arr[j+1] = temp;
-    }
+\begin{lstlisting}[language=Java]
+public static int[] insertionSort(int[] arr) {
+	for (int i = 1; i < arr.length; i++) {
+		int temp = arr[i];
+		int j = i - 1;
+		while (j >= 0 && temp < arr[j]) {
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = temp;
+	}
+
+	return arr;
 }
 \end{lstlisting}
 
@@ -526,28 +532,146 @@ void insertionSort(int *arr, int n) {
 
 \mybox{折半插入排序}
 
-\begin{lstlisting}[language=C]
-void binaryInsertionSort(int *arr, int n) {
-    for(int i = 1; i < n; i++) {
-        int temp = arr[i];
-        int start = 0;
-        int end = i - 1;
-        while(start <= end) {
-            int mid = start + (end - start) / 2;
-            if(arr[mid] > temp) {
-                end = mid - 1;
-            } else {
-                start = mid + 1;
-            }
-        }
-        int j;
-        for(j = i - 1; j > end; j--) {
-            arr[j+1] = arr[j];
-        }
-        arr[j+1] = temp;
-    }
+\begin{lstlisting}[language=Java]
+public static int[] insertionSort(int[] arr) {
+	for (int i = 1; i < arr.length; i++) {
+		int temp = arr[i];
+		int left = 0;
+		int right = i - 1;
+
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			if (temp < arr[mid]) {
+				right = mid - 1;
+			} else {
+				left = mid + 1;
+			}
+		}
+
+		for (int j = i - 1; j >= left; j--) {
+			arr[j + 1] = arr[j];
+		}
+		arr[left] = temp;
+	}
+
+	return arr;
 }
 \end{lstlisting}
+
+\newpage
+
+\section{希尔排序}
+
+\subsection{希尔排序（Shell Sort）}
+
+希尔排序本质上是直接插入排序的升级版。对于插入排序而言，在大多数元素已经有序的情况下，工作量会比较小。这个结论很明显，如果一个数组大部分元素都有序，那么数组中的元素自然不需要频繁地进行比较和交换。\\
+
+如何能够让待排序的数组中大部分元素有序呢？需要对原始数组进行预处理，使得原始数组的大部分元素变得有序。采用分组的方法，可以将数组进行一定程度地粗略调整。\\
+
+例如一个有8个数字组成的无序序列\{5, 8, 6, 3, 9, 2, 1, 7\}，进行升序排序。让元素两两一组，同组两个元素之间的跨度为数组总长度的一半。\\
+
+接着让每组元素进行独立排序，排序方式使用直接插入排序即可。由于每一组的元素数量很少，所以插入排序的工作量很少。这样一来，仅仅经过几次简单的交换，数组整体的有序程序得到了显著提高，使得后续再进行直接插入排序的工作量大大减少。\\
+
+但是这样还不算完，还可以进一步缩小分组跨度，重复上述工作。\\
+
+例如一个有8个数字组成的无序序列\{5, 8, 6, 3, 9, 2, 1, 7\}，进行升序排序。
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\ttfamily,
+			array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+					row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+				}]
+
+		\matrix[array] (array) {
+			0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+			5 & 2 & 1 & 3 & 9 & 8 & 6 & 7 \\
+		};
+
+		\draw[-, red] (-3.5,-0.8) -- (-3.5,-1.2) -- (0.5,-1.2) -- (0.5,-0.8);
+		\draw[-, red] (-2.5,-0.8) -- (-2.5,-1.4) -- (1.5,-1.4) -- (1.5,-0.8);
+		\draw[-, red] (-1.5,-0.8) -- (-1.5,-1.6) -- (2.5,-1.6) -- (2.5,-0.8);
+		\draw[-, red] (-0.5,-0.8) -- (-0.5,-1.8) -- (3.5,-1.8) -- (3.5,-0.8);
+	\end{tikzpicture}
+	\caption{跨度为4分组交换}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\ttfamily,
+			array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+					row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+				}]
+
+		\matrix[array] (array) {
+			0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+			1 & 2 & 5 & 3 & 6 & 7 & 9 & 8 \\
+		};
+
+		\draw[-, red] (-3.5,-0.8) -- (-3.5,-1.2) -- (-1.6,-1.2) -- (-1.6,-0.8);
+		\draw[-, red] (-2.5,-0.8) -- (-2.5,-1.4) -- (-0.6,-1.4) -- (-0.6,-0.8);
+		\draw[-, red] (-1.5,-0.8) -- (-1.5,-1.6) -- (0.4,-1.6) -- (0.4,-0.8);
+		\draw[-, red] (-0.5,-0.8) -- (-0.5,-1.2) -- (1.4,-1.2) -- (1.4,-0.8);
+		\draw[-, red] (0.5,-0.8) -- (0.5,-1.4) -- (2.5,-1.4) -- (2.5,-0.8);
+		\draw[-, red] (1.5,-0.8) -- (1.5,-1.6) -- (3.5,-1.6) -- (3.5,-0.8);
+	\end{tikzpicture}
+	\caption{跨度为2分组交换}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[font=\ttfamily,
+			array/.style={matrix of nodes,nodes={draw, minimum size=10mm, fill=green!30},column sep=-\pgflinewidth, row sep=0.5mm, nodes in empty cells,
+					row 1/.style={nodes={draw=none, fill=none, minimum size=5mm}},
+				}]
+
+		\matrix[array] (array) {
+			0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+			1 & 2 & 3 & 5 & 6 & 7 & 8 & 9 \\
+		};
+	\end{tikzpicture}
+	\caption{跨度为1分组交换}
+\end{figure}
+
+希尔排序的发明者是计算机科学家Donald Shell。希尔排序中说使用的分组跨度被称为希尔排序的增量。增量的选择可以有很多种，最朴素的就是Donald Shell在发明希尔排序时所提出的逐步折半的方法。\\
+
+\subsection{算法分析}
+
+希尔排序利用分组粗略调整的方式减少了直接插入排序的工作量，使得算法的平均时间复杂度低于$ O(n^2) $。但是在某些极端情况下，希尔排序的最坏时间复杂度仍然是$ O(n^2) $，甚至比插入排序更慢。\\
+
+例如\{2, 1, 5, 3, 7, 6, 9, 8\}，无论是以4为增量，还是以2为增量，每组内部的元素都没有任何交换。直到增量缩减为1，数组才会按照直接插入排序的方式进行调整。\\
+
+对于这样的数组，希尔排序不但没有减少直接插入排序的工作量，反而白白增加了分组操作的成本。\\
+
+这是因为每一轮希尔增量之间都是等比的，这就导致了希尔增量存在盲区。为了避免这样的极端情况，科学家发明了许多更为严谨的增量方式。其中最具有代表性的是Hibbard增量和Sedgewick增量。
+
+\subsubsection{Hibbard增量序列}
+
+Hibbard增量序列为$ 1, 3, 7, 15, \dots $，通项公式为$ 2^i - 1 $。\\
+
+利用这种增量方式的希尔排序，最坏时间复杂度是$ O(n^{3/2}) $。\\
+
+\subsubsection{Sedgewick增量序列}
+
+Sedgewick增量序列为$ 1, 5, 19, 41, 109, \dots $，通项公式为$ 9 \times 4^i - 9 \times 2^i + 1 $和$ 4^{i+2} - 3 \times 2^{i+2} + 1 $。\\
+
+利用这种增量方式的希尔排序，最坏时间复杂度是$ O(n^{4/3}) $。\\
+
+这两种增量方式的时间复杂度需要很复杂的数学证明，有些是人们的大致猜想。
+
+\begin{table}[H]
+	\centering
+	\setlength{\tabcolsep}{5mm}{
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{时间复杂度}   & \textbf{空间复杂度} & \textbf{稳定性} \\
+			\hline
+			$ O(n^{1.3 \sim 2}) $ & $ O(1) $            & 不稳定          \\
+			\hline
+		\end{tabular}
+	}
+	\caption{希尔排序算法分析}
+\end{table}
 
 \newpage
 

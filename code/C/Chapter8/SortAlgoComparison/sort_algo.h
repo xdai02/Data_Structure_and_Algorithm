@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef int T;
+
 void *bubble_sort(void *args);
 void *bubble_sort_opt_v1(void *args);
 void *bubble_sort_opt_v2(void *args);

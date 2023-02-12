@@ -1,3 +1,5 @@
+import math
+
 def bubble_sort(lst):
     """Bubble Sort (original)"""
     for i in range(len(lst) - 1):
@@ -71,7 +73,7 @@ def selection_sort_opt(lst):
     return lst
 
 def insertion_sort(lst):
-    """Insertion Sort"""
+    """Insertion Sort (original)"""
     for i in range(1, len(lst)):
         temp = lst[i]
         j = i - 1
@@ -83,7 +85,7 @@ def insertion_sort(lst):
     return lst
 
 def insertion_sort_opt(lst):
-    """Binary Insertion Sort"""
+    """Insertion Sort (optimized)"""
     for i in range(1, len(lst)):
         temp = lst[i]
         left = 0
@@ -101,8 +103,6 @@ def insertion_sort_opt(lst):
         lst[left] = temp
     
     return lst
-
-import math
 
 def shell_sort(lst):
     """Shell Sort (original)"""

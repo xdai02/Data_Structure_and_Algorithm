@@ -3,11 +3,12 @@
 using namespace std;
 
 /**
- * Insertion Sort
+ * Insertion Sort (original)
  */
-int *insertion_sort(int *arr, int n) {
+template <typename T>
+T *insertion_sort(T *arr, int n) {
     for (int i = 1; i < n; i++) {
-        int temp = arr[i];
+        T temp = arr[i];
         int j = i - 1;
         while (j >= 0 && arr[j] > temp) {
             arr[j + 1] = arr[j];
@@ -20,11 +21,12 @@ int *insertion_sort(int *arr, int n) {
 }
 
 /**
- * Binary Insertion Sort
+ * Insertion Sort (optimized)
  */
-// int* insertion_sort(int* arr, int n) {
+// template <typename T>
+// T *insertion_sort(T *arr, int n) {
 //     for (int i = 1; i < n; i++) {
-//         int temp = arr[i];
+//         T temp = arr[i];
 //         int left = 0;
 //         int right = i - 1;
 

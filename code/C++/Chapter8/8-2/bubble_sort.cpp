@@ -5,7 +5,8 @@ using namespace std;
 /**
  * Bubble Sort (original)
  */
-int *bubble_sort(int *arr, int n) {
+template <typename T>
+T *bubble_sort(T *arr, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -19,7 +20,8 @@ int *bubble_sort(int *arr, int n) {
 /**
  * Bubble Sort (optimized v1.0)
  */
-// int *bubble_sort(int *arr, int n) {
+// template <typename T>
+// T *bubble_sort(T *arr, int n) {
 //     for (int i = 0; i < n; i++) {
 //         bool swapped = false;
 //         for (int j = 0; j < n - i - 1; j++) {
@@ -39,7 +41,8 @@ int *bubble_sort(int *arr, int n) {
 /**
  * Bubble Sort (optimized v2.0)
  */
-// int *bubble_sort(int *arr, int n) {
+// template <typename T>
+// T *bubble_sort(T *arr, int n) {
 //     int right = n - 1;
 //     for (int i = 0; i < n; i++) {
 //         bool swapped = false;

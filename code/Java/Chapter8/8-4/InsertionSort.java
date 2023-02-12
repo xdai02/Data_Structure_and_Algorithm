@@ -8,7 +8,7 @@ public class InsertionSort {
     }
 
 	/**
-     * Insertion Sort
+     * Insertion Sort (original)
      */
    	public static int[] insertionSort(int[] arr) {
         for (int i = 1; i < arr.length; i++) {
@@ -25,7 +25,7 @@ public class InsertionSort {
    }
 
     /**
-     * Binary Insertion Sort
+     * Insertion Sort (optimized)
      */
     // public static int[] insertionSort(int[] arr) {
     //     for (int i = 1; i < arr.length; i++) {

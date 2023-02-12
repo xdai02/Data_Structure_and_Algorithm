@@ -4,10 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef int T;
+
 typedef struct sort_algo_comparator sort_algo_comparator;
 
 typedef struct argument_t {
-    int *data;
+    T *data;
     int n;
 } argument_t;
 

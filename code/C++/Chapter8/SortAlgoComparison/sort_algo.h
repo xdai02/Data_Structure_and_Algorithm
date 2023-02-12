@@ -1,30 +1,18 @@
-#include "sort_algo.h"
-#include <math.h>
+#ifndef _SORT_ALGO_H_
+#define _SORT_ALGO_H_
 
-#define SWAP(x, y)  \
-    {               \
-        T temp = x; \
-        x = y;      \
-        y = temp;   \
-    }
-
-typedef struct argument_t {
-    T *data;
-    int n;
-} argument_t;
+#include <iostream>
+#include <cmath>
 
 /**
  * Bubble Sort (original)
  */
-void *bubble_sort(void *args) {
-    argument_t *argument = (argument_t *)args;
-    T *arr = argument->data;
-    int n = argument->n;
-
+template <typename T>
+T *bubble_sort(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                SWAP(arr[j], arr[j + 1]);
+                std::swap(arr[j], arr[j + 1]);
             }
         }
     }
@@ -35,16 +23,13 @@ void *bubble_sort(void *args) {
 /**
  * Bubble Sort (optimized v1.0)
  */
-void *bubble_sort_opt_v1(void *args) {
-    argument_t *argument = (argument_t *)args;
-    T *arr = argument->data;
-    int n = argument->n;
-
+template <typename T>
+T *bubble_sort_opt_v1(T *arr, int n) {
     for (int i = 0; i < n; i++) {
         bool swapped = false;
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                SWAP(arr[j], arr[j + 1]);
+                std::swap(arr[j], arr[j + 1]);
                 swapped = true;
             }
         }
@@ -59,18 +44,15 @@ void *bubble_sort_opt_v1(void *args) {
 /**
  * Bubble Sort (optimized v2.0)
  */
-void *bubble_sort_opt_v2(void *args) {
-    argument_t *argument = (argument_t *)args;
-    T *arr = argument->data;
-    int n = argument->n;
-
+template <typename T>
+T *bubble_sort_opt_v2(T *arr, int n) {
     int right = n - 1;
     for (int i = 0; i < n; i++) {
         bool swapped = false;
         int last = 0;
         for (int j = 0; j < right; j++) {
             if (arr[j] > arr[j + 1]) {
-                SWAP(arr[j], arr[j + 1]);
+                std::swap(arr[j], arr[j + 1]);
                 swapped = true;
                 last = j;
             }
@@ -87,11 +69,8 @@ void *bubble_sort_opt_v2(void *args) {
 /**
  * Selection Sort (original)
  */
-void *selection_sort(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *selection_sort(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         int minIndex = i;
         for (int j = i + 1; j < n; j++) {
@@ -99,7 +78,7 @@ void *selection_sort(void *args) {
                 minIndex = j;
             }
         }
-        SWAP(arr[i], arr[minIndex]);
+        std::swap(arr[i], arr[minIndex]);
     }
 
     return arr;
@@ -108,11 +87,8 @@ void *selection_sort(void *args) {
 /**
  * Selection Sort (optimzed)
  */
-void *selection_sort_opt(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *selection_sort_opt(T *arr, int n) {
     for (int i = 0; i < n / 2; i++) {
         int minIndex = i;
         int maxIndex = n - i - 1;
@@ -126,14 +102,14 @@ void *selection_sort_opt(void *args) {
             }
         }
 
-        SWAP(arr[i], arr[minIndex]);
+        std::swap(arr[i], arr[minIndex]);
 
         // In case of i == maxIndex before swap(arr[i], arr[minIndex]), it's now at minIndex.
         if (i == maxIndex) {
             maxIndex = minIndex;
         }
 
-        SWAP(arr[n - i - 1], arr[maxIndex]);
+        std::swap(arr[n - i - 1], arr[maxIndex]);
     }
 
     return arr;
@@ -142,11 +118,8 @@ void *selection_sort_opt(void *args) {
 /**
  * Insertion Sort (original)
  */
-void *insertion_sort(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *insertion_sort(T *arr, int n) {
     for (int i = 1; i < n; i++) {
         T temp = arr[i];
         int j = i - 1;
@@ -163,11 +136,8 @@ void *insertion_sort(void *args) {
 /**
  * Insertion Sort (optimized)
  */
-void *insertion_sort_opt(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *insertion_sort_opt(T *arr, int n) {
     for (int i = 1; i < n; i++) {
         T temp = arr[i];
         int left = 0;
@@ -194,11 +164,8 @@ void *insertion_sort_opt(void *args) {
 /**
  * Shell Sort (original)
  */
-void *shell_sort(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *shell_sort(T *arr, int n) {
     int gap = n / 2;
 
     while (gap > 0) {
@@ -220,11 +187,8 @@ void *shell_sort(void *args) {
 /**
  * Shell Sort (Hibbard)
  */
-void *shell_sort_opt_hibbard(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *shell_sort_opt_hibbard(T *arr, int n) {
     int k = (int)log2(n);
 
     while (k >= 0) {
@@ -247,11 +211,8 @@ void *shell_sort_opt_hibbard(void *args) {
 /**
  * Shell Sort (Sedgewick)
  */
-void *shell_sort_opt_sedgewick(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
+template <typename T>
+T *shell_sort_opt_sedgewick(T *arr, int n) {
     int k = (int)log2(n / 3);
 
     while (k >= 0) {
@@ -270,3 +231,5 @@ void *shell_sort_opt_sedgewick(void *args) {
 
     return arr;
 }
+
+#endif

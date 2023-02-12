@@ -7,7 +7,7 @@
 #include <time.h>
 
 typedef struct sort_algo_comparator {
-    int *data;
+    T *data;
     size_t size;
 } sort_algo_comparator;
 
@@ -32,12 +32,12 @@ int sort_algo_comparator_read_data(sort_algo_comparator *comparator, const char 
     }
 
     int count = 0;
-    int elem;
+    T elem;
     while (fscanf(file, "%d", &elem) != EOF) {
         count++;
     }
 
-    comparator->data = (int *)malloc(count * sizeof(int));
+    comparator->data = (T *)malloc(count * sizeof(T));
     if (!comparator->data) {
         fclose(file);
         return 0;
@@ -46,7 +46,7 @@ int sort_algo_comparator_read_data(sort_algo_comparator *comparator, const char 
 
     rewind(file);
 
-    int *data = comparator->data;
+    T *data = comparator->data;
     while (fscanf(file, "%d", data) != EOF) {
         data++;
     }
@@ -57,8 +57,8 @@ int sort_algo_comparator_read_data(sort_algo_comparator *comparator, const char 
 
 void sort_algo_comparator_sort(sort_algo_comparator *comparator, void *(*sort)(void *args), const char *algo_name, int timeout) {
     // make a copy of data
-    int *data = (int *)malloc(comparator->size * sizeof(int));
-    memcpy(data, comparator->data, comparator->size * sizeof(int));
+    T *data = (T *)malloc(comparator->size * sizeof(T));
+    memcpy(data, comparator->data, comparator->size * sizeof(T));
 
 #ifdef _WIN32
     HANDLE tid;

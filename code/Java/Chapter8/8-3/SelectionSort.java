@@ -8,7 +8,7 @@ public class SelectionSort {
     }
 
     /**
-     * Selection Sort (optimized)
+     * Selection Sort (original)
      */
     public static int[] selectionSort(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
@@ -27,7 +27,7 @@ public class SelectionSort {
     }
 
     /**
-     * Selection Sort (original)
+     * Selection Sort (optimized)
      */
     // public static int[] selectionSort(int[] arr) {
     //     for (int i = 0; i < arr.length / 2; i++) {

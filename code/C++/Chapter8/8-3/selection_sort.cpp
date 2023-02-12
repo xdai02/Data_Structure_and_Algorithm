@@ -5,7 +5,8 @@ using namespace std;
 /**
  * Selection Sort (original)
  */
-int* selection_sort(int* arr, int n) {
+template <typename T>
+T *selection_sort(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         int minIndex = i;
         for (int j = i + 1; j < n; j++) {
@@ -22,7 +23,8 @@ int* selection_sort(int* arr, int n) {
 /**
  * Selection Sort (optimzed)
  */
-// int* selection_sort(int* arr, int n) {
+// template <typename T>
+// T *selection_sort(T *arr, int n) {
 //     for (int i = 0; i < n / 2; i++) {
 //         int minIndex = i;
 //         int maxIndex = n - i - 1;

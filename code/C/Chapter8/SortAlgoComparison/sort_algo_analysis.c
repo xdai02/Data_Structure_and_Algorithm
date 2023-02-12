@@ -16,7 +16,7 @@ int main() {
     sort_algo_comparator_sort(comparator, selection_sort_opt, "Selection Sort (optimized)", TIMEOUT);
 
     sort_algo_comparator_sort(comparator, insertion_sort, "Insertion Sort (original)", TIMEOUT);
-    sort_algo_comparator_sort(comparator, insertion_sort_opt, "Binary Insertion Sort", TIMEOUT);
+    sort_algo_comparator_sort(comparator, insertion_sort_opt, "Insertion Sort (optimized)", TIMEOUT);
 
     sort_algo_comparator_sort(comparator, shell_sort, "Shell Sort (original)", TIMEOUT);
     sort_algo_comparator_sort(comparator, shell_sort_opt_hibbard, "Shell Sort (Hibbard)", TIMEOUT);

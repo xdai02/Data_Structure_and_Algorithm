@@ -8,6 +8,7 @@ class SortAlgoComparator:
     def read_data(self, filename):
         with open(filename, "r") as file:
             self.__data = [int(elem) for line in file for elem in line.strip().split()]
+            return len(self.__data)
 
     def sort(self, algo, algo_name, timeout=5):
         process = multiprocessing.Process(target=algo, name=algo_name, args=(self.__data,))

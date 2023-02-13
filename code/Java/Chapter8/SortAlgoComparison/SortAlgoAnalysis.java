@@ -8,22 +8,22 @@ public class SortAlgoAnalysis {
         final int TIMEOUT = 15;
         SortAlgo sortAlgo = SortAlgo.getInstance(Integer.class);
 
-        // comparator.sort(SortAlgo::bubbleSort, "Bubble Sort (original v1.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::bubbleSortOptV1, "Bubble Sort (optimized v2.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::bubbleSortOptV2, "Bubble Sort (optimized v2.1)", TIMEOUT);
+        // comparator.sort(SortAlgo::bubbleSortV10, "Bubble Sort (original v1.0)", TIMEOUT);
+        // comparator.sort(SortAlgo::bubbleSortV20, "Bubble Sort (optimized v2.0)", TIMEOUT);
+        // comparator.sort(SortAlgo::bubbleSortV21, "Bubble Sort (optimized v2.1)", TIMEOUT);
 
-        // comparator.sort(SortAlgo::selectionSort, "Selection Sort (original v1.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::selectionSortOpt, "Selection Sort (optimized v2.0)", TIMEOUT);
+        // comparator.sort(SortAlgo::selectionSortV10, "Selection Sort (original v1.0)", TIMEOUT);
+        // comparator.sort(SortAlgo::selectionSortV20, "Selection Sort (optimized v2.0)", TIMEOUT);
 
-        // comparator.sort(SortAlgo::insertionSort, "Insertion Sort (original v1.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::insertionSortOpt, "Insertion Sort (optimized v2.0)", TIMEOUT);
+        // comparator.sort(SortAlgo::insertionSortV10, "Insertion Sort (original v1.0)", TIMEOUT);
+        // comparator.sort(SortAlgo::insertionSortV20, "Insertion Sort (optimized v2.0)", TIMEOUT);
 
-        comparator.sort(SortAlgo::shellSort, "Shell Sort (original v1.0)", TIMEOUT);
-        comparator.sort(SortAlgo::shellSortOptHibbard, "Shell Sort (Hibbard)", TIMEOUT);
-        comparator.sort(SortAlgo::shellSortOptSedgewick, "Shell Sort (Sedgewick)", TIMEOUT);
+        comparator.sort(SortAlgo::shellSortV10, "Shell Sort (original v1.0)", TIMEOUT);
+        comparator.sort(SortAlgo::shellSortHibbard, "Shell Sort (Hibbard)", TIMEOUT);
+        comparator.sort(SortAlgo::shellSortSedgewick, "Shell Sort (Sedgewick)", TIMEOUT);
 
-        comparator.sort(SortAlgo::mergeSort, "Merge Sort (original v1.0)", TIMEOUT);
-        comparator.sort(SortAlgo::mergeSortOptV1, "Merge Sort (optimized v2.0)", TIMEOUT);
-        comparator.sort(SortAlgo::mergeSortOptV2, "Merge Sort (optimized v3.0)", TIMEOUT);
+        comparator.sort(SortAlgo::mergeSortV10, "Merge Sort (original v1.0)", TIMEOUT);
+        comparator.sort(SortAlgo::mergeSortV20, "Merge Sort (optimized v2.0)", TIMEOUT);
+        comparator.sort(SortAlgo::mergeSortV30, "Merge Sort (optimized v3.0)", TIMEOUT);
     }
 }

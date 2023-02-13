@@ -59,29 +59,29 @@ T *merge_sort(T *arr, int n) {
 /**
  * Binary Insertion Sort
  */
-T *insertion_sort(T *arr, int n) {
-    for (int i = 1; i < n; i++) {
-        T temp = arr[i];
-        int left = 0;
-        int right = i - 1;
+// T *insertion_sort(T *arr, int n) {
+//     for (int i = 1; i < n; i++) {
+//         T temp = arr[i];
+//         int left = 0;
+//         int right = i - 1;
 
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (temp < arr[mid]) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
+//         while (left <= right) {
+//             int mid = (left + right) / 2;
+//             if (temp < arr[mid]) {
+//                 right = mid - 1;
+//             } else {
+//                 left = mid + 1;
+//             }
+//         }
 
-        for (int j = i - 1; j >= left; j--) {
-            arr[j + 1] = arr[j];
-        }
-        arr[left] = temp;
-    }
+//         for (int j = i - 1; j >= left; j--) {
+//             arr[j + 1] = arr[j];
+//         }
+//         arr[left] = temp;
+//     }
 
-    return arr;
-}
+//     return arr;
+// }
 
 /**
  * Merge Sort (optimized v2.0)
@@ -138,47 +138,47 @@ T *insertion_sort(T *arr, int n) {
 /**
  * Helper function for Merge Sort
  */
-static void merge(T *arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+// static void merge(T *arr, int left, int mid, int right) {
+//     int n1 = mid - left + 1;
+//     int n2 = right - mid;
 
-    T left_half[n1];
-    T right_half[n2];
+//     T left_half[n1];
+//     T right_half[n2];
 
-    for (int i = 0; i < n1; i++) {
-        left_half[i] = arr[left + i];
-    }
-    for (int i = 0; i < n2; i++) {
-        right_half[i] = arr[mid + i + 1];
-    }
+//     for (int i = 0; i < n1; i++) {
+//         left_half[i] = arr[left + i];
+//     }
+//     for (int i = 0; i < n2; i++) {
+//         right_half[i] = arr[mid + i + 1];
+//     }
 
-    int i = 0;
-    int j = 0;
-    int k = left;
+//     int i = 0;
+//     int j = 0;
+//     int k = left;
 
-    while (i < n1 && j < n2) {
-        if (left_half[i] < right_half[j]) {
-            arr[k] = left_half[i];
-            i++;
-        } else {
-            arr[k] = right_half[j];
-            j++;
-        }
-        k++;
-    }
+//     while (i < n1 && j < n2) {
+//         if (left_half[i] < right_half[j]) {
+//             arr[k] = left_half[i];
+//             i++;
+//         } else {
+//             arr[k] = right_half[j];
+//             j++;
+//         }
+//         k++;
+//     }
 
-    while (i < n1) {
-        arr[k] = left_half[i];
-        i++;
-        k++;
-    }
+//     while (i < n1) {
+//         arr[k] = left_half[i];
+//         i++;
+//         k++;
+//     }
 
-    while (j < n2) {
-        arr[k] = right_half[j];
-        j++;
-        k++;
-    }
-}
+//     while (j < n2) {
+//         arr[k] = right_half[j];
+//         j++;
+//         k++;
+//     }
+// }
 
 /**
  * Merge Sort (optimized v3.0)

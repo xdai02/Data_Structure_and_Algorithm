@@ -8,7 +8,7 @@
  * Bubble Sort (original v1.0)
  */
 template <typename T>
-T *bubble_sort(T *arr, int n) {
+T *bubble_sort_v1_0(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -24,7 +24,7 @@ T *bubble_sort(T *arr, int n) {
  * Bubble Sort (optimized v2.0)
  */
 template <typename T>
-T *bubble_sort_opt_v1(T *arr, int n) {
+T *bubble_sort_v2_0(T *arr, int n) {
     for (int i = 0; i < n; i++) {
         bool swapped = false;
         for (int j = 0; j < n - i - 1; j++) {
@@ -45,7 +45,7 @@ T *bubble_sort_opt_v1(T *arr, int n) {
  * Bubble Sort (optimized v2.1)
  */
 template <typename T>
-T *bubble_sort_opt_v2(T *arr, int n) {
+T *bubble_sort_v2_1(T *arr, int n) {
     int right = n - 1;
     for (int i = 0; i < n; i++) {
         bool swapped = false;
@@ -70,7 +70,7 @@ T *bubble_sort_opt_v2(T *arr, int n) {
  * Selection Sort (original v1.0)
  */
 template <typename T>
-T *selection_sort(T *arr, int n) {
+T *selection_sort_v1_0(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         int minIndex = i;
         for (int j = i + 1; j < n; j++) {
@@ -88,7 +88,7 @@ T *selection_sort(T *arr, int n) {
  * Selection Sort (optimzed v2.0)
  */
 template <typename T>
-T *selection_sort_opt(T *arr, int n) {
+T *selection_sort_v2_0(T *arr, int n) {
     for (int i = 0; i < n / 2; i++) {
         int minIndex = i;
         int maxIndex = n - i - 1;
@@ -119,7 +119,7 @@ T *selection_sort_opt(T *arr, int n) {
  * Insertion Sort (original v1.0)
  */
 template <typename T>
-T *insertion_sort(T *arr, int n) {
+T *insertion_sort_v1_0(T *arr, int n) {
     for (int i = 1; i < n; i++) {
         T temp = arr[i];
         int j = i - 1;
@@ -137,7 +137,7 @@ T *insertion_sort(T *arr, int n) {
  * Insertion Sort (optimized v2.0)
  */
 template <typename T>
-T *insertion_sort_opt(T *arr, int n) {
+T *insertion_sort_v2_0(T *arr, int n) {
     for (int i = 1; i < n; i++) {
         T temp = arr[i];
         int left = 0;
@@ -165,7 +165,7 @@ T *insertion_sort_opt(T *arr, int n) {
  * Shell Sort (original v1.0)
  */
 template <typename T>
-T *shell_sort(T *arr, int n) {
+T *shell_sort_v1_0(T *arr, int n) {
     int gap = n / 2;
 
     while (gap > 0) {
@@ -188,7 +188,7 @@ T *shell_sort(T *arr, int n) {
  * Shell Sort (Hibbard)
  */
 template <typename T>
-T *shell_sort_opt_hibbard(T *arr, int n) {
+T *shell_sort_hibbard(T *arr, int n) {
     int k = (int)log2(n);
 
     while (k >= 0) {
@@ -212,7 +212,7 @@ T *shell_sort_opt_hibbard(T *arr, int n) {
  * Shell Sort (Sedgewick)
  */
 template <typename T>
-T *shell_sort_opt_sedgewick(T *arr, int n) {
+T *shell_sort_sedgewick(T *arr, int n) {
     int k = (int)log2(n / 3);
 
     while (k >= 0) {
@@ -236,7 +236,7 @@ T *shell_sort_opt_sedgewick(T *arr, int n) {
  * Merge Sort (original v1.0)
  */
 template <typename T>
-T *merge_sort(T *arr, int n) {
+T *merge_sort_v1_0(T *arr, int n) {
     if (n <= 1) {
         return arr;
     }
@@ -252,8 +252,8 @@ T *merge_sort(T *arr, int n) {
         right_half[i - mid] = arr[i];
     }
 
-    merge_sort(left_half, mid);
-    merge_sort(right_half, n - mid);
+    merge_sort_v1_0(left_half, mid);
+    merge_sort_v1_0(right_half, n - mid);
 
     int i = 0;
     int j = 0;
@@ -289,9 +289,9 @@ T *merge_sort(T *arr, int n) {
  * Merge Sort (optimized v2.0)
  */
 template <typename T>
-T *merge_sort_opt_v1(T *arr, int n) {
+T *merge_sort_v2_0(T *arr, int n) {
     if (n <= 10) {
-        return insertion_sort_opt(arr, n);
+        return insertion_sort_v2_0(arr, n);
     }
 
     int mid = n / 2;
@@ -305,8 +305,8 @@ T *merge_sort_opt_v1(T *arr, int n) {
         right_half[i - mid] = arr[i];
     }
 
-    merge_sort_opt_v1(left_half, mid);
-    merge_sort_opt_v1(right_half, n - mid);
+    merge_sort_v2_0(left_half, mid);
+    merge_sort_v2_0(right_half, n - mid);
 
     int i = 0;
     int j = 0;
@@ -388,9 +388,9 @@ static void merge(T *arr, int left, int mid, int right) {
  * Merge Sort (optimized v3.0)
  */
 template <typename T>
-T *merge_sort_opt_v2(T *arr, int n) {
+T *merge_sort_v3_0(T *arr, int n) {
     if (n <= 10) {
-        return insertion_sort_opt(arr, n);
+        return insertion_sort_v2_0(arr, n);
     }
 
     int current_size = 1;

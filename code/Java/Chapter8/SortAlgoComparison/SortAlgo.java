@@ -28,7 +28,7 @@ public class SortAlgo {
     /**
      * Bubble Sort (original v1.0)
      */
-    public static <T extends Number & Comparable<T>> T[] bubbleSort(T[] arr) {
+    public static <T extends Number & Comparable<T>> T[] bubbleSortV10(T[] arr) {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length - i - 1; j++) {
                 if (arr[j].compareTo(arr[j + 1]) > 0) {
@@ -46,7 +46,7 @@ public class SortAlgo {
     /**
      * Bubble Sort (optimized v2.0)
      */
-    public static <T extends Comparable<T>> T[] bubbleSortOptV1(T[] arr) {
+    public static <T extends Comparable<T>> T[] bubbleSortV20(T[] arr) {
         for (int i = 0; i < arr.length; i++) {
             boolean swapped = false;
             for (int j = 0; j < arr.length - i - 1; j++) {
@@ -68,7 +68,7 @@ public class SortAlgo {
     /**
      * Bubble Sort (optimized v2.1)
      */
-    public static <T extends Comparable<T>> T[] bubbleSortOptV2(T[] arr) {
+    public static <T extends Comparable<T>> T[] bubbleSortV21(T[] arr) {
         int right = arr.length - 1;
         for (int i = 0; i < arr.length; i++) {
             boolean swapped = false;
@@ -94,7 +94,7 @@ public class SortAlgo {
     /**
      * Selection Sort (original v1.0)
      */
-    public static <T extends Comparable<T>> T[] selectionSort(T[] arr) {
+    public static <T extends Comparable<T>> T[] selectionSortV10(T[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < arr.length; j++) {
@@ -113,7 +113,7 @@ public class SortAlgo {
     /**
      * Selection Sort (optimized v2.0)
      */
-    public static <T extends Comparable<T>> T[] selectionSortOpt(T[] arr) {
+    public static <T extends Comparable<T>> T[] selectionSortV20(T[] arr) {
         for (int i = 0; i < arr.length / 2; i++) {
             int minIndex = i;
             int maxIndex = arr.length - i - 1;
@@ -147,7 +147,7 @@ public class SortAlgo {
     /**
      * Insertion Sort (original v1.0)
      */
-    public static <T extends Comparable<T>> T[] insertionSort(T[] arr) {
+    public static <T extends Comparable<T>> T[] insertionSortV10(T[] arr) {
         for (int i = 1; i < arr.length; i++) {
             T temp = arr[i];
             int j = i - 1;
@@ -164,7 +164,7 @@ public class SortAlgo {
     /**
      * Insertion Sort (optimized v2.0)
      */
-    public static <T extends Comparable<T>> T[] insertionSortOpt(T[] arr) {
+    public static <T extends Comparable<T>> T[] insertionSortV20(T[] arr) {
         for (int i = 1; i < arr.length; i++) {
             T temp = arr[i];
             int left = 0;
@@ -191,7 +191,7 @@ public class SortAlgo {
     /**
      * Shell Sort (original v1.0)
      */
-    public static <T extends Comparable<T>> T[] shellSort(T[] arr) {
+    public static <T extends Comparable<T>> T[] shellSortV10(T[] arr) {
         int gap = arr.length / 2;
 
         while (gap > 0) {
@@ -213,7 +213,7 @@ public class SortAlgo {
     /**
      * Shell Sort (Hibbard)
      */
-    public static <T extends Comparable<T>> T[] shellSortOptHibbard(T[] arr) {
+    public static <T extends Comparable<T>> T[] shellSortHibbard(T[] arr) {
         int k = (int) (Math.log(arr.length) / Math.log(2));
 
         while (k >= 0) {
@@ -236,7 +236,7 @@ public class SortAlgo {
     /**
      * Shell Sort (Sedgewick)
      */
-    public static <T extends Comparable<T>> T[] shellSortOptSedgewick(T[] arr) {
+    public static <T extends Comparable<T>> T[] shellSortSedgewick(T[] arr) {
         int k = (int) (Math.log(arr.length / 3) / Math.log(2));
 
         while (k >= 0) {
@@ -259,7 +259,7 @@ public class SortAlgo {
     /**
      * Merge Sort (original v1.0)
      */
-    public static <T extends Comparable<T>> T[] mergeSort(T[] arr) {
+    public static <T extends Comparable<T>> T[] mergeSortV10(T[] arr) {
         if (arr.length <= 1) {
             return arr;
         }
@@ -268,8 +268,8 @@ public class SortAlgo {
         T[] leftHalf = Arrays.copyOfRange(arr, 0, mid);
         T[] rightHalf = Arrays.copyOfRange(arr, mid, arr.length);
 
-        mergeSort(leftHalf);
-        mergeSort(rightHalf);
+        mergeSortV10(leftHalf);
+        mergeSortV10(rightHalf);
 
         int i = 0;
         int j = 0;
@@ -304,17 +304,17 @@ public class SortAlgo {
     /**
      * Merge Sort (optimized v2.0)
      */
-    public static <T extends Comparable<T>> T[] mergeSortOptV1(T[] arr) {
+    public static <T extends Comparable<T>> T[] mergeSortV20(T[] arr) {
         if (arr.length <= 10) {
-            return insertionSortOpt(arr);
+            return insertionSortV20(arr);
         }
 
         int mid = arr.length / 2;
         T[] leftHalf = Arrays.copyOfRange(arr, 0, mid);
         T[] rightHalf = Arrays.copyOfRange(arr, mid, arr.length);
 
-        mergeSortOptV1(leftHalf);
-        mergeSortOptV1(rightHalf);
+        mergeSortV20(leftHalf);
+        mergeSortV20(rightHalf);
 
         int i = 0;
         int j = 0;
@@ -394,9 +394,9 @@ public class SortAlgo {
     /**
      * Merge Sort (optimized v3.0)
      */
-    public static <T extends Comparable<T>> T[] mergeSortOptV2(T[] arr) {
+    public static <T extends Comparable<T>> T[] mergeSortV30(T[] arr) {
         if (arr.length <= 10) {
-            return insertionSortOpt(arr);
+            return insertionSortV20(arr);
         }
 
         int currentSize = 1;

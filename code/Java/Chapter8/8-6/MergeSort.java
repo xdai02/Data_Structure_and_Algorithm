@@ -55,29 +55,29 @@ public class MergeSort {
     /**
      * Binary Insertion Sort
      */
-    public static int[] insertionSort(int[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            int temp = arr[i];
-            int left = 0;
-            int right = i - 1;
+    // public static int[] insertionSort(int[] arr) {
+    //     for (int i = 1; i < arr.length; i++) {
+    //         int temp = arr[i];
+    //         int left = 0;
+    //         int right = i - 1;
 
-            while (left <= right) {
-                int mid = (left + right) / 2;
-                if (temp < arr[mid]) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-            }
+    //         while (left <= right) {
+    //             int mid = (left + right) / 2;
+    //             if (temp < arr[mid]) {
+    //                 right = mid - 1;
+    //             } else {
+    //                 left = mid + 1;
+    //             }
+    //         }
 
-            for (int j = i - 1; j >= left; j--) {
-                arr[j + 1] = arr[j];
-            }
-            arr[left] = temp;
-        }
+    //         for (int j = i - 1; j >= left; j--) {
+    //             arr[j + 1] = arr[j];
+    //         }
+    //         arr[left] = temp;
+    //     }
 
-        return arr;
-    }
+    //     return arr;
+    // }
 
     /**
      * Merge Sort (optimized v2.0)
@@ -127,47 +127,47 @@ public class MergeSort {
     /**
      * Helper function for Merge Sort
      */
-    private static void merge(int[] arr, int left, int mid, int right) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
+    // private static void merge(int[] arr, int left, int mid, int right) {
+    //     int n1 = mid - left + 1;
+    //     int n2 = right - mid;
 
-        int[] leftHalf = new int[n1];
-        int[] rightHalf = new int[n2];
+    //     int[] leftHalf = new int[n1];
+    //     int[] rightHalf = new int[n2];
 
-        for (int i = 0; i < n1; i++) {
-            leftHalf[i] = arr[left + i];
-        }
-        for (int i = 0; i < n2; i++) {
-            rightHalf[i] = arr[mid + i + 1];
-        }
+    //     for (int i = 0; i < n1; i++) {
+    //         leftHalf[i] = arr[left + i];
+    //     }
+    //     for (int i = 0; i < n2; i++) {
+    //         rightHalf[i] = arr[mid + i + 1];
+    //     }
 
-        int i = 0;
-        int j = 0;
-        int k = left;
+    //     int i = 0;
+    //     int j = 0;
+    //     int k = left;
 
-        while (i < n1 && j < n2) {
-            if (leftHalf[i] < rightHalf[j]) {
-                arr[k] = leftHalf[i];
-                i++;
-            } else {
-                arr[k] = rightHalf[j];
-                j++;
-            }
-            k++;
-        }
+    //     while (i < n1 && j < n2) {
+    //         if (leftHalf[i] < rightHalf[j]) {
+    //             arr[k] = leftHalf[i];
+    //             i++;
+    //         } else {
+    //             arr[k] = rightHalf[j];
+    //             j++;
+    //         }
+    //         k++;
+    //     }
 
-        while (i < n1) {
-            arr[k] = leftHalf[i];
-            i++;
-            k++;
-        }
+    //     while (i < n1) {
+    //         arr[k] = leftHalf[i];
+    //         i++;
+    //         k++;
+    //     }
 
-        while (j < n2) {
-            arr[k] = rightHalf[j];
-            j++;
-            k++;
-        }
-    }
+    //     while (j < n2) {
+    //         arr[k] = rightHalf[j];
+    //         j++;
+    //         k++;
+    //     }
+    // }
 
     /**
      * Merge Sort (optimized v3.0)

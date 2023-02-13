@@ -7,23 +7,28 @@
 
 typedef int T;
 
-void *bubble_sort(void *args);
-void *bubble_sort_opt_v1(void *args);
-void *bubble_sort_opt_v2(void *args);
+void *bubble_sort_v1_0(void *args);
+void *bubble_sort_v2_0(void *args);
+void *bubble_sort_v2_1(void *args);
 
-void *selection_sort(void *args);
-void *selection_sort_opt(void *args);
+void *selection_sort_v1_0(void *args);
+void *selection_sort_v2_0(void *args);
 
-void *insertion_sort(void *args);
-void *insertion_sort_opt(void *args);
+void *insertion_sort_v1_0(void *args);
+void *insertion_sort_v2_0(void *args);
 
-void *shell_sort(void *args);
-void *shell_sort_opt_hibbard(void *args);
-void *shell_sort_opt_sedgewick(void *args);
+void *shell_sort_v1_0(void *args);
+void *shell_sort_hibbard(void *args);
+void *shell_sort_sedgewick(void *args);
 
-void *merge_sort(void *args);
-void *merge_sort_opt_v1(void *args);
-void *merge_sort_opt_v2(void *args);
+void *merge_sort_v1_0(void *args);
+void *merge_sort_v2_0(void *args);
+void *merge_sort_v3_0(void *args);
 
+void *quick_sort_v1_0(void *args);
+void *quick_sort_v2_0(void *args);
+void *quick_sort_v2_1(void *args);
+void *quick_sort_v2_2(void *args);
+void *quick_sort_v3_0(void *args);
 
 #endif

@@ -1,16 +1,16 @@
 #include <stdio.h>
 
-#define SWAP(x, y)    \
-    {                 \
-        int temp = x; \
-        x = y;        \
-        y = temp;     \
-    }
-
 typedef int T;
 
+#define swap(x, y)  \
+    {               \
+        T temp = x; \
+        x = y;      \
+        y = temp;   \
+    }
+
 /**
- * Selection Sort (original)
+ * Selection Sort (original v1.0)
  */
 T *selection_sort(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
@@ -20,14 +20,14 @@ T *selection_sort(T *arr, int n) {
                 minIndex = j;
             }
         }
-        SWAP(arr[i], arr[minIndex]);
+        swap(arr[i], arr[minIndex]);
     }
 
     return arr;
 }
 
 /**
- * Selection Sort (optimzed)
+ * Selection Sort (optimzed v2.0)
  */
 // T *selection_sort(T *arr, int n) {
 //     for (int i = 0; i < n / 2; i++) {
@@ -43,14 +43,14 @@ T *selection_sort(T *arr, int n) {
 //             }
 //         }
 
-//         SWAP(arr[i], arr[minIndex]);
+//         swap(arr[i], arr[minIndex]);
 
 //         // In case of i == maxIndex before swap(arr[i], arr[minIndex]), it's now at minIndex.
 //         if (i == maxIndex) {
 //             maxIndex = minIndex;
 //         }
 
-//         SWAP(arr[n - i - 1], arr[maxIndex]);
+//         swap(arr[n - i - 1], arr[maxIndex]);
 //     }
 
 //     return arr;
@@ -65,6 +65,6 @@ int main() {
         printf("%d ", arr[i]);
     }
     printf("\n");
-    
+
     return 0;
 }

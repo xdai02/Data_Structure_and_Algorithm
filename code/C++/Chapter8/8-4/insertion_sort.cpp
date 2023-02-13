@@ -3,7 +3,7 @@
 using namespace std;
 
 /**
- * Insertion Sort (original)
+ * Insertion Sort (original v1.0)
  */
 template <typename T>
 T *insertion_sort(T *arr, int n) {
@@ -21,7 +21,7 @@ T *insertion_sort(T *arr, int n) {
 }
 
 /**
- * Insertion Sort (optimized)
+ * Insertion Sort (optimized v2.0)
  */
 // template <typename T>
 // T *insertion_sort(T *arr, int n) {

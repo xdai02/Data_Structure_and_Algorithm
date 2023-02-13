@@ -3,7 +3,7 @@
 using namespace std;
 
 /**
- * Bubble Sort (original)
+ * Bubble Sort (original v1.0)
  */
 template <typename T>
 T *bubble_sort(T *arr, int n) {
@@ -18,7 +18,7 @@ T *bubble_sort(T *arr, int n) {
 }
 
 /**
- * Bubble Sort (optimized v1.0)
+ * Bubble Sort (optimized v2.0)
  */
 // template <typename T>
 // T *bubble_sort(T *arr, int n) {
@@ -39,7 +39,7 @@ T *bubble_sort(T *arr, int n) {
 // }
 
 /**
- * Bubble Sort (optimized v2.0)
+ * Bubble Sort (optimized v2.1)
  */
 // template <typename T>
 // T *bubble_sort(T *arr, int n) {

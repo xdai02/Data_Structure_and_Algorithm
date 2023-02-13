@@ -3,7 +3,7 @@
 typedef int T;
 
 /**
- * Insertion Sort (original)
+ * Insertion Sort (original v1.0)
  */
 T *insertion_sort(T *arr, int n) {
     for (int i = 1; i < n; i++) {
@@ -20,7 +20,7 @@ T *insertion_sort(T *arr, int n) {
 }
 
 /**
- * Insertion Sort (optimized)
+ * Insertion Sort (optimized v2.0)
  */
 // T *insertion_sort(T *arr, int n) {
 //     for (int i = 1; i < n; i++) {

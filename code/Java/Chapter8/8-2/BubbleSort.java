@@ -8,7 +8,7 @@ public class BubbleSort {
     }
 
     /**
-     * Bubble Sort (original)
+     * Bubble Sort (original v1.0)
      */
      public static int[] bubbleSort(int[] arr) {
          for (int i = 0; i < arr.length; i++) {
@@ -25,7 +25,7 @@ public class BubbleSort {
      }
 
     /**
-     * Bubble Sort (optimized v1.0)
+     * Bubble Sort (optimized v2.0)
      */
 //    public static int[] bubbleSort(int[] arr) {
 //        for (int i = 0; i < arr.length; i++) {
@@ -47,7 +47,7 @@ public class BubbleSort {
 //    }
 
     /**
-     * Bubble Sort (optimized v2.0)
+     * Bubble Sort (optimized v2.1)
      */
 //    public static int[] bubbleSort(int[] arr) {
 //        int right = arr.length - 1;

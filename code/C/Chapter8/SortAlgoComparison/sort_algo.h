@@ -21,4 +21,9 @@ void *shell_sort(void *args);
 void *shell_sort_opt_hibbard(void *args);
 void *shell_sort_opt_sedgewick(void *args);
 
+void *merge_sort(void *args);
+void *merge_sort_opt_v1(void *args);
+void *merge_sort_opt_v2(void *args);
+
+
 #endif

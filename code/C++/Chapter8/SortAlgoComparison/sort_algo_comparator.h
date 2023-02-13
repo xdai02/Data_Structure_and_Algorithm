@@ -5,10 +5,6 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-// #include <pthread.h>
-// #include <windows.h>
-// #include <time.h>
-
 #include <chrono>
 #include <thread>
 

@@ -1,5 +1,5 @@
 def bubble_sort(lst):
-    """Bubble Sort (original)"""
+    """Bubble Sort (original v1.0)"""
     for i in range(len(lst) - 1):
         for j in range(len(lst) - 1 - i):
             if lst[j] > lst[j + 1]:
@@ -8,7 +8,7 @@ def bubble_sort(lst):
     return lst
 
 # def bubble_sort(lst):
-#     """Bubble Sort (optimized v1.0)"""
+#     """Bubble Sort (optimized v2.0)"""
 #     for i in range(len(lst) - 1):
 #         swapped = False
 #         for j in range(len(lst) - 1 - i):
@@ -21,7 +21,7 @@ def bubble_sort(lst):
 #     return lst
 
 # def bubble_sort(lst):
-#     """Bubble Sort (optimized v2.0)"""
+#     """Bubble Sort (optimized v2.1)"""
 #     right = len(lst) - 1
 #     for i in range(len(lst) - 1):
 #         swapped = False

@@ -1,5 +1,5 @@
 def insertion_sort(lst):
-    """Insertion Sort (original)"""
+    """Insertion Sort (original v1.0)"""
     for i in range(1, len(lst)):
         temp = lst[i]
         j = i - 1
@@ -11,7 +11,7 @@ def insertion_sort(lst):
     return lst
 
 # def insertion_sort(lst):
-#     """Insertion Sort (optimized)"""
+#     """Insertion Sort (optimized v2.0)"""
 #     for i in range(1, len(lst)):
 #         temp = lst[i]
 #         left = 0

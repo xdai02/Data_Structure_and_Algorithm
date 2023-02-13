@@ -743,10 +743,6 @@ Sedgewick增量序列为$ 1, 5, 19, 41, 109, \dots $，通项公式为$ 9 \times
 	\caption{归并排序}
 \end{figure}
 
-\vspace{0.5cm}
-
-\subsection{算法分析}
-
 归并排序每次将数组折半对分，一共分了$ logn $次，每一层进行合并操作的运算量是n，所以时间复杂度为$ O(nlogn) $。归并排序的速度仅次于快速排序。\\
 
 \begin{table}[H]
@@ -765,40 +761,92 @@ Sedgewick增量序列为$ 1, 5, 19, 41, 109, \dots $，通项公式为$ 9 \times
 
 \mybox{归并排序}
 
-\begin{lstlisting}[language=C]
-void merge(int *arr, int start, int mid, int end, int *temp) {
-    int i = start;
-    int j = mid + 1;
-    int k = 0;
+\begin{lstlisting}[language=Python]
+def merge_sort(lst):
+    """Merge Sort (original v1.0)"""
+    if len(lst) <= 1:
+        return lst
+    
+    mid = len(lst) // 2
+    left_half = lst[:mid]
+    right_half = lst[mid:]
 
-    while(i <= mid && j <= end) {
-        if(arr[i] <= arr[j]) {
-            temp[k++] = arr[i++];
-        } else {
-            temp[k++] = arr[j++];
-        }
-    }
+    merge_sort(left_half)
+    merge_sort(right_half)
 
-    while(i <= mid) {
-        temp[k++] = arr[i++];
-    }
-    while(j <= end) {
-        temp[k++] = arr[j++];
-    }
+    i = 0
+    j = 0
+    k = 0
 
-    for(int i = 0; i < k; i++) {
-        arr[start+i] = temp[i];
-    }
-}
+    while i < len(left_half) and j < len(right_half):
+        if left_half[i] < right_half[j]:
+            lst[k] = left_half[i]
+            i += 1
+        else:
+            lst[k] = right_half[j]
+            j += 1
+        k += 1
+    
+    while i < len(left_half):
+        lst[k] = left_half[i]
+        i += 1
+        k += 1
+    
+    while j < len(right_half):
+        lst[k] = right_half[j]
+        j += 1
+        k += 1
+    
+    return lst
+\end{lstlisting}
 
-void mergeSort(int *arr, int start, int end, int *temp) {
-    if(start < end) {
-        int mid = start + (end - start) / 2;
-        mergeSort(arr, start, mid, temp);
-        mergeSort(arr, mid+1, end, temp);
-        merge(arr, start, mid, end, temp);
-    }
-}
+\vspace{0.5cm}
+
+\subsection{归并排序优化}
+
+简单的归并排序利用分治法，递归地将对小规模子数组进行处理。但是递归会使小规模问题中方法调用太过频繁，因此对于规模较小的子数组可以采用插入排序。一般来说插入排序在小数组中比归并更快，这种优化可以使归并排序的运行时间缩短10\% $ \sim $ 15\%。\\
+
+另一个可以优化的地方是对于单次合并的过程，例如将子数组$ arr[start..mid] $和$ arr[mid+1..end] $进行合并，如果$ arr[mid] \le arr[mid+1] $的话，说明$ arr[start..end] $已经为有序状态，无序再进行不必要的合并。\\
+
+\mybox{归并排序优化}
+
+\begin{lstlisting}[language=Python]
+def merge_sort(lst):
+    """Merge Sort (optimized v2.0)"""
+    if len(lst) <= 10:
+        return insertion_sort(lst)
+    
+    mid = len(lst) // 2
+    left_half = lst[:mid]
+    right_half = lst[mid:]
+
+    left_half = merge_sort(left_half)
+    right_half = merge_sort(right_half)
+
+    i = 0
+    j = 0
+    k = 0
+
+    while i < len(left_half) and j < len(right_half):
+        if left_half[i] < right_half[j]:
+            lst[k] = left_half[i]
+            i += 1
+        else:
+            lst[k] = right_half[j]
+            j += 1
+        k += 1
+    
+    while i < len(left_half):
+        lst[k] = left_half[i]
+        i += 1
+        k += 1
+    
+    while j < len(right_half):
+        lst[k] = right_half[j]
+        j += 1
+        k += 1
+    
+    return lst
 \end{lstlisting}
 
 \newpage
@@ -994,34 +1042,197 @@ void mergeSort(int *arr, int start, int end, int *temp) {
 
 \mybox{快速排序}
 
-\begin{lstlisting}[language=C]
-void quickSort(int *arr, int start, int end) {
-    if(start < end) {
-        int i = start;
-        int j = end;
-        int pivot = arr[start];
+\begin{lstlisting}[language=Python]
+def quick_sort(lst):
+    """Quick Sort (original v1.0)"""
+    def partition(start, end):
+        pivot = lst[start]
 
-        while(i < j) {
-            while(i < j && arr[j] > pivot) {
-                j--;
-            }
-            if(i < j) {
-                arr[i] = arr[j];
-                i++;
-            }
-            while(i < j && arr[i] < pivot) {
-                i++;
-            }
-            if(i < j) {
-                arr[j] = arr[i];
-                j--;
-            }
-        }
-        arr[i] = pivot;
-        quickSort(arr, start, i-1);
-        quickSort(arr, i+1, end);
-    } 
-}
+        i = start + 1
+        j = end
+        while i <= j:
+            while i <= j and lst[i] <= pivot:
+                i += 1
+            while i <= j and lst[j] >= pivot:
+                j -= 1
+            if i <= j:
+                lst[i], lst[j] = lst[j], lst[i]
+
+        lst[start], lst[j] = lst[j], lst[start]
+        return j
+
+    def sort(start, end):
+        if start < end:
+            pivot_index = partition(start, end)
+            sort(start, pivot_index - 1)
+            sort(pivot_index + 1, end)
+
+    sort(0, len(lst) - 1)
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\subsection{随机选择基准值}
+
+快速排序利用分治法，通过一趟排序将数组分为两部分，其中一部分小于等于基准值，另一部分大于等于基准值，然后再递归对两个子问题排序。\\
+
+基本的快速排序采用序列的第一个元素作为基准值，但是这不是一种好方法。当数组已经有序时，这样的分割效率非常糟糕。为了缓解这种极端情况，可以在待排序数组中随机选择一个元素作为基准值。\\
+
+\mybox{随机选取基准值}
+
+\begin{lstlisting}[language=Python]
+def quick_sort(lst):
+    """Quick Sort (optimized v2.0)"""
+    def partition(start, end):
+        pivot_index = random.randint(start, end)
+        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+        pivot = lst[start]
+
+        i = start + 1
+        j = end
+        while i <= j:
+            while i <= j and lst[i] <= pivot:
+                i += 1
+            while i <= j and lst[j] >= pivot:
+                j -= 1
+            if i <= j:
+                lst[i], lst[j] = lst[j], lst[i]
+        
+        lst[start], lst[j] = lst[j], lst[start]
+        return j
+
+    def sort(start, end):
+        if start < end:
+            pivot_index = partition(start, end)
+            sort(start, pivot_index - 1)
+            sort(pivot_index + 1, end)
+
+    sort(0, len(lst) - 1)
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\subsection{三数取中}
+
+虽然随机选取基准值可以减少出现分割不好的几率，但是最坏情况下还是$ O(n^2) $。另一种选取基准值的方法就是三数取中，也就是取序列中start、mid、end三个元素的中间值作为基准值。\\
+
+\mybox{三数取中}
+
+\begin{lstlisting}[language=Python]
+def quick_sort(lst):
+    """Quick Sort (optimized v2.1)"""
+    def median_of_three(start, end):
+        mid = start + (end - start) // 2
+
+        if lst[start] > lst[mid]:
+            lst[start], lst[mid] = lst[mid], lst[start]
+        if lst[start] > lst[end]:
+            lst[start], lst[end] = lst[end], lst[start]
+        if lst[mid] > lst[end]:
+            lst[mid], lst[end] = lst[end], lst[mid]
+        
+        return mid
+
+    def partition(start, end):
+        pivot_index = median_of_three(start, end)
+        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+        pivot = lst[start]
+
+        i = start + 1
+        j = end
+        while i <= j:
+            while i <= j and lst[i] <= pivot:
+                i += 1
+            while i <= j and lst[j] >= pivot:
+                j -= 1
+            if i <= j:
+                lst[i], lst[j] = lst[j], lst[i]
+        
+        lst[start], lst[j] = lst[j], lst[start]
+        return j
+
+    def sort(start, end):
+        if start < end:
+            pivot_index = partition(start, end)
+            sort(start, pivot_index - 1)
+            sort(pivot_index + 1, end)
+
+    sort(0, len(lst) - 1)
+\end{lstlisting}
+
+\vspace{0.5cm}
+
+\subsection{三数取中+插入排序}
+
+对于很小和部分有序的数组，快速排序的效率不如插入排序。因此当待排序数组被分割到一定大小后，可直接采用插入排序。\\
+
+\mybox{三数取中+插入排序}
+
+\begin{lstlisting}[language=Python]
+def quick_sort(lst):
+    """Quick Sort (optimized v2.2)"""
+    def insertion_sort(lst):
+        """Binary Insertion Sort"""
+        for i in range(1, len(lst)):
+            temp = lst[i]
+            left = 0
+            right = i - 1
+
+            while left <= right:
+                mid = (left + right) // 2
+                if temp < lst[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+
+            for j in range(i - 1, left - 1, -1):
+                lst[j + 1] = lst[j]
+            lst[left] = temp
+        
+        return lst
+    
+    def median_of_three(start, end):
+        mid = start + (end - start) // 2
+
+        if lst[start] > lst[mid]:
+            lst[start], lst[mid] = lst[mid], lst[start]
+        if lst[start] > lst[end]:
+            lst[start], lst[end] = lst[end], lst[start]
+        if lst[mid] > lst[end]:
+            lst[mid], lst[end] = lst[end], lst[mid]
+        
+        return mid
+
+    def partition(start, end):
+        if end - start <= 10:
+            lst[start:end + 1] = insertion_sort(lst[start:end + 1])
+            return None
+
+        pivot_index = median_of_three(start, end)
+        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+        pivot = lst[start]
+
+        i = start + 1
+        j = end
+        while i <= j:
+            while i <= j and lst[i] <= pivot:
+                i += 1
+            while i <= j and lst[j] >= pivot:
+                j -= 1
+            if i <= j:
+                lst[i], lst[j] = lst[j], lst[i]
+        
+        lst[start], lst[j] = lst[j], lst[start]
+        return j
+
+    def sort(start, end):
+        if start < end:
+            pivot_index = partition(start, end)
+            if pivot_index is not None:
+                sort(start, pivot_index - 1)
+                sort(pivot_index + 1, end)
+
+    sort(0, len(lst) - 1)
 \end{lstlisting}
 
 \newpage

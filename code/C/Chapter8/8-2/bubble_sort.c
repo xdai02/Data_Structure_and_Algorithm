@@ -1,23 +1,23 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define SWAP(x, y)    \
-    {                 \
-        int temp = x; \
-        x = y;        \
-        y = temp;     \
-    }
-
 typedef int T;
 
+#define swap(x, y)  \
+    {               \
+        T temp = x; \
+        x = y;      \
+        y = temp;   \
+    }
+
 /**
- * Bubble Sort (original)
+ * Bubble Sort (original v1.0)
  */
 T *bubble_sort(T *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                SWAP(arr[j], arr[j + 1]);
+                swap(arr[j], arr[j + 1]);
             }
         }
     }
@@ -25,14 +25,14 @@ T *bubble_sort(T *arr, int n) {
 }
 
 /**
- * Bubble Sort (optimized v1.0)
+ * Bubble Sort (optimized v2.0)
  */
 // T *bubble_sort(T *arr, int n) {
 //     for (int i = 0; i < n; i++) {
 //         bool swapped = false;
 //         for (int j = 0; j < n - i - 1; j++) {
 //             if (arr[j] > arr[j + 1]) {
-//                 SWAP(arr[j], arr[j + 1]);
+//                 swap(arr[j], arr[j + 1]);
 //                 swapped = true;
 //             }
 //         }
@@ -45,7 +45,7 @@ T *bubble_sort(T *arr, int n) {
 // }
 
 /**
- * Bubble Sort (optimized v2.0)
+ * Bubble Sort (optimized v2.1)
  */
 // T *bubble_sort(T *arr, int n) {
 //     int right = n - 1;
@@ -54,7 +54,7 @@ T *bubble_sort(T *arr, int n) {
 //         int last = 0;
 //         for (int j = 0; j < right; j++) {
 //             if (arr[j] > arr[j + 1]) {
-//                 SWAP(arr[j], arr[j + 1]);
+//                 swap(arr[j], arr[j + 1]);
 //                 swapped = true;
 //                 last = j;
 //             }

@@ -5,7 +5,7 @@
 #include <cmath>
 
 /**
- * Bubble Sort (original)
+ * Bubble Sort (original v1.0)
  */
 template <typename T>
 T *bubble_sort(T *arr, int n) {
@@ -21,7 +21,7 @@ T *bubble_sort(T *arr, int n) {
 }
 
 /**
- * Bubble Sort (optimized v1.0)
+ * Bubble Sort (optimized v2.0)
  */
 template <typename T>
 T *bubble_sort_opt_v1(T *arr, int n) {
@@ -42,7 +42,7 @@ T *bubble_sort_opt_v1(T *arr, int n) {
 }
 
 /**
- * Bubble Sort (optimized v2.0)
+ * Bubble Sort (optimized v2.1)
  */
 template <typename T>
 T *bubble_sort_opt_v2(T *arr, int n) {
@@ -67,7 +67,7 @@ T *bubble_sort_opt_v2(T *arr, int n) {
 }
 
 /**
- * Selection Sort (original)
+ * Selection Sort (original v1.0)
  */
 template <typename T>
 T *selection_sort(T *arr, int n) {
@@ -85,7 +85,7 @@ T *selection_sort(T *arr, int n) {
 }
 
 /**
- * Selection Sort (optimzed)
+ * Selection Sort (optimzed v2.0)
  */
 template <typename T>
 T *selection_sort_opt(T *arr, int n) {
@@ -116,7 +116,7 @@ T *selection_sort_opt(T *arr, int n) {
 }
 
 /**
- * Insertion Sort (original)
+ * Insertion Sort (original v1.0)
  */
 template <typename T>
 T *insertion_sort(T *arr, int n) {
@@ -134,7 +134,7 @@ T *insertion_sort(T *arr, int n) {
 }
 
 /**
- * Insertion Sort (optimized)
+ * Insertion Sort (optimized v2.0)
  */
 template <typename T>
 T *insertion_sort_opt(T *arr, int n) {
@@ -162,7 +162,7 @@ T *insertion_sort_opt(T *arr, int n) {
 }
 
 /**
- * Shell Sort (original)
+ * Shell Sort (original v1.0)
  */
 template <typename T>
 T *shell_sort(T *arr, int n) {
@@ -227,6 +227,182 @@ T *shell_sort_opt_sedgewick(T *arr, int n) {
             arr[j] = temp;
         }
         k--;
+    }
+
+    return arr;
+}
+
+/**
+ * Merge Sort (original v1.0)
+ */
+template <typename T>
+T *merge_sort(T *arr, int n) {
+    if (n <= 1) {
+        return arr;
+    }
+
+    int mid = n / 2;
+    T left_half[mid];
+    T right_half[n - mid];
+
+    for (int i = 0; i < mid; i++) {
+        left_half[i] = arr[i];
+    }
+    for (int i = mid; i < n; i++) {
+        right_half[i - mid] = arr[i];
+    }
+
+    merge_sort(left_half, mid);
+    merge_sort(right_half, n - mid);
+
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    while (i < mid && j < n - mid) {
+        if (left_half[i] < right_half[j]) {
+            arr[k] = left_half[i];
+            i++;
+        } else {
+            arr[k] = right_half[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < mid) {
+        arr[k] = left_half[i];
+        i++;
+        k++;
+    }
+
+    while (j < n - mid) {
+        arr[k] = right_half[j];
+        j++;
+        k++;
+    }
+
+    return arr;
+}
+
+/**
+ * Merge Sort (optimized v2.0)
+ */
+template <typename T>
+T *merge_sort_opt_v1(T *arr, int n) {
+    if (n <= 10) {
+        return insertion_sort_opt(arr, n);
+    }
+
+    int mid = n / 2;
+    T left_half[mid];
+    T right_half[n - mid];
+
+    for (int i = 0; i < mid; i++) {
+        left_half[i] = arr[i];
+    }
+    for (int i = mid; i < n; i++) {
+        right_half[i - mid] = arr[i];
+    }
+
+    merge_sort_opt_v1(left_half, mid);
+    merge_sort_opt_v1(right_half, n - mid);
+
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    while (i < mid && j < n - mid) {
+        if (left_half[i] < right_half[j]) {
+            arr[k] = left_half[i];
+            i++;
+        } else {
+            arr[k] = right_half[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < mid) {
+        arr[k] = left_half[i];
+        i++;
+        k++;
+    }
+
+    while (j < n - mid) {
+        arr[k] = right_half[j];
+        j++;
+        k++;
+    }
+
+    return arr;
+}
+
+/**
+ * Helper function for Merge Sort
+ */
+template <typename T>
+static void merge(T *arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    T left_half[n1];
+    T right_half[n2];
+
+    for (int i = 0; i < n1; i++) {
+        left_half[i] = arr[left + i];
+    }
+    for (int i = 0; i < n2; i++) {
+        right_half[i] = arr[mid + i + 1];
+    }
+
+    int i = 0;
+    int j = 0;
+    int k = left;
+
+    while (i < n1 && j < n2) {
+        if (left_half[i] < right_half[j]) {
+            arr[k] = left_half[i];
+            i++;
+        } else {
+            arr[k] = right_half[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = left_half[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = right_half[j];
+        j++;
+        k++;
+    }
+}
+
+/**
+ * Merge Sort (optimized v3.0)
+ */
+template <typename T>
+T *merge_sort_opt_v2(T *arr, int n) {
+    if (n <= 10) {
+        return insertion_sort_opt(arr, n);
+    }
+
+    int current_size = 1;
+    while (current_size < n - 1) {
+        int left = 0;
+        while (left < n - 1) {
+            int mid = std::min(left + current_size - 1, n - 1);
+            int right = std::min(left + 2 * current_size - 1, n - 1);
+            merge(arr, left, mid, right);
+            left = right + 1;
+        }
+        current_size *= 2;
     }
 
     return arr;

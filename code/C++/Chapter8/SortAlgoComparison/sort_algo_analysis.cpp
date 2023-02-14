@@ -26,5 +26,11 @@ int main() {
     comparator->sort(merge_sort_v2_0, "Merge Sort (optimized v2.0)");
     comparator->sort(merge_sort_v3_0, "Merge Sort (optimized v3.0)");
 
+    comparator->sort(quick_sort_v1_0, "Quick Sort (original v1.0)");
+    comparator->sort(quick_sort_v2_0, "Quick Sort (optimized v2.0)");
+    comparator->sort(quick_sort_v2_1, "Quick Sort (optimized v2.1)");
+    comparator->sort(quick_sort_v2_2, "Quick Sort (optimized v2.2)");
+    comparator->sort(quick_sort_v3_0, "Quick Sort (optimized v3.0)");
+
     return 0;
 }

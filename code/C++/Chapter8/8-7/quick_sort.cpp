@@ -1,22 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 
-typedef int T;
-
-#define swap(x, y)  \
-    {               \
-        T temp = x; \
-        x = y;      \
-        y = temp;   \
-    }
+using namespace std;
 
 const int INSERTION_SORT_THRESHOLD = 10;
 
 /**
  * Binary Insertion Sort
  */
+template <typename T>
 T *insertion_sort(T *arr, int n) {
     for (int i = 1; i < n; i++) {
         T temp = arr[i];
@@ -41,6 +34,7 @@ T *insertion_sort(T *arr, int n) {
     return arr;
 }
 
+template <typename T>
 static int partition(T *arr, int start, int end, T pivot) {
     int i = start + 1;
     int j = end;
@@ -60,6 +54,7 @@ static int partition(T *arr, int start, int end, T pivot) {
     return j;
 }
 
+template <typename T>
 static int median_of_three(T *arr, int start, int end) {
     int mid = start + (end - start) / 2;
 
@@ -76,78 +71,85 @@ static int median_of_three(T *arr, int start, int end) {
     return mid;
 }
 
-// /**
-//  * Help function for Quick Sort (original v1.0)
-//  */
-// static void __quick_sort(T *arr, int start, int end) {
-//     if (start < end) {
-//         T pivot = arr[start];
+/**
+ * Help function for Quick Sort (original v1.0)
+ */
+template <typename T>
+static void quick_sort(T *arr, int start, int end) {
+    if (start < end) {
+        T pivot = arr[start];
 
-//         int pivot_index = partition(arr, start, end, pivot);
-//         __quick_sort(arr, start, pivot_index - 1);
-//         __quick_sort(arr, pivot_index + 1, end);
-//     }
-// }
+        int pivot_index = partition(arr, start, end, pivot);
+        quick_sort(arr, start, pivot_index - 1);
+        quick_sort(arr, pivot_index + 1, end);
+    }
+}
 
-// /**
-//  * Quick Sort (original v1.0)
-//  */
-// T *quick_sort(T *arr, int n) {
-//     __quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
+/**
+ * Quick Sort (original v1.0)
+ */
+template <typename T>
+T *quick_sort(T *arr, int n) {
+    quick_sort(arr, 0, n - 1);
+    return arr;
+}
 
 // /**
 //  * Help function for Quick Sort (optimized v2.0)
 //  */
-// static void __quick_sort(T *arr, int start, int end) {
+// template <typename T>
+// static void quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
 //         int pivot_index = rand() % (end - start + 1) + start;
 //         swap(arr[start], arr[pivot_index]);
 //         T pivot = arr[start];
 
 //         pivot_index = partition(arr, start, end, pivot);
-//         __quick_sort(arr, start, pivot_index - 1);
-//         __quick_sort(arr, pivot_index + 1, end);
+//         quick_sort(arr, start, pivot_index - 1);
+//         quick_sort(arr, pivot_index + 1, end);
 //     }
 // }
 
 // /**
 //  * Quick Sort (optimized v2.0)
 //  */
+// template <typename T>
 // T *quick_sort(T *arr, int n) {
 //     srand(time(NULL));
-//     __quick_sort(arr, 0, n - 1);
+//     quick_sort(arr, 0, n - 1);
 //     return arr;
 // }
 
 // /**
 //  * Help function for Quick Sort (optimized v2.1)
 //  */
-// static void __quick_sort(T *arr, int start, int end) {
+// template <typename T>
+// static void quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
 //         int pivot_index = median_of_three(arr, start, end);
 //         swap(arr[start], arr[pivot_index]);
 //         T pivot = arr[start];
 
 //         pivot_index = partition(arr, start, end, pivot);
-//         __quick_sort(arr, start, pivot_index - 1);
-//         __quick_sort(arr, pivot_index + 1, end);
+//         quick_sort(arr, start, pivot_index - 1);
+//         quick_sort(arr, pivot_index + 1, end);
 //     }
 // }
 
 // /**
 //  * Quick Sort (optimized v2.1)
 //  */
+// template <typename T>
 // T *quick_sort(T *arr, int n) {
-//     __quick_sort(arr, 0, n - 1);
+//     quick_sort(arr, 0, n - 1);
 //     return arr;
 // }
 
 // /**
 //  * Help function for Quick Sort (optimized v2.2)
 //  */
-// static void __quick_sort(T *arr, int start, int end) {
+// template <typename T>
+// static void quick_sort(T *arr, int start, int end) {
 //     if (end - start <= INSERTION_SORT_THRESHOLD) {
 //         T temp[end - start + 1];
 //         memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
@@ -161,15 +163,16 @@ static int median_of_three(T *arr, int start, int end) {
 //     T pivot = arr[start];
 
 //     pivot_index = partition(arr, start, end, pivot);
-//     __quick_sort(arr, start, pivot_index - 1);
-//     __quick_sort(arr, pivot_index + 1, end);
+//     quick_sort(arr, start, pivot_index - 1);
+//     quick_sort(arr, pivot_index + 1, end);
 // }
 
 // /**
 //  * Quick Sort (optimized v2.2)
 //  */
+// template <typename T>
 // T *quick_sort(T *arr, int n) {
-//     __quick_sort(arr, 0, n - 1);
+//     quick_sort(arr, 0, n - 1);
 //     return arr;
 // }
 
@@ -179,9 +182,9 @@ int main() {
 
     quick_sort(arr, n);
     for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
+        cout << arr[i] << " ";
     }
-    printf("\n");
+    cout << endl;
 
     return 0;
 }

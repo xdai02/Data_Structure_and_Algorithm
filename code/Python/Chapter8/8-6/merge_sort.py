@@ -1,3 +1,5 @@
+INESRTION_SORT_THRESHOLD = 10
+
 def merge_sort(lst):
     """Merge Sort (original v1.0)"""
     if len(lst) <= 1:
@@ -57,7 +59,7 @@ def merge_sort(lst):
 
 # def merge_sort(lst):
 #     """Merge Sort (optimized v2.0)"""
-#     if len(lst) <= 10:
+#     if len(lst) <= INESRTION_SORT_THRESHOLD:
 #         return insertion_sort(lst)
     
 #     mid = len(lst) // 2
@@ -129,7 +131,7 @@ def merge_sort(lst):
 #             j += 1
 #             k += 1
 
-#     if len(lst) <= 10:
+#     if len(lst) <= INESRTION_SORT_THRESHOLD:
 #         return insertion_sort(lst)
 
 #     current_size = 1

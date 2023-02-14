@@ -1,6 +1,8 @@
 import math
 import random
 
+INSERTION_SORT_THRESHOLD = 10
+
 def bubble_sort_v1_0(lst):
     """Bubble Sort (original v1.0)"""
     for i in range(len(lst) - 1):
@@ -194,7 +196,7 @@ def merge_sort_v1_0(lst):
 
 def merge_sort_v2_0(lst):
     """Merge Sort (optimized v2.0)"""
-    if len(lst) <= 10:
+    if len(lst) <= INSERTION_SORT_THRESHOLD:
         return insertion_sort_v2_0(lst)
     
     mid = len(lst) // 2
@@ -266,7 +268,7 @@ def merge_sort_v3_0(lst):
             j += 1
             k += 1
 
-    if len(lst) <= 10:
+    if len(lst) <= INSERTION_SORT_THRESHOLD:
         return insertion_sort_v2_0(lst)
 
     current_size = 1
@@ -281,27 +283,39 @@ def merge_sort_v3_0(lst):
     
     return lst
 
+def partition(lst, start, end, pivot):
+    i = start + 1
+    j = end
+    while i <= j:
+        while i <= j and lst[i] <= pivot:
+            i += 1
+        while i <= j and lst[j] >= pivot:
+            j -= 1
+        if i <= j:
+            lst[i], lst[j] = lst[j], lst[i]
+    
+    lst[start], lst[j] = lst[j], lst[start]
+    return j
+
+def median_of_three(lst, start, end):
+    mid = start + (end - start) // 2
+
+    if lst[start] > lst[mid]:
+        lst[start], lst[mid] = lst[mid], lst[start]
+    if lst[start] > lst[end]:
+        lst[start], lst[end] = lst[end], lst[start]
+    if lst[mid] > lst[end]:
+        lst[mid], lst[end] = lst[end], lst[mid]
+    
+    return mid
+
 def quick_sort_v1_0(lst):
     """Quick Sort (original v1.0)"""
-    def partition(start, end):
-        pivot = lst[start]
-
-        i = start + 1
-        j = end
-        while i <= j:
-            while i <= j and lst[i] <= pivot:
-                i += 1
-            while i <= j and lst[j] >= pivot:
-                j -= 1
-            if i <= j:
-                lst[i], lst[j] = lst[j], lst[i]
-
-        lst[start], lst[j] = lst[j], lst[start]
-        return j
-
     def sort(start, end):
         if start < end:
-            pivot_index = partition(start, end)
+            pivot = lst[start]
+
+            pivot_index = partition(lst, start, end, pivot)
             sort(start, pivot_index - 1)
             sort(pivot_index + 1, end)
 
@@ -309,27 +323,13 @@ def quick_sort_v1_0(lst):
 
 def quick_sort_v2_0(lst):
     """Quick Sort (optimized v2.0)"""
-    def partition(start, end):
-        pivot_index = random.randint(start, end)
-        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
-        pivot = lst[start]
-
-        i = start + 1
-        j = end
-        while i <= j:
-            while i <= j and lst[i] <= pivot:
-                i += 1
-            while i <= j and lst[j] >= pivot:
-                j -= 1
-            if i <= j:
-                lst[i], lst[j] = lst[j], lst[i]
-        
-        lst[start], lst[j] = lst[j], lst[start]
-        return j
-
     def sort(start, end):
         if start < end:
-            pivot_index = partition(start, end)
+            pivot_index = random.randint(start, end)
+            lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+            pivot = lst[start]
+
+            pivot_index = partition(lst, start, end, pivot)
             sort(start, pivot_index - 1)
             sort(pivot_index + 1, end)
 
@@ -337,39 +337,13 @@ def quick_sort_v2_0(lst):
 
 def quick_sort_v2_1(lst):
     """Quick Sort (optimized v2.1)"""
-    def median_of_three(start, end):
-        mid = start + (end - start) // 2
-
-        if lst[start] > lst[mid]:
-            lst[start], lst[mid] = lst[mid], lst[start]
-        if lst[start] > lst[end]:
-            lst[start], lst[end] = lst[end], lst[start]
-        if lst[mid] > lst[end]:
-            lst[mid], lst[end] = lst[end], lst[mid]
-        
-        return mid
-
-    def partition(start, end):
-        pivot_index = median_of_three(start, end)
-        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
-        pivot = lst[start]
-
-        i = start + 1
-        j = end
-        while i <= j:
-            while i <= j and lst[i] <= pivot:
-                i += 1
-            while i <= j and lst[j] >= pivot:
-                j -= 1
-            if i <= j:
-                lst[i], lst[j] = lst[j], lst[i]
-        
-        lst[start], lst[j] = lst[j], lst[start]
-        return j
-
     def sort(start, end):
         if start < end:
-            pivot_index = partition(start, end)
+            pivot_index = median_of_three(lst, start, end)
+            lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+            pivot = lst[start]
+
+            pivot_index = partition(lst, start, end, pivot)
             sort(start, pivot_index - 1)
             sort(pivot_index + 1, end)
 
@@ -377,88 +351,35 @@ def quick_sort_v2_1(lst):
 
 def quick_sort_v2_2(lst):
     """Quick Sort (optimized v2.2)"""
-    def median_of_three(start, end):
-        mid = start + (end - start) // 2
-
-        if lst[start] > lst[mid]:
-            lst[start], lst[mid] = lst[mid], lst[start]
-        if lst[start] > lst[end]:
-            lst[start], lst[end] = lst[end], lst[start]
-        if lst[mid] > lst[end]:
-            lst[mid], lst[end] = lst[end], lst[mid]
-        
-        return mid
-
-    def partition(start, end):
-        if end - start <= 10:
+    def sort(start, end):
+        if end - start <= INSERTION_SORT_THRESHOLD:
             lst[start:end + 1] = insertion_sort_v2_0(lst[start:end + 1])
-            return None
-
-        pivot_index = median_of_three(start, end)
+            return
+            
+        pivot_index = median_of_three(lst, start, end)
         lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
         pivot = lst[start]
 
-        i = start + 1
-        j = end
-        while i <= j:
-            while i <= j and lst[i] <= pivot:
-                i += 1
-            while i <= j and lst[j] >= pivot:
-                j -= 1
-            if i <= j:
-                lst[i], lst[j] = lst[j], lst[i]
-        
-        lst[start], lst[j] = lst[j], lst[start]
-        return j
-
-    def sort(start, end):
-        if start < end:
-            pivot_index = partition(start, end)
-            if pivot_index is not None:
-                sort(start, pivot_index - 1)
-                sort(pivot_index + 1, end)
+        pivot_index = partition(lst, start, end, pivot)
+        if pivot_index is not None:
+            sort(start, pivot_index - 1)
+            sort(pivot_index + 1, end)
 
     sort(0, len(lst) - 1)
 
 def quick_sort_v3_0(lst):
     """Quick Sort (optimized v3.0)"""
-    def median_of_three(start, end):
-        mid = start + (end - start) // 2
-
-        if lst[start] > lst[mid]:
-            lst[start], lst[mid] = lst[mid], lst[start]
-        if lst[start] > lst[end]:
-            lst[start], lst[end] = lst[end], lst[start]
-        if lst[mid] > lst[end]:
-            lst[mid], lst[end] = lst[end], lst[mid]
-        
-        return mid
-
-    def partition(start, end):
-        pivot_index = median_of_three(start, end)
-        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
-        pivot = lst[start]
-        
-        i = start + 1
-        j = end
-        while i <= j:
-            while i <= j and lst[i] <= pivot:
-                i += 1
-            while i <= j and lst[j] >= pivot:
-                j -= 1
-            if i <= j:
-                lst[i], lst[j] = lst[j], lst[i]
-        
-        lst[start], lst[j] = lst[j], lst[start]
-        return j
-
     stack = [(0, len(lst) - 1)]
     while stack:
         start, end = stack.pop()
 
-        if end - start <= 10:
+        if end - start <= INSERTION_SORT_THRESHOLD:
             lst[start:end + 1] = insertion_sort_v2_0(lst[start:end + 1])
         else:
-            pivot_index = partition(start, end)
+            pivot_index = median_of_three(lst, start, end)
+            lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+            pivot = lst[start]
+
+            pivot_index = partition(lst, start, end, pivot)
             stack.append((start, pivot_index - 1))
             stack.append((pivot_index + 1, end))

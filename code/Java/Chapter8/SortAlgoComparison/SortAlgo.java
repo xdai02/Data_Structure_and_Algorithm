@@ -4,6 +4,8 @@ import java.util.Arrays;
 public class SortAlgo {
     private static volatile SortAlgo sortAlgo;
     private static Class clazz;
+    
+    private static final int INSERTION_SORT_THRESHOLD = 10;
 
     private SortAlgo(Class clazz) {
         this.clazz = clazz;
@@ -305,7 +307,7 @@ public class SortAlgo {
      * Merge Sort (optimized v2.0)
      */
     public static <T extends Comparable<T>> T[] mergeSortV20(T[] arr) {
-        if (arr.length <= 10) {
+        if (arr.length <= INSERTION_SORT_THRESHOLD) {
             return insertionSortV20(arr);
         }
 
@@ -395,7 +397,7 @@ public class SortAlgo {
      * Merge Sort (optimized v3.0)
      */
     public static <T extends Comparable<T>> T[] mergeSortV30(T[] arr) {
-        if (arr.length <= 10) {
+        if (arr.length <= INSERTION_SORT_THRESHOLD) {
             return insertionSortV20(arr);
         }
 

@@ -1,6 +1,8 @@
 import java.util.Arrays;
 
 public class MergeSort {
+    private static final int INSERTION_SORT_THRESHOLD = 10;
+
     public static void main(String[] args) {
         int[] arr = {39, 27, 43, 3, 9, 82, 10};
         mergeSort(arr);
@@ -83,7 +85,7 @@ public class MergeSort {
      * Merge Sort (optimized v2.0)
      */
     // public static int[] mergeSort(int[] arr) {
-    //     if (arr.length <= 10) {
+    //     if (arr.length <= INSERTION_SORT_THRESHOLD) {
     //         return insertionSort(arr);
     //     }
 
@@ -173,7 +175,7 @@ public class MergeSort {
      * Merge Sort (optimized v3.0)
      */
     // public static int[] mergeSort(int[] arr) {
-    //     if (arr.length <= 10) {
+    //     if (arr.length <= INSERTION_SORT_THRESHOLD) {
     //         return insertionSort(arr);
     //     }
 

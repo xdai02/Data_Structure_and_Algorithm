@@ -17,6 +17,8 @@ typedef struct argument_t {
     int n;
 } argument_t;
 
+const int INSERTION_SORT_THRESHOLD = 10;
+
 /**
  * Bubble Sort (original v1.0)
  */
@@ -341,7 +343,7 @@ void *merge_sort_v2_0(void *args) {
     T *arr = arg->data;
     int n = arg->n;
 
-    if (n <= 10) {
+    if (n <= INSERTION_SORT_THRESHOLD) {
         return insertion_sort_v2_0(args);
     }
 
@@ -444,7 +446,7 @@ void *merge_sort_v3_0(void *args) {
     T *arr = arg->data;
     int n = arg->n;
 
-    if (n <= 10) {
+    if (n <= INSERTION_SORT_THRESHOLD) {
         return insertion_sort_v2_0(args);
     }
 
@@ -463,12 +465,7 @@ void *merge_sort_v3_0(void *args) {
     return arr;
 }
 
-/**
- * Partition function for Quick Sort (original v1.0)
- */
-static int partition_v1_0(T *arr, int start, int end) {
-    T pivot = arr[start];
-
+static int partition(T *arr, int start, int end, T pivot) {
     int i = start + 1;
     int j = end;
     while (i <= j) {
@@ -487,82 +484,6 @@ static int partition_v1_0(T *arr, int start, int end) {
     return j;
 }
 
-/**
- * Help function for Quick Sort (original v1.0)
- */
-static void __quick_sort_v1_0(T *arr, int start, int end) {
-    if (start < end) {
-        int pivot = partition_v1_0(arr, start, end);
-        __quick_sort_v1_0(arr, start, pivot - 1);
-        __quick_sort_v1_0(arr, pivot + 1, end);
-    }
-}
-
-/**
- * Quick Sort (original v1.0)
- */
-void *quick_sort_v1_0(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
-    __quick_sort_v1_0(arr, 0, n - 1);
-    return arr;
-}
-
-/**
- * Partition function for Quick Sort (optimized v2.0)
- */
-static int partition_v2_0(T *arr, int start, int end) {
-    int pivot_index = rand() % (end - start + 1) + start;
-    swap(arr[start], arr[pivot_index]);
-    T pivot = arr[start];
-
-    int i = start + 1;
-    int j = end;
-    while (i <= j) {
-        while (i <= j && arr[i] <= pivot) {
-            i++;
-        }
-        while (i <= j && arr[j] >= pivot) {
-            j--;
-        }
-        if (i <= j) {
-            swap(arr[i], arr[j]);
-        }
-    }
-
-    swap(arr[start], arr[j]);
-    return j;
-}
-
-/**
- * Help function for Quick Sort (optimized v2.0)
- */
-static void __quick_sort_v2_0(T *arr, int start, int end) {
-    if (start < end) {
-        int pivot = partition_v2_0(arr, start, end);
-        __quick_sort_v2_0(arr, start, pivot - 1);
-        __quick_sort_v2_0(arr, pivot + 1, end);
-    }
-}
-
-/**
- * Quick Sort (optimized v2.0)
- */
-void *quick_sort_v2_0(void *args) {
-    argument_t *arg = (argument_t *)args;
-    T *arr = arg->data;
-    int n = arg->n;
-
-    srand(time(NULL));
-    __quick_sort_v2_0(arr, 0, n - 1);
-    return arr;
-}
-
-/**
- * Pivot chosen function for Quick Sort
- */
 static int median_of_three(T *arr, int start, int end) {
     int mid = start + (end - start) / 2;
 
@@ -580,29 +501,56 @@ static int median_of_three(T *arr, int start, int end) {
 }
 
 /**
- * Partition function for Quick Sort (optimized v2.1)
+ * Help function for Quick Sort (original v1.0)
  */
-static int partition_v2_1(T *arr, int start, int end) {
-    int pivot_index = median_of_three(arr, start, end);
-    swap(arr[start], arr[pivot_index]);
-    T pivot = arr[start];
+static void __quick_sort_v1_0(T *arr, int start, int end) {
+    if (start < end) {
+        T pivot = arr[start];
 
-    int i = start + 1;
-    int j = end;
-    while (i <= j) {
-        while (i <= j && arr[i] <= pivot) {
-            i++;
-        }
-        while (i <= j && arr[j] >= pivot) {
-            j--;
-        }
-        if (i <= j) {
-            swap(arr[i], arr[j]);
-        }
+        int pivot_index = partition(arr, start, end, pivot);
+        __quick_sort_v1_0(arr, start, pivot_index - 1);
+        __quick_sort_v1_0(arr, pivot_index + 1, end);
     }
+}
 
-    swap(arr[start], arr[j]);
-    return j;
+/**
+ * Quick Sort (original v1.0)
+ */
+void *quick_sort_v1_0(void *args) {
+    argument_t *arg = (argument_t *)args;
+    T *arr = arg->data;
+    int n = arg->n;
+
+    __quick_sort_v1_0(arr, 0, n - 1);
+    return arr;
+}
+
+/**
+ * Help function for Quick Sort (optimized v2.0)
+ */
+static void __quick_sort_v2_0(T *arr, int start, int end) {
+    if (start < end) {
+        int pivot_index = rand() % (end - start + 1) + start;
+        swap(arr[start], arr[pivot_index]);
+        T pivot = arr[start];
+
+        pivot_index = partition(arr, start, end, pivot);
+        __quick_sort_v2_0(arr, start, pivot_index - 1);
+        __quick_sort_v2_0(arr, pivot_index + 1, end);
+    }
+}
+
+/**
+ * Quick Sort (optimized v2.0)
+ */
+void *quick_sort_v2_0(void *args) {
+    argument_t *arg = (argument_t *)args;
+    T *arr = arg->data;
+    int n = arg->n;
+
+    srand(time(NULL));
+    __quick_sort_v2_0(arr, 0, n - 1);
+    return arr;
 }
 
 /**
@@ -610,9 +558,13 @@ static int partition_v2_1(T *arr, int start, int end) {
  */
 static void __quick_sort_v2_1(T *arr, int start, int end) {
     if (start < end) {
-        int pivot = partition_v2_1(arr, start, end);
-        __quick_sort_v2_1(arr, start, pivot - 1);
-        __quick_sort_v2_1(arr, pivot + 1, end);
+        int pivot_index = median_of_three(arr, start, end);
+        swap(arr[start], arr[pivot_index]);
+        T pivot = arr[start];
+
+        pivot_index = partition(arr, start, end, pivot);
+        __quick_sort_v2_1(arr, start, pivot_index - 1);
+        __quick_sort_v2_1(arr, pivot_index + 1, end);
     }
 }
 
@@ -629,51 +581,25 @@ void *quick_sort_v2_1(void *args) {
 }
 
 /**
- * Partition function for Quick Sort (optimized v2.2)
+ * Help function for Quick Sort (optimized v2.2)
  */
-static int partition_v2_2(T *arr, int start, int end) {
-    if (end - start <= 10) {
+static void __quick_sort_v2_2(T *arr, int start, int end) {
+    if (end - start <= INSERTION_SORT_THRESHOLD) {
         T temp[end - start + 1];
         memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
         argument_t arg = {temp, end - start + 1};
         insertion_sort_v2_0(&arg);
         memcpy(arr + start, temp, sizeof(T) * (end - start + 1));
-        return -1;
+        return;
     }
 
     int pivot_index = median_of_three(arr, start, end);
     swap(arr[start], arr[pivot_index]);
     T pivot = arr[start];
 
-    int i = start + 1;
-    int j = end;
-    while (i <= j) {
-        while (i <= j && arr[i] <= pivot) {
-            i++;
-        }
-        while (i <= j && arr[j] >= pivot) {
-            j--;
-        }
-        if (i <= j) {
-            swap(arr[i], arr[j]);
-        }
-    }
-
-    swap(arr[start], arr[j]);
-    return j;
-}
-
-/**
- * Help function for Quick Sort (optimized v2.2)
- */
-static void __quick_sort_v2_2(T *arr, int start, int end) {
-    if (start < end) {
-        int pivot = partition_v2_2(arr, start, end);
-        if (pivot != -1) {
-            __quick_sort_v2_2(arr, start, pivot - 1);
-            __quick_sort_v2_2(arr, pivot + 1, end);
-        }
-    }
+    pivot_index = partition(arr, start, end, pivot);
+    __quick_sort_v2_2(arr, start, pivot_index - 1);
+    __quick_sort_v2_2(arr, pivot_index + 1, end);
 }
 
 /**
@@ -689,47 +615,11 @@ void *quick_sort_v2_2(void *args) {
 }
 
 /**
- * Partition function for Quick Sort (optimized v3.0)
- */
-static int partition_v3_0(T *arr, int start, int end) {
-    int pivot_index = median_of_three(arr, start, end);
-    swap(arr[start], arr[pivot_index]);
-    T pivot = arr[start];
-
-    int i = start + 1;
-    int j = end;
-    while (i <= j) {
-        while (i <= j && arr[i] <= pivot) {
-            i++;
-        }
-        while (i <= j && arr[j] >= pivot) {
-            j--;
-        }
-        if (i <= j) {
-            swap(arr[i], arr[j]);
-        }
-    }
-
-    swap(arr[start], arr[j]);
-    return j;
-}
-
-/**
  * Help function for Quick Sort (optimized v3.0)
  */
 static void __quick_sort_v3_0(T *arr, int start, int end) {
-    if (end - start <= 10) {
-        T temp[end - start + 1];
-        memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
-        argument_t arg = {temp, end - start + 1};
-        insertion_sort_v2_0(&arg);
-        memcpy(arr + start, temp, sizeof(T) * (end - start + 1));
-        return;
-    }
-
     int stack[end - start + 1];
     int top = -1;
-
     stack[++top] = start;
     stack[++top] = end;
 
@@ -737,15 +627,44 @@ static void __quick_sort_v3_0(T *arr, int start, int end) {
         end = stack[top--];
         start = stack[top--];
 
-        int pivot_index = partition_v3_0(arr, start, end);
-        if (pivot_index - 1 > start) {
-            stack[++top] = start;
-            stack[++top] = pivot_index - 1;
+        if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
+            T temp[end - start + 1];
+            memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
+            argument_t arg = {temp, end - start + 1};
+            insertion_sort_v2_0(&arg);
+            memcpy(arr + start, temp, sizeof(T) * (end - start + 1));
+            continue;
         }
 
-        if (pivot_index + 1 < end) {
-            stack[++top] = pivot_index + 1;
+        int pivot_index = median_of_three(arr, start, end);
+        int pivot = arr[pivot_index];
+        int i = start, j = end - 1;
+        swap(arr[pivot_index], arr[end]);
+
+        while (i <= j) {
+            while (arr[i] < pivot) {
+                i++;
+            }
+            while (arr[j] > pivot) {
+                j--;
+            }
+            swap(arr[i], arr[j]);
+            i++;
+            j--;
+        }
+
+        swap(arr[i], arr[end]);
+
+        if (i - start < end - i) {
+            stack[++top] = start;
+            stack[++top] = i - 1;
+            stack[++top] = i + 1;
             stack[++top] = end;
+        } else {
+            stack[++top] = i + 1;
+            stack[++top] = end;
+            stack[++top] = start;
+            stack[++top] = i - 1;
         }
     }
 }
@@ -760,4 +679,22 @@ void *quick_sort_v3_0(void *args) {
 
     __quick_sort_v3_0(arr, 0, n - 1);
     return arr;
+}
+
+int main() {
+    int arr[30];
+
+    // random
+    for (int i = 0; i < 30; i++) {
+        arr[i] = rand() % 100;
+    }
+
+    argument_t arg = {arr, 30};
+    quick_sort_v3_0(&arg);
+
+    for (int i = 0; i < 30; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    return 0;
 }

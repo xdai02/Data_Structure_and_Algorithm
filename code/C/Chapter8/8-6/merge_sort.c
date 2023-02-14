@@ -4,6 +4,8 @@
 
 typedef int T;
 
+const int INSERTION_SORT_THRESHOLD = 10;
+
 /**
  * Merge Sort (original v1.0)
  */
@@ -87,7 +89,7 @@ T *merge_sort(T *arr, int n) {
  * Merge Sort (optimized v2.0)
  */
 // T *merge_sort(T *arr, int n) {
-//     if (n <= 10) {
+//     if (n <= INSERTION_SORT_THRESHOLD) {
 //         return insertion_sort(arr, n);
 //     }
 
@@ -184,7 +186,7 @@ T *merge_sort(T *arr, int n) {
  * Merge Sort (optimized v3.0)
  */
 // T *merge_sort(T *arr, int n) {
-//     if (n <= 10) {
+//     if (n <= INSERTION_SORT_THRESHOLD) {
 //         return insertion_sort(arr, n);
 //     }
 

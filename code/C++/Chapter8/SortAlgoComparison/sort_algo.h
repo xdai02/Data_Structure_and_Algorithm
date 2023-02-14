@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <cmath>
+#include <ctime>
+#include <stack>
+
+const int INSERTION_SORT_THRESHOLD = 10;
 
 /**
  * Bubble Sort (original v1.0)
@@ -290,7 +294,7 @@ T *merge_sort_v1_0(T *arr, int n) {
  */
 template <typename T>
 T *merge_sort_v2_0(T *arr, int n) {
-    if (n <= 10) {
+    if (n <= INSERTION_SORT_THRESHOLD) {
         return insertion_sort_v2_0(arr, n);
     }
 
@@ -389,7 +393,7 @@ static void merge(T *arr, int left, int mid, int right) {
  */
 template <typename T>
 T *merge_sort_v3_0(T *arr, int n) {
-    if (n <= 10) {
+    if (n <= INSERTION_SORT_THRESHOLD) {
         return insertion_sort_v2_0(arr, n);
     }
 
@@ -405,6 +409,188 @@ T *merge_sort_v3_0(T *arr, int n) {
         current_size *= 2;
     }
 
+    return arr;
+}
+
+template <typename T>
+static int partition(T *arr, int start, int end, T pivot) {
+    int i = start + 1;
+    int j = end;
+    while (i <= j) {
+        while (i <= j && arr[i] <= pivot) {
+            i++;
+        }
+        while (i <= j && arr[j] >= pivot) {
+            j--;
+        }
+        if (i <= j) {
+            std::swap(arr[i], arr[j]);
+        }
+    }
+
+    std::swap(arr[start], arr[j]);
+    return j;
+}
+
+template <typename T>
+static int median_of_three(T *arr, int start, int end) {
+    int mid = start + (end - start) / 2;
+
+    if (arr[start] > arr[mid]) {
+        std::swap(arr[start], arr[mid]);
+    }
+    if (arr[start] > arr[end]) {
+        std::swap(arr[start], arr[end]);
+    }
+    if (arr[mid] > arr[end]) {
+        std::swap(arr[mid], arr[end]);
+    }
+
+    return mid;
+}
+
+/**
+ * Help function for Quick Sort (original v1.0)
+ */
+template <typename T>
+static void quick_sort_v1_0(T *arr, int start, int end) {
+    if (start < end) {
+        T pivot = arr[start];
+
+        int pivot_index = partition(arr, start, end, pivot);
+        quick_sort_v1_0(arr, start, pivot_index - 1);
+        quick_sort_v1_0(arr, pivot_index + 1, end);
+    }
+}
+
+/**
+ * Quick Sort (original v1.0)
+ */
+template <typename T>
+T *quick_sort_v1_0(T *arr, int n) {
+    quick_sort_v1_0(arr, 0, n - 1);
+    return arr;
+}
+
+/**
+ * Help function for Quick Sort (optimized v2.0)
+ */
+template <typename T>
+static void quick_sort_v2_0(T *arr, int start, int end) {
+    if (start < end) {
+        int pivot_index = rand() % (end - start + 1) + start;
+        std::swap(arr[start], arr[pivot_index]);
+        T pivot = arr[start];
+
+        pivot_index = partition(arr, start, end, pivot);
+        quick_sort_v2_0(arr, start, pivot_index - 1);
+        quick_sort_v2_0(arr, pivot_index + 1, end);
+    }
+}
+
+/**
+ * Quick Sort (optimized v2.0)
+ */
+template <typename T>
+T *quick_sort_v2_0(T *arr, int n) {
+    srand(time(NULL));
+    quick_sort_v2_0(arr, 0, n - 1);
+    return arr;
+}
+
+/**
+ * Help function for Quick Sort (optimized v2.1)
+ */
+template <typename T>
+static void quick_sort_v2_1(T *arr, int start, int end) {
+    if (start < end) {
+        int pivot_index = median_of_three(arr, start, end);
+        std::swap(arr[start], arr[pivot_index]);
+        T pivot = arr[start];
+
+        pivot_index = partition(arr, start, end, pivot);
+        quick_sort_v2_1(arr, start, pivot_index - 1);
+        quick_sort_v2_1(arr, pivot_index + 1, end);
+    }
+}
+
+/**
+ * Quick Sort (optimized v2.1)
+ */
+template <typename T>
+T *quick_sort_v2_1(T *arr, int n) {
+    quick_sort_v2_1(arr, 0, n - 1);
+    return arr;
+}
+
+/**
+ * Help function for Quick Sort (optimized v2.2)
+ */
+template <typename T>
+static void quick_sort_v2_2(T *arr, int start, int end) {
+    if (end - start <= INSERTION_SORT_THRESHOLD) {
+        T temp[end - start + 1];
+        memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
+        insertion_sort_v2_0(temp, end - start + 1);
+        memcpy(arr + start, temp, sizeof(T) * (end - start + 1));
+        return;
+    }
+
+    int pivot_index = median_of_three(arr, start, end);
+    std::swap(arr[start], arr[pivot_index]);
+    T pivot = arr[start];
+
+    pivot_index = partition(arr, start, end, pivot);
+    quick_sort_v2_2(arr, start, pivot_index - 1);
+    quick_sort_v2_2(arr, pivot_index + 1, end);
+}
+
+/**
+ * Quick Sort (optimized v2.2)
+ */
+template <typename T>
+T *quick_sort_v2_2(T *arr, int n) {
+    quick_sort_v2_2(arr, 0, n - 1);
+    return arr;
+}
+
+/**
+ * Help function for Quick Sort (optimized v3.0)
+ */
+template <typename T>
+static void quick_sort_v3_0(T *arr, int start, int end) {
+    std::stack<std::pair<int, int>> stack;
+
+    stack.push(std::make_pair(start, end));
+
+    while (!stack.empty()) {
+        std::pair<int, int> subarray = stack.top();
+        stack.pop();
+
+        if (subarray.second - subarray.first + 1 <= INSERTION_SORT_THRESHOLD) {
+            T temp[subarray.second - subarray.first + 1];
+            memcpy(temp, arr + subarray.first, sizeof(T) * (subarray.second - subarray.first + 1));
+            insertion_sort_v2_0(temp, subarray.second - subarray.first + 1);
+            memcpy(arr + subarray.first, temp, sizeof(T) * (subarray.second - subarray.first + 1));
+            continue;
+        }
+
+        int pivot_index = median_of_three(arr, subarray.first, subarray.second);
+        std::swap(arr[subarray.first], arr[pivot_index]);
+        T pivot = arr[subarray.first];
+
+        pivot_index = partition(arr, subarray.first, subarray.second, pivot);
+        stack.push(std::make_pair(subarray.first, pivot_index));
+        stack.push(std::make_pair(pivot_index + 1, subarray.second));
+    }
+}
+
+/**
+ * Quick Sort (optimized v3.0)
+ */
+template <typename T>
+T *quick_sort_v3_0(T *arr, int n) {
+    quick_sort_v3_0(arr, 0, n - 1);
     return arr;
 }
 

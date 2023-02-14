@@ -292,13 +292,8 @@ void *merge_sort_v1_0(void *args) {
     int mid = n / 2;
     T left_half[mid];
     T right_half[n - mid];
-
-    for (int i = 0; i < mid; i++) {
-        left_half[i] = arr[i];
-    }
-    for (int i = mid; i < n; i++) {
-        right_half[i - mid] = arr[i];
-    }
+    memcpy(left_half, arr, mid * sizeof(T));
+    memcpy(right_half, arr + mid, (n - mid) * sizeof(T));
 
     argument_t left_arg = {left_half, mid};
     argument_t right_arg = {right_half, n - mid};
@@ -350,13 +345,8 @@ void *merge_sort_v2_0(void *args) {
     int mid = n / 2;
     T left_half[mid];
     T right_half[n - mid];
-
-    for (int i = 0; i < mid; i++) {
-        left_half[i] = arr[i];
-    }
-    for (int i = mid; i < n; i++) {
-        right_half[i - mid] = arr[i];
-    }
+    memcpy(left_half, arr, mid * sizeof(T));
+    memcpy(right_half, arr + mid, (n - mid) * sizeof(T));
 
     argument_t left_arg = {left_half, mid};
     argument_t right_arg = {right_half, n - mid};
@@ -396,23 +386,27 @@ void *merge_sort_v2_0(void *args) {
 /**
  * Helper function for Merge Sort
  */
-static void merge(T *arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+static void merge(T *arr, int start, int mid, int end) {
+    if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
+        T temp[end - start + 1];
+        memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
+        argument_t arg = {temp, end - start + 1};
+        insertion_sort_v2_0(&arg);
+        memcpy(arr + start, temp, sizeof(T) * (end - start + 1));
+        return;
+    }
+
+    int n1 = mid - start + 1;
+    int n2 = end - mid;
 
     T left_half[n1];
     T right_half[n2];
-
-    for (int i = 0; i < n1; i++) {
-        left_half[i] = arr[left + i];
-    }
-    for (int i = 0; i < n2; i++) {
-        right_half[i] = arr[mid + i + 1];
-    }
+    memcpy(left_half, arr + start, n1 * sizeof(T));
+    memcpy(right_half, arr + mid + 1, n2 * sizeof(T));
 
     int i = 0;
     int j = 0;
-    int k = left;
+    int k = start;
 
     while (i < n1 && j < n2) {
         if (left_half[i] < right_half[j]) {
@@ -446,18 +440,14 @@ void *merge_sort_v3_0(void *args) {
     T *arr = arg->data;
     int n = arg->n;
 
-    if (n <= INSERTION_SORT_THRESHOLD) {
-        return insertion_sort_v2_0(args);
-    }
-
     int current_size = 1;
     while (current_size < n - 1) {
-        int left = 0;
-        while (left < n - 1) {
-            int mid = min(left + current_size - 1, n - 1);
-            int right = min(left + 2 * current_size - 1, n - 1);
-            merge(arr, left, mid, right);
-            left = right + 1;
+        int start = 0;
+        while (start < n - 1) {
+            int mid = min(start + current_size - 1, n - 1);
+            int end = min(start + 2 * current_size - 1, n - 1);
+            merge(arr, start, mid, end);
+            start = end + 1;
         }
         current_size *= 2;
     }
@@ -679,22 +669,4 @@ void *quick_sort_v3_0(void *args) {
 
     __quick_sort_v3_0(arr, 0, n - 1);
     return arr;
-}
-
-int main() {
-    int arr[30];
-
-    // random
-    for (int i = 0; i < 30; i++) {
-        arr[i] = rand() % 100;
-    }
-
-    argument_t arg = {arr, 30};
-    quick_sort_v3_0(&arg);
-
-    for (int i = 0; i < 30; i++) {
-        printf("%d ", arr[i]);
-    }
-
-    return 0;
 }

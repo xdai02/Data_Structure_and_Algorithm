@@ -248,13 +248,8 @@ T *merge_sort_v1_0(T *arr, int n) {
     int mid = n / 2;
     T left_half[mid];
     T right_half[n - mid];
-
-    for (int i = 0; i < mid; i++) {
-        left_half[i] = arr[i];
-    }
-    for (int i = mid; i < n; i++) {
-        right_half[i - mid] = arr[i];
-    }
+    memcpy(left_half, arr, mid * sizeof(T));
+    memcpy(right_half, arr + mid, (n - mid) * sizeof(T));
 
     merge_sort_v1_0(left_half, mid);
     merge_sort_v1_0(right_half, n - mid);
@@ -301,13 +296,8 @@ T *merge_sort_v2_0(T *arr, int n) {
     int mid = n / 2;
     T left_half[mid];
     T right_half[n - mid];
-
-    for (int i = 0; i < mid; i++) {
-        left_half[i] = arr[i];
-    }
-    for (int i = mid; i < n; i++) {
-        right_half[i - mid] = arr[i];
-    }
+    memcpy(left_half, arr, mid * sizeof(T));
+    memcpy(right_half, arr + mid, (n - mid) * sizeof(T));
 
     merge_sort_v2_0(left_half, mid);
     merge_sort_v2_0(right_half, n - mid);
@@ -346,23 +336,26 @@ T *merge_sort_v2_0(T *arr, int n) {
  * Helper function for Merge Sort
  */
 template <typename T>
-static void merge(T *arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+static void merge(T *arr, int start, int mid, int end) {
+    if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
+        T temp[end - start + 1];
+        memcpy(temp, arr + start, (end - start + 1) * sizeof(T));
+        insertion_sort_v2_0(temp, end - start + 1);
+        memcpy(arr + start, temp, (end - start + 1) * sizeof(T));
+        return;
+    }
+
+    int n1 = mid - start + 1;
+    int n2 = end - mid;
 
     T left_half[n1];
     T right_half[n2];
-
-    for (int i = 0; i < n1; i++) {
-        left_half[i] = arr[left + i];
-    }
-    for (int i = 0; i < n2; i++) {
-        right_half[i] = arr[mid + i + 1];
-    }
+    memcpy(left_half, arr + start, n1 * sizeof(T));
+    memcpy(right_half, arr + mid + 1, n2 * sizeof(T));
 
     int i = 0;
     int j = 0;
-    int k = left;
+    int k = start;
 
     while (i < n1 && j < n2) {
         if (left_half[i] < right_half[j]) {
@@ -393,18 +386,14 @@ static void merge(T *arr, int left, int mid, int right) {
  */
 template <typename T>
 T *merge_sort_v3_0(T *arr, int n) {
-    if (n <= INSERTION_SORT_THRESHOLD) {
-        return insertion_sort_v2_0(arr, n);
-    }
-
     int current_size = 1;
     while (current_size < n - 1) {
-        int left = 0;
-        while (left < n - 1) {
-            int mid = std::min(left + current_size - 1, n - 1);
-            int right = std::min(left + 2 * current_size - 1, n - 1);
-            merge(arr, left, mid, right);
-            left = right + 1;
+        int start = 0;
+        while (start < n - 1) {
+            int mid = std::min(start + current_size - 1, n - 1);
+            int end = std::min(start + 2 * current_size - 1, n - 1);
+            merge(arr, start, mid, end);
+            start = end + 1;
         }
         current_size *= 2;
     }
@@ -528,7 +517,7 @@ T *quick_sort_v2_1(T *arr, int n) {
  */
 template <typename T>
 static void quick_sort_v2_2(T *arr, int start, int end) {
-    if (end - start <= INSERTION_SORT_THRESHOLD) {
+    if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
         T temp[end - start + 1];
         memcpy(temp, arr + start, sizeof(T) * (end - start + 1));
         insertion_sort_v2_0(temp, end - start + 1);
@@ -555,12 +544,14 @@ T *quick_sort_v2_2(T *arr, int n) {
 }
 
 /**
- * Help function for Quick Sort (optimized v3.0)
+ * Quick Sort (optimized v3.0)
  */
 template <typename T>
-static void quick_sort_v3_0(T *arr, int start, int end) {
-    std::stack<std::pair<int, int>> stack;
+T *quick_sort_v3_0(T *arr, int n) {
+    int start = 0;
+    int end = n - 1;
 
+    std::stack<std::pair<int, int>> stack;
     stack.push(std::make_pair(start, end));
 
     while (!stack.empty()) {
@@ -583,14 +574,7 @@ static void quick_sort_v3_0(T *arr, int start, int end) {
         stack.push(std::make_pair(subarray.first, pivot_index));
         stack.push(std::make_pair(pivot_index + 1, subarray.second));
     }
-}
 
-/**
- * Quick Sort (optimized v3.0)
- */
-template <typename T>
-T *quick_sort_v3_0(T *arr, int n) {
-    quick_sort_v3_0(arr, 0, n - 1);
     return arr;
 }
 

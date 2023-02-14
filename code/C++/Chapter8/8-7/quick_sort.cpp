@@ -86,17 +86,8 @@ static void quick_sort(T *arr, int start, int end) {
 }
 
 /**
- * Quick Sort (original v1.0)
+ * Help function for Quick Sort (optimized v2.0)
  */
-template <typename T>
-T *quick_sort(T *arr, int n) {
-    quick_sort(arr, 0, n - 1);
-    return arr;
-}
-
-// /**
-//  * Help function for Quick Sort (optimized v2.0)
-//  */
 // template <typename T>
 // static void quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
@@ -110,19 +101,9 @@ T *quick_sort(T *arr, int n) {
 //     }
 // }
 
-// /**
-//  * Quick Sort (optimized v2.0)
-//  */
-// template <typename T>
-// T *quick_sort(T *arr, int n) {
-//     srand(time(NULL));
-//     quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
-
-// /**
-//  * Help function for Quick Sort (optimized v2.1)
-//  */
+/**
+ * Help function for Quick Sort (optimized v2.1)
+ */
 // template <typename T>
 // static void quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
@@ -136,18 +117,9 @@ T *quick_sort(T *arr, int n) {
 //     }
 // }
 
-// /**
-//  * Quick Sort (optimized v2.1)
-//  */
-// template <typename T>
-// T *quick_sort(T *arr, int n) {
-//     quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
-
-// /**
-//  * Help function for Quick Sort (optimized v2.2)
-//  */
+/**
+ * Help function for Quick Sort (optimized v2.2)
+ */
 // template <typename T>
 // static void quick_sort(T *arr, int start, int end) {
 //     if (end - start <= INSERTION_SORT_THRESHOLD) {
@@ -167,14 +139,15 @@ T *quick_sort(T *arr, int n) {
 //     quick_sort(arr, pivot_index + 1, end);
 // }
 
-// /**
-//  * Quick Sort (optimized v2.2)
-//  */
-// template <typename T>
-// T *quick_sort(T *arr, int n) {
-//     quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
+/**
+ * Quick Sort
+ */
+template <typename T>
+T *quick_sort(T *arr, int n) {
+    srand(time(NULL));
+    quick_sort(arr, 0, n - 1);
+    return arr;
+}
 
 int main() {
     int arr[] = {4, 7, 6, 5, 3, 2, 8, 1};

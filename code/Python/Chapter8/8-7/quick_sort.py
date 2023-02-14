@@ -59,6 +59,7 @@ def quick_sort(lst):
             sort(pivot_index + 1, end)
 
     sort(0, len(lst) - 1)
+    return lst
 
 # def quick_sort(lst):
 #     """Quick Sort (optimized v2.0)"""
@@ -73,6 +74,7 @@ def quick_sort(lst):
 #             sort(pivot_index + 1, end)
 
 #     sort(0, len(lst) - 1)
+#     return lst
 
 # def quick_sort(lst):
 #     """Quick Sort (optimized v2.1)"""
@@ -87,24 +89,25 @@ def quick_sort(lst):
 #             sort(pivot_index + 1, end)
 
 #     sort(0, len(lst) - 1)
+#     return lst
 
-def quick_sort(lst):
-    """Quick Sort (optimized v2.2)"""
-    def sort(start, end):
-        if end - start <= INSERTION_SORT_THRESHOLD:
-            lst[start:end + 1] = insertion_sort(lst[start:end + 1])
-            return
+# def quick_sort(lst):
+#     """Quick Sort (optimized v2.2)"""
+#     def sort(start, end):
+#         if end - start <= INSERTION_SORT_THRESHOLD:
+#             lst[start:end + 1] = insertion_sort(lst[start:end + 1])
+#             return
 
-        pivot_index = median_of_three(lst, start, end)
-        lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
-        pivot = lst[start]
+#         pivot_index = median_of_three(lst, start, end)
+#         lst[start], lst[pivot_index] = lst[pivot_index], lst[start]
+#         pivot = lst[start]
 
-        pivot_index = partition(lst, start, end, pivot)
-        if pivot_index is not None:
-            sort(start, pivot_index - 1)
-            sort(pivot_index + 1, end)
+#         pivot_index = partition(lst, start, end, pivot)
+#         sort(start, pivot_index - 1)
+#         sort(pivot_index + 1, end)
 
-    sort(0, len(lst) - 1)
+#     sort(0, len(lst) - 1)
+#     return lst
 
 lst = [4, 7, 6, 5, 3, 2, 8, 1]
 quick_sort(lst)

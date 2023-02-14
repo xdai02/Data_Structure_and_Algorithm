@@ -233,21 +233,25 @@ def merge_sort_v2_0(lst):
 
 def merge_sort_v3_0(lst):
     """Merge Sort (optimized v3.0)"""
-    def merge(lst, left, mid, right):
-        n1 = mid - left + 1
-        n2 = right - mid
+    def merge(lst, start, mid, end):
+        if end - start <= INSERTION_SORT_THRESHOLD:
+            lst[start:end + 1] = insertion_sort_v2_0(lst[start:end + 1])
+            return
+
+        n1 = mid - start + 1
+        n2 = end - mid
 
         left_half = [0] * n1
         right_half = [0] * n2
 
         for i in range(0, n1):
-            left_half[i] = lst[left + i]
+            left_half[i] = lst[start + i]
         for i in range(0, n2):
             right_half[i] = lst[mid + i + 1]
         
         i = 0
         j = 0
-        k = left
+        k = start
 
         while i < n1 and j < n2:
             if left_half[i] < right_half[j]:
@@ -268,17 +272,14 @@ def merge_sort_v3_0(lst):
             j += 1
             k += 1
 
-    if len(lst) <= INSERTION_SORT_THRESHOLD:
-        return insertion_sort_v2_0(lst)
-
     current_size = 1
     while current_size < len(lst) - 1:
-        left = 0
-        while left < len(lst) - 1:
-            mid = min(left + current_size - 1, len(lst) - 1)
-            right = min(left + 2 * current_size - 1, len(lst) - 1)
-            merge(lst, left, mid, right)
-            left = right + 1
+        start = 0
+        while start < len(lst) - 1:
+            mid = min(start + current_size - 1, len(lst) - 1)
+            end = min(start + 2 * current_size - 1, len(lst) - 1)
+            merge(lst, start, mid, end)
+            start = end + 1
         current_size *= 2
     
     return lst
@@ -320,6 +321,7 @@ def quick_sort_v1_0(lst):
             sort(pivot_index + 1, end)
 
     sort(0, len(lst) - 1)
+    return lst
 
 def quick_sort_v2_0(lst):
     """Quick Sort (optimized v2.0)"""
@@ -334,6 +336,7 @@ def quick_sort_v2_0(lst):
             sort(pivot_index + 1, end)
 
     sort(0, len(lst) - 1)
+    return lst
 
 def quick_sort_v2_1(lst):
     """Quick Sort (optimized v2.1)"""
@@ -348,6 +351,7 @@ def quick_sort_v2_1(lst):
             sort(pivot_index + 1, end)
 
     sort(0, len(lst) - 1)
+    return lst
 
 def quick_sort_v2_2(lst):
     """Quick Sort (optimized v2.2)"""
@@ -361,11 +365,11 @@ def quick_sort_v2_2(lst):
         pivot = lst[start]
 
         pivot_index = partition(lst, start, end, pivot)
-        if pivot_index is not None:
-            sort(start, pivot_index - 1)
-            sort(pivot_index + 1, end)
+        sort(start, pivot_index - 1)
+        sort(pivot_index + 1, end)
 
     sort(0, len(lst) - 1)
+    return lst
 
 def quick_sort_v3_0(lst):
     """Quick Sort (optimized v3.0)"""
@@ -373,7 +377,7 @@ def quick_sort_v3_0(lst):
     while stack:
         start, end = stack.pop()
 
-        if end - start <= INSERTION_SORT_THRESHOLD:
+        if end - start + 1 <= INSERTION_SORT_THRESHOLD:
             lst[start:end + 1] = insertion_sort_v2_0(lst[start:end + 1])
         else:
             pivot_index = median_of_three(lst, start, end)
@@ -383,3 +387,5 @@ def quick_sort_v3_0(lst):
             pivot_index = partition(lst, start, end, pivot)
             stack.append((start, pivot_index - 1))
             stack.append((pivot_index + 1, end))
+    
+    return lst

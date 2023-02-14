@@ -1,10 +1,12 @@
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Stack;
 
 public class SortAlgo {
     private static volatile SortAlgo sortAlgo;
     private static Class clazz;
-    
+
     private static final int INSERTION_SORT_THRESHOLD = 10;
 
     private SortAlgo(Class clazz) {
@@ -13,6 +15,7 @@ public class SortAlgo {
 
     /**
      * Singleton Pattern
+     *
      * @param clazz Class of data
      * @return Singleton instance of SortAlgo
      */
@@ -349,25 +352,47 @@ public class SortAlgo {
     }
 
     /**
+     * Merge Sort (optimized v3.0)
+     */
+    public static <T extends Comparable<T>> T[] mergeSortV30(T[] arr) {
+        int currentSize = 1;
+        while (currentSize < arr.length - 1) {
+            int start = 0;
+            while (start < arr.length - 1) {
+                int mid = Math.min(start + currentSize - 1, arr.length - 1);
+                int end = Math.min(start + 2 * currentSize - 1, arr.length - 1);
+                merge(arr, start, mid, end);
+                start = end + 1;
+            }
+            currentSize *= 2;
+        }
+
+        return arr;
+    }
+
+    /**
      * Helper function for Merge Sort
      */
-    private static <T extends Comparable<T>> void merge(T[] arr, int left, int mid, int right) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
+    private static <T extends Comparable<T>> void merge(T[] arr, int start, int mid, int end) {
+        if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
+            T[] temp = (T[]) Array.newInstance(clazz, end - start + 1);
+            System.arraycopy(arr, start, temp, 0, end - start + 1);
+            insertionSortV20(temp);
+            System.arraycopy(temp, 0, arr, start, end - start + 1);
+            return;
+        }
+
+        int n1 = mid - start + 1;
+        int n2 = end - mid;
 
         T[] leftHalf = (T[]) Array.newInstance(clazz, n1);
         T[] rightHalf = (T[]) Array.newInstance(clazz, n2);
-
-        for (int i = 0; i < n1; i++) {
-            leftHalf[i] = arr[left + i];
-        }
-        for (int i = 0; i < n2; i++) {
-            rightHalf[i] = arr[mid + i + 1];
-        }
+        System.arraycopy(arr, start, leftHalf, 0, n1);
+        System.arraycopy(arr, mid + 1, rightHalf, 0, n2);
 
         int i = 0;
         int j = 0;
-        int k = left;
+        int k = start;
 
         while (i < n1 && j < n2) {
             if (leftHalf[i].compareTo(rightHalf[j]) < 0) {
@@ -393,24 +418,187 @@ public class SortAlgo {
         }
     }
 
-    /**
-     * Merge Sort (optimized v3.0)
-     */
-    public static <T extends Comparable<T>> T[] mergeSortV30(T[] arr) {
-        if (arr.length <= INSERTION_SORT_THRESHOLD) {
-            return insertionSortV20(arr);
+    private static <T extends Comparable<T>> int partition(T[] arr, int start, int end, T pivot) {
+        int i = start + 1;
+        int j = end;
+
+        while (i <= j) {
+            while (i <= j && arr[i].compareTo(pivot) <= 0) {
+                i++;
+            }
+            while (i <= j && arr[j].compareTo(pivot) >= 0) {
+                j--;
+            }
+            if (i <= j) {
+                T temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
         }
 
-        int currentSize = 1;
-        while (currentSize < arr.length - 1) {
-            int left = 0;
-            while (left < arr.length - 1) {
-                int mid = Math.min(left + currentSize - 1, arr.length - 1);
-                int right = Math.min(left + 2 * currentSize - 1, arr.length - 1);
-                merge(arr, left, mid, right);
-                left = right + 1;
+        T temp = arr[start];
+        arr[start] = arr[j];
+        arr[j] = temp;
+        return j;
+    }
+
+    private static <T extends Comparable<T>> int medianOfThree(T[] arr, int start, int end) {
+        int mid = start + (end - start) / 2;
+
+        T temp;
+        if (arr[start].compareTo(arr[mid]) > 0) {
+            temp = arr[start];
+            arr[start] = arr[mid];
+            arr[mid] = temp;
+        }
+        if (arr[start].compareTo(arr[end]) > 0) {
+            temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+        }
+        if (arr[mid].compareTo(arr[end]) > 0) {
+            temp = arr[mid];
+            arr[mid] = arr[end];
+            arr[end] = temp;
+        }
+
+        return mid;
+    }
+
+    /**
+     * Quick Sort (original v1.0)
+     */
+    public static <T extends Comparable<T>> T[] quickSortV10(T[] arr) {
+        quickSortV10(arr, 0, arr.length - 1);
+        return arr;
+    }
+
+    /**
+     * Help function for Quick Sort (original v1.0)
+     */
+    private static <T extends Comparable<T>> void quickSortV10(T[] arr, int start, int end) {
+        if (start < end) {
+            T pivot = arr[start];
+
+            int pivot_index = partition(arr, start, end, pivot);
+            quickSortV10(arr, start, pivot_index - 1);
+            quickSortV10(arr, pivot_index + 1, end);
+        }
+    }
+
+    /**
+     * Quick Sort (optimized v2.0)
+     */
+    public static <T extends Comparable<T>> T[] quickSortV20(T[] arr) {
+        quickSortV20(arr, 0, arr.length - 1);
+        return arr;
+    }
+
+    /**
+     * Help function for Quick Sort (optimized v2.0)
+     */
+    private static <T extends Comparable<T>> void quickSortV20(T[] arr, int start, int end) {
+        if (start < end) {
+            Random random = new Random();
+            int pivot_index = random.nextInt(end - start + 1) + start;
+            T temp = arr[start];
+            arr[start] = arr[pivot_index];
+            arr[pivot_index] = temp;
+            T pivot = arr[start];
+
+            pivot_index = partition(arr, start, end, pivot);
+            quickSortV20(arr, start, pivot_index - 1);
+            quickSortV20(arr, pivot_index + 1, end);
+        }
+    }
+
+    /**
+     * Quick Sort (optimized v2.1)
+     */
+    public static <T extends Comparable<T>> T[] quickSortV21(T[] arr) {
+        quickSortV21(arr, 0, arr.length - 1);
+        return arr;
+    }
+
+    /**
+     * Help function for Quick Sort (optimized v2.1)
+     */
+    private static <T extends Comparable<T>> void quickSortV21(T[] arr, int start, int end) {
+        if (start < end) {
+            int pivot_index = medianOfThree(arr, start, end);
+            T temp = arr[start];
+            arr[start] = arr[pivot_index];
+            arr[pivot_index] = temp;
+            T pivot = arr[start];
+
+            pivot_index = partition(arr, start, end, pivot);
+            quickSortV21(arr, start, pivot_index - 1);
+            quickSortV21(arr, pivot_index + 1, end);
+        }
+    }
+
+    /**
+     * Quick Sort (optimized v2.2)
+     */
+    public static <T extends Comparable<T>> T[] quickSortV22(T[] arr) {
+        quickSortV22(arr, 0, arr.length - 1);
+        return arr;
+    }
+
+    /**
+     * Help function for Quick Sort (optimized v2.2)
+     */
+    private static <T extends Comparable<T>> void quickSortV22(T[] arr, int start, int end) {
+        if (end - start <= INSERTION_SORT_THRESHOLD) {
+            T[] temp = (T[]) Array.newInstance(clazz, end - start + 1);
+            System.arraycopy(arr, start, temp, 0, end - start + 1);
+            insertionSortV20(temp);
+            System.arraycopy(temp, 0, arr, start, end - start + 1);
+            return;
+        }
+
+        int pivot_index = medianOfThree(arr, start, end);
+        T temp = arr[start];
+        arr[start] = arr[pivot_index];
+        arr[pivot_index] = temp;
+        T pivot = arr[start];
+
+        pivot_index = partition(arr, start, end, pivot);
+        quickSortV22(arr, start, pivot_index - 1);
+        quickSortV22(arr, pivot_index + 1, end);
+    }
+
+    /**
+     * Quick Sort (optimized v3.0)
+     */
+    public static <T extends Comparable<T>> T[] quickSortV30(T[] arr) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        stack.push(arr.length - 1);
+
+        while (!stack.isEmpty()) {
+            int end = stack.pop();
+            int start = stack.pop();
+
+            if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
+                T[] temp = (T[]) Array.newInstance(clazz, end - start + 1);
+                System.arraycopy(arr, start, temp, 0, end - start + 1);
+                insertionSortV20(temp);
+                System.arraycopy(temp, 0, arr, start, end - start + 1);
+                continue;
             }
-            currentSize *= 2;
+
+            int pivot_index = medianOfThree(arr, start, end);
+            T temp = arr[start];
+            arr[start] = arr[pivot_index];
+            arr[pivot_index] = temp;
+            T pivot = arr[start];
+
+            pivot_index = partition(arr, start, end, pivot);
+            stack.push(start);
+            stack.push(pivot_index - 1);
+            stack.push(pivot_index + 1);
+            stack.push(end);
         }
 
         return arr;

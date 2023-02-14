@@ -76,9 +76,9 @@ static int median_of_three(T *arr, int start, int end) {
     return mid;
 }
 
-// /**
-//  * Help function for Quick Sort (original v1.0)
-//  */
+/**
+ * Help function for Quick Sort (original v1.0)
+ */
 // static void __quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
 //         T pivot = arr[start];
@@ -89,17 +89,9 @@ static int median_of_three(T *arr, int start, int end) {
 //     }
 // }
 
-// /**
-//  * Quick Sort (original v1.0)
-//  */
-// T *quick_sort(T *arr, int n) {
-//     __quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
-
-// /**
-//  * Help function for Quick Sort (optimized v2.0)
-//  */
+/**
+ * Help function for Quick Sort (optimized v2.0)
+ */
 // static void __quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
 //         int pivot_index = rand() % (end - start + 1) + start;
@@ -112,18 +104,9 @@ static int median_of_three(T *arr, int start, int end) {
 //     }
 // }
 
-// /**
-//  * Quick Sort (optimized v2.0)
-//  */
-// T *quick_sort(T *arr, int n) {
-//     srand(time(NULL));
-//     __quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
-
-// /**
-//  * Help function for Quick Sort (optimized v2.1)
-//  */
+/**
+ * Help function for Quick Sort (optimized v2.1)
+ */
 // static void __quick_sort(T *arr, int start, int end) {
 //     if (start < end) {
 //         int pivot_index = median_of_three(arr, start, end);
@@ -136,17 +119,9 @@ static int median_of_three(T *arr, int start, int end) {
 //     }
 // }
 
-// /**
-//  * Quick Sort (optimized v2.1)
-//  */
-// T *quick_sort(T *arr, int n) {
-//     __quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
-
-// /**
-//  * Help function for Quick Sort (optimized v2.2)
-//  */
+/**
+ * Help function for Quick Sort (optimized v2.2)
+ */
 // static void __quick_sort(T *arr, int start, int end) {
 //     if (end - start <= INSERTION_SORT_THRESHOLD) {
 //         T temp[end - start + 1];
@@ -165,13 +140,14 @@ static int median_of_three(T *arr, int start, int end) {
 //     __quick_sort(arr, pivot_index + 1, end);
 // }
 
-// /**
-//  * Quick Sort (optimized v2.2)
-//  */
-// T *quick_sort(T *arr, int n) {
-//     __quick_sort(arr, 0, n - 1);
-//     return arr;
-// }
+/**
+ * Quick Sort
+ */
+T *quick_sort(T *arr, int n) {
+    srand(time(NULL));
+    __quick_sort(arr, 0, n - 1);
+    return arr;
+}
 
 int main() {
     int arr[] = {4, 7, 6, 5, 3, 2, 8, 1};

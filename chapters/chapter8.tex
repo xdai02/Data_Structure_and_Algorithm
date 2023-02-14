@@ -1181,34 +1181,23 @@ def quick_sort(lst):
 
 \mybox{计数排序}
 
-\begin{lstlisting}[language=C]
-void countingSort(int *arr, int n) {
-    int max = arr[0];
-    int min = arr[0];
-    for(int i = 1; i < n; i++) {
-        if(arr[i] > max) {
-            max = arr[i];
-        }
-        if(arr[i] < min) {
-            min = arr[i];
-        }
-    }
+\begin{lstlisting}[language=Python]
+def counting_sort(lst):
+	if len(lst) == 0:
+		return lst
+
+    max_val = max(lst)
+    min_val = min(lst)
+
+    counts = [0] * (max_val - min_val + 1)
+    for elem in lst:
+        counts[elem - min_val] += 1
     
-    int range = max - min + 1;
-    int table[range];
-    memset(table, 0, sizeof(table));
-
-    for(int i = 0; i < n; i++) {
-        table[arr[i] - min]++;
-    }
-
-    int cnt = 0;
-    for(int i = 0; i < range; i++) {
-        while(table[i]--) {
-            arr[cnt++] = i + min;
-        }
-    }
-}
+    lst.clear()
+    for i in range(len(counts)):
+        lst.extend([i + min_val] * counts[i])
+    
+    return lst
 \end{lstlisting}
 
 \newpage
@@ -1311,48 +1300,27 @@ $$
 
 \mybox{桶排序}
 
-\begin{lstlisting}[language=Java]
-public static void bucketSort(int[] arr) {
-        int max = arr[0];
-        int min = arr[0];
-        for(int i = 1; i < arr.length; i++) {
-            if(arr[i] > max) {
-                max = arr[i];
-            }
-            if(arr[i] < min) {
-                min = arr[i];
-            }
-        }
-        int diff = max - min;
+\begin{lstlisting}[language=Python]
+def bucket_sort(lst):
+    if len(lst) == 0:
+        return lst
+    
+    max_val = max(lst)
+    min_val = min(lst)
+    bucket_size = (max_val - min_val) // len(lst) + 1
 
-        // 创建桶
-        int bucketNum = arr.length;
-        List<LinkedList<Integer>> buckets 
-            = new ArrayList<>(bucketNum);
-        for(int i = 0; i < bucketNum; i++) {
-            buckets.add(new LinkedList<>());
-        }
+    buckets = [[] for _ in range(len(lst))]
 
-        // 遍历数组，把元素放入对应桶中
-        for(int i = 0; i < arr.length; i++) {
-            // 计算当前元素所放置的桶号
-            int num = (arr[i]-min) / (diff / (bucketNum-1));
-            buckets.get(num).add(arr[i]);
-        }
-
-        // 桶内排序
-        for(int i = 0; i < bucketNum; i++) {
-            Collections.sort(buckets.get(i));
-        }
-
-        // 取出元素
-        int cnt = 0;
-        for(LinkedList<Integer> list : buckets) {
-            for(int data : list) {
-                arr[cnt++] = data;
-            }
-        }
-    }
+    for elem in lst:
+        index = (elem - min_val) // bucket_size
+        buckets[index].append(elem)
+    
+    lst.clear()
+    for bucket in buckets:
+        bucket.sort()
+        lst.extend(bucket)
+    
+    return lst
 \end{lstlisting}
 
 \newpage
@@ -1488,44 +1456,6 @@ public static void bucketSort(int[] arr) {
 		};
 	\end{tikzpicture}
 \end{figure}
-
-\mybox{基数排序}
-
-\begin{lstlisting}[language=Java]
-public static void radixSort(int[] arr) {
-        int max = arr[0];
-        for(int i = 1; i < arr.length; i++) {
-            if(arr[i] > max) {
-                max = arr[i];
-            }
-        }
-
-        int bucketNum = 10;
-        // 从个位开始
-        for(int exp = 1; max / exp > 0; exp *= 10) {
-            // 创建桶
-            List<LinkedList<Integer>> buckets 
-                = new ArrayList<>(bucketNum);
-            for(int i = 0; i < bucketNum; i++) {
-                buckets.add(new LinkedList<>());
-            }
-
-            // 把元素放到对应桶中
-            for(int data : arr) {
-                int num = (data / exp) % 10;
-                buckets.get(num).add(data);
-            }
-
-            // 按顺序取出元素
-            int cnt = 0;
-            for(LinkedList<Integer> bucket : buckets) {
-                for(int data : bucket) {
-                    arr[cnt++] = data;
-                }
-            }
-        }
-    }
-\end{lstlisting}
 
 \newpage
 

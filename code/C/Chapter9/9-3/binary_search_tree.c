@@ -1,4 +1,5 @@
 #include "binary_search_tree.h"
+#include "queue.h"
 
 typedef struct node_t {
     T data;
@@ -233,4 +234,34 @@ void binary_search_tree_post_order(binary_search_tree_t *tree) {
     printf("[");
     __binary_search_tree_post_order(tree->root);
     printf("\b\b]\n");
+}
+
+void binary_search_tree_level_order(binary_search_tree_t *tree) {
+    if (tree == NULL) {
+        return;
+    }
+
+    if (tree->size == 0) {
+        printf("[]\n");
+        return;
+    }
+
+    queue_t *queue = queue_create();
+    queue_enqueue(queue, tree->root);
+
+    printf("[");
+    while (!queue_is_empty(queue)) {
+        node_t *node = queue_dequeue(queue);
+        printf("%d, ", node->data);
+
+        if (node->left != NULL) {
+            queue_enqueue(queue, node->left);
+        }
+        if (node->right != NULL) {
+            queue_enqueue(queue, node->right);
+        }
+    }
+    printf("\b\b]\n");
+
+    queue_destroy(queue);
 }

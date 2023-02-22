@@ -1,7 +1,7 @@
 class BinarySearchTree:
     class Node:
-        def __init__(self, data):
-            self.data = data
+        def __init__(self, elem):
+            self.data = elem
             self.left = None
             self.right = None
 
@@ -27,40 +27,40 @@ class BinarySearchTree:
         self.__root = None
         self.__size = 0
 
-    def contains(self, data):
+    def contains(self, elem):
         node = self.__root
         while node is not None:
-            if data < node.data:
+            if elem < node.data:
                 node = node.left
-            elif data > node.data:
+            elif elem > node.data:
                 node = node.right
             else:
                 return True
         return False
     
-    def add(self, data):
-        self.__root = self.__add(self.__root, data)
+    def add(self, elem):
+        self.__root = self.__add(self.__root, elem)
     
-    def __add(self, node, data):
+    def __add(self, node, elem):
         if node is None:
             self.__size += 1
-            return self.Node(data)
-        if data < node.data:
-            node.left = self.__add(node.left, data)
-        elif data > node.data:
-            node.right = self.__add(node.right, data)
+            return self.Node(elem)
+        if elem < node.data:
+            node.left = self.__add(node.left, elem)
+        elif elem > node.data:
+            node.right = self.__add(node.right, elem)
         return node
     
-    def remove(self, data):
-        self.__root = self.__remove(self.__root, data)
+    def remove(self, elem):
+        self.__root = self.__remove(self.__root, elem)
     
-    def __remove(self, node, data):
+    def __remove(self, node, elem):
         if node is None:
             return None
-        if data < node.data:
-            node.left = self.__remove(node.left, data)
-        elif data > node.data:
-            node.right = self.__remove(node.right, data)
+        if elem < node.data:
+            node.left = self.__remove(node.left, elem)
+        elif elem > node.data:
+            node.right = self.__remove(node.right, elem)
         else:
             if node.left is None:
                 self.__size -= 1
@@ -112,6 +112,15 @@ class BinarySearchTree:
             yield from self.__post_order(node.left)
             yield from self.__post_order(node.right)
             yield node
+    
+    def level_order(self):
+        queue = [self.__root]
+        while len(queue) > 0:
+            node = queue.pop(0)
+            if node is not None:
+                yield node.data
+                queue.append(node.left)
+                queue.append(node.right)
 
     def __str__(self):
         return "[" + ", ".join(str(node.data) for node in self.in_order()) + "]"

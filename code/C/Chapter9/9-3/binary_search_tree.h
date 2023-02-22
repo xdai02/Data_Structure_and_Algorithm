@@ -19,5 +19,6 @@ binary_search_tree_t *binary_search_tree_remove(binary_search_tree_t *tree, T el
 void binary_search_tree_pre_order(binary_search_tree_t *tree);
 void binary_search_tree_in_order(binary_search_tree_t *tree);
 void binary_search_tree_post_order(binary_search_tree_t *tree);
+void binary_search_tree_level_order(binary_search_tree_t *tree);
 
 #endif

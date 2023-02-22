@@ -12,6 +12,18 @@ typedef struct doubly_linked_list_t {
     int size;
 } doubly_linked_list_t;
 
+static node_t *doubly_linked_list_node_create(T elem) {
+    node_t *node = (node_t *)malloc(sizeof(node_t));
+    if (!node) {
+        fprintf(stderr, "Error: memory allocation failed.\n");
+        return NULL;
+    }
+    node->data = elem;
+    node->prev = NULL;
+    node->next = NULL;
+    return node;
+}
+
 doubly_linked_list_t *doubly_linked_list_create() {
     doubly_linked_list_t *list = (doubly_linked_list_t *)malloc(sizeof(doubly_linked_list_t));
     if (!list) {
@@ -25,6 +37,10 @@ doubly_linked_list_t *doubly_linked_list_create() {
 }
 
 void doubly_linked_list_destroy(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return;
+    }
+
     node_t *node = list->head;
     while (node != NULL) {
         node_t *next = node->next;
@@ -35,14 +51,24 @@ void doubly_linked_list_destroy(doubly_linked_list_t *list) {
 }
 
 int doubly_linked_list_size(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return 0;
+    }
     return list->size;
 }
 
 bool doubly_linked_list_is_empty(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return true;
+    }
     return list->size == 0;
 }
 
 doubly_linked_list_t *doubly_linked_list_clear(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return NULL;
+    }
+
     node_t *node = list->head;
     while (node != NULL) {
         node_t *next = node->next;
@@ -56,6 +82,10 @@ doubly_linked_list_t *doubly_linked_list_clear(doubly_linked_list_t *list) {
 }
 
 void doubly_linked_list_print(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return;
+    }
+
     node_t *node = list->head;
     printf("[");
     while (node != NULL) {
@@ -69,41 +99,36 @@ void doubly_linked_list_print(doubly_linked_list_t *list) {
 }
 
 doubly_linked_list_t *doubly_linked_list_add(doubly_linked_list_t *list, T elem) {
-    node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (!node) {
-        fprintf(stderr, "Error: memory allocation failed.\n");
-        exit(1);
+    if (list == NULL) {
+        return NULL;
     }
-    node->data = elem;
-    node->prev = list->tail;
-    node->next = NULL;
 
-    if (list->tail != NULL) {
+    node_t *node = doubly_linked_list_node_create(elem);
+    if (list->tail == NULL) {
+        list->head = node;
+    } else {
         list->tail->next = node;
+        node->prev = list->tail;
     }
     list->tail = node;
-    if (list->head == NULL) {
-        list->head = node;
-    }
+
     list->size++;
     return list;
 }
 
 doubly_linked_list_t *doubly_linked_list_insert(doubly_linked_list_t *list, int index, T elem) {
+    if (list == NULL) {
+        return NULL;
+    }
+
     if (index < 0 || index > list->size) {
         fprintf(stderr, "Error: index out of bounds.\n");
-        exit(1);
+        return list;
     }
 
-    node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (!node) {
-        fprintf(stderr, "Error: memory allocation failed.\n");
-        exit(1);
-    }
-    node->data = elem;
+    node_t *node = doubly_linked_list_node_create(elem);
 
     if (index == 0) {
-        node->prev = NULL;
         node->next = list->head;
         if (list->head != NULL) {
             list->head->prev = node;
@@ -113,24 +138,18 @@ doubly_linked_list_t *doubly_linked_list_insert(doubly_linked_list_t *list, int 
             list->tail = node;
         }
     } else if (index == list->size) {
+        list->tail->next = node;
         node->prev = list->tail;
-        node->next = NULL;
-        if (list->tail != NULL) {
-            list->tail->next = node;
-        }
         list->tail = node;
-        if (list->head == NULL) {
-            list->head = node;
-        }
     } else {
-        node_t *prev = list->head;
-        for (int i = 0; i < index - 1; i++) {
-            prev = prev->next;
+        node_t *next = list->head;
+        for (int i = 0; i < index; i++) {
+            next = next->next;
         }
-        node_t *next = prev->next;
+        node_t *prev = next->prev;
+        prev->next = node;
         node->prev = prev;
         node->next = next;
-        prev->next = node;
         next->prev = node;
     }
 
@@ -139,6 +158,10 @@ doubly_linked_list_t *doubly_linked_list_insert(doubly_linked_list_t *list, int 
 }
 
 T doubly_linked_list_remove(doubly_linked_list_t *list, int index) {
+    if (list == NULL) {
+        exit(1);
+    }
+
     if (index < 0 || index >= list->size) {
         fprintf(stderr, "Error: index out of bounds.\n");
         exit(1);
@@ -181,6 +204,10 @@ T doubly_linked_list_remove(doubly_linked_list_t *list, int index) {
 }
 
 T doubly_linked_list_get(doubly_linked_list_t *list, int index) {
+    if (list == NULL) {
+        exit(1);
+    }
+
     if (index < 0 || index >= list->size) {
         fprintf(stderr, "Error: index out of bounds.\n");
         exit(1);
@@ -198,9 +225,13 @@ T doubly_linked_list_get(doubly_linked_list_t *list, int index) {
 }
 
 doubly_linked_list_t *doubly_linked_list_set(doubly_linked_list_t *list, int index, T elem) {
+    if (list == NULL) {
+        return NULL;
+    }
+
     if (index < 0 || index >= list->size) {
         fprintf(stderr, "Error: index out of bounds.\n");
-        exit(1);
+        return list;
     }
 
     node_t *node = list->head;
@@ -212,6 +243,10 @@ doubly_linked_list_t *doubly_linked_list_set(doubly_linked_list_t *list, int ind
 }
 
 bool doubly_linked_list_contains(doubly_linked_list_t *list, T elem) {
+    if (list == NULL) {
+        return false;
+    }
+
     node_t *node = list->head;
     while (node != NULL) {
         if (node->data == elem) {
@@ -223,6 +258,10 @@ bool doubly_linked_list_contains(doubly_linked_list_t *list, T elem) {
 }
 
 int doubly_linked_list_index_of(doubly_linked_list_t *list, T elem) {
+    if (list == NULL) {
+        return -1;
+    }
+
     node_t *node = list->head;
     int index = 0;
     while (node != NULL) {
@@ -236,9 +275,10 @@ int doubly_linked_list_index_of(doubly_linked_list_t *list, T elem) {
 }
 
 static doubly_linked_list_t *__doubly_linked_list_reverse_recursive(doubly_linked_list_t *list, node_t *node) {
-    if (!node) {
+    if (list == NULL || node == NULL) {
         return list;
     }
+
     node_t *next = node->next;
     node->next = node->prev;
     node->prev = next;
@@ -252,10 +292,17 @@ static doubly_linked_list_t *__doubly_linked_list_reverse_recursive(doubly_linke
 }
 
 doubly_linked_list_t *doubly_linked_list_reverse_recursive(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return NULL;
+    }
     return __doubly_linked_list_reverse_recursive(list, list->head);
 }
 
 doubly_linked_list_t *doubly_linked_list_reverse(doubly_linked_list_t *list) {
+    if (list == NULL) {
+        return NULL;
+    }
+
     node_t *node = list->head;
     while (node != NULL) {
         node_t *next = node->next;

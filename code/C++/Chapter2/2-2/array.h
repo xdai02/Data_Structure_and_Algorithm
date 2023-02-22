@@ -93,6 +93,7 @@ void Array<T>::insert(int index, T elem) {
     if (index < 0 || index > size) {
         throw std::out_of_range("Index out of range");
     }
+
     if (size == capacity) {
         resize(2 * capacity);
     }
@@ -108,6 +109,7 @@ void Array<T>::remove(int index) {
     if (index < 0 || index >= size) {
         throw std::out_of_range("Index out of range");
     }
+    
     for (int i = index; i < size - 1; i++) {
         data[i] = data[i + 1];
     }

@@ -13,7 +13,6 @@ stack_t *stack_create();
 void stack_destroy(stack_t *stack);
 int stack_size(stack_t *stack);
 bool stack_is_empty(stack_t *stack);
-stack_t *stack_clear(stack_t *stack);
 stack_t *stack_push(stack_t *stack, T elem);
 T stack_pop(stack_t *stack);
 T stack_peek(stack_t *stack);

@@ -1,9 +1,9 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
 class SinglyLinkedList:
+    class Node:
+        def __init__(self, data):
+            self.data = data
+            self.next = None
+
     def __init__(self):
         self.__head = None
         self.__tail = None

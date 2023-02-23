@@ -60,6 +60,24 @@ int binary_search_tree_height(binary_search_tree_t *tree) {
     return __binary_search_tree_height(tree->root);
 }
 
+static void __binary_search_tree_clear(node_t *node) {
+    if (node == NULL) {
+        return;
+    }
+    __binary_search_tree_clear(node->left);
+    __binary_search_tree_clear(node->right);
+    free(node);
+}
+
+void binary_search_tree_clear(binary_search_tree_t *tree) {
+    if (tree == NULL) {
+        return;
+    }
+    __binary_search_tree_clear(tree->root);
+    tree->root = NULL;
+    tree->size = 0;
+}
+
 bool binary_search_tree_contains(binary_search_tree_t *tree, T elem) {
     if (tree == NULL) {
         return false;
@@ -101,26 +119,26 @@ binary_search_tree_t *binary_search_tree_add(binary_search_tree_t *tree, T elem)
     return tree;
 }
 
-static T binary_search_tree_min(node_t *node) {
+static node_t *binary_search_tree_min(node_t *node) {
     if (node == NULL) {
-        exit(1);
+        return NULL;
     }
 
     while (node->left != NULL) {
         node = node->left;
     }
-    return node->data;
+    return node;
 }
 
-static T binary_search_tree_max(node_t *node) {
+static node_t *binary_search_tree_max(node_t *node) {
     if (node == NULL) {
-        exit(1);
+        return NULL;
     }
 
     while (node->right != NULL) {
         node = node->right;
     }
-    return node->data;
+    return node;
 }
 
 static node_t *__binary_search_tree_remove(node_t *node, T elem) {
@@ -147,7 +165,7 @@ static node_t *__binary_search_tree_remove(node_t *node, T elem) {
             return left_node;
         }
 
-        T successor = binary_search_tree_min(node->right);
+        T successor = binary_search_tree_min(node->right)->data;
         node->data = successor;
         node->right = __binary_search_tree_remove(node->right, successor);
         return node;

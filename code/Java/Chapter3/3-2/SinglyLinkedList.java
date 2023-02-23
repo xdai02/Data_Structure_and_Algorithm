@@ -5,8 +5,8 @@ public class SinglyLinkedList<T> {
         T data;
         Node<T> next;
 
-        Node(T data) {
-            this.data = data;
+        Node(T elem) {
+            this.data = elem;
             this.next = null;
         }
     }

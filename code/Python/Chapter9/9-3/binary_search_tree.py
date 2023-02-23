@@ -10,7 +10,7 @@ class BinarySearchTree:
         self.__size = 0
     
     def is_empty(self):
-        return self.__root is None
+        return self.__size == 0
     
     def __len__(self):
         return self.__size
@@ -57,6 +57,7 @@ class BinarySearchTree:
     def __remove(self, node, elem):
         if node is None:
             return None
+            
         if elem < node.data:
             node.left = self.__remove(node.left, elem)
         elif elem > node.data:
@@ -69,19 +70,19 @@ class BinarySearchTree:
                 self.__size -= 1
                 return node.left
             else:
-                node.data = self.__min(node.right)
+                node.data = self.__min(node.right).data
                 node.right = self.__remove(node.right, node.data)
         return node
 
     def __min(self, node):
         while node.left is not None:
             node = node.left
-        return node.data
+        return node
     
     def __max(self, node):
         while node.right is not None:
             node = node.right
-        return node.data
+        return node
 
     def pre_order(self):
         for node in self.__pre_order(self.__root):

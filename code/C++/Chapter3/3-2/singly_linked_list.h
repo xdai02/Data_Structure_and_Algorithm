@@ -11,8 +11,8 @@ class SinglyLinkedList {
         T data;
         Node *next;
 
-        Node(T data) {
-            this->data = data;
+        Node(T elem) {
+            this->data = elem;
             this->next = nullptr;
         }
     };
@@ -21,7 +21,7 @@ class SinglyLinkedList {
     Node *tail;
     int length;
 
-    void reverse_recursive(Node node);
+    void reverse_recursive(Node *node);
 
     public:
     SinglyLinkedList();
@@ -211,14 +211,14 @@ int SinglyLinkedList<T>::index_of(T elem) {
 }
 
 template <typename T>
-void SinglyLinkedList<T>::reverse_recursive(Node node) {
-    if (node.next == nullptr) {
-        head = &node;
+void SinglyLinkedList<T>::reverse_recursive(Node *node) {
+    if (node->next == nullptr) {
+        head = node;
         return;
     }
-    reverse_recursive(*node.next);
-    node.next->next = &node;
-    node.next = nullptr;
+    reverse_recursive(node->next);
+    node->next->next = node;
+    node->next = nullptr;
 }
 
 template <typename T>

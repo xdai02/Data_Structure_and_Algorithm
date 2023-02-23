@@ -12,8 +12,8 @@ class DoublyLinkedList {
         Node *prev;
         Node *next;
 
-        Node(T data) {
-            this->data = data;
+        Node(T elem) {
+            this->data = elem;
             this->prev = nullptr;
             this->next = nullptr;
         }

@@ -1184,29 +1184,20 @@ $$
 	}
 \end{table}
 
-\mybox{Floyd最短路径}
-
-\begin{lstlisting}[language=C]
-void floyd(Graph *g, int dist[MAX][MAX]) {
-    // 最短路径矩阵初始化为图的邻接矩阵
-    for(int i = 0; i < g->vertexNum; i++) {
-        for(int j = 0; j < g->vertexNum; j++) {
-            dist[i][j] = g->weight[i][j];
-        }
-    }
-
-    // Floyd算法
-    for(int k = 0; k < g->vertexNum; k++) {
-        for(int i = 0; i < g->vertexNum; i++) {
-            for(int j = 0; j < g->vertexNum; j++) {
-                if(dist[i][k] + dist[k][j] < dist[i][j]) {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                }
-            }
-        }
-    }
-}
-\end{lstlisting}
+\begin{algorithm}[H]
+	\caption{Floyd最短路径}
+	\begin{algorithmic}[1]
+		\Procedure{floyd}{Graph G}
+		\For {k = 0 to G.vertexNum}
+		\For {i = 0 to G.vertexNum}
+		\For {j = 0 to G.vertexNum}
+		\State dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+		\EndFor
+		\EndFor
+		\EndFor
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 \newpage
 
@@ -1878,7 +1869,7 @@ Kruskal算法可以理解为将森林合并成树，每次在图中找权值最�
 			\hline
 			C9                & 计算机组成           & C8                \\
 			\hline
-			Chapter10               & 操作系统             & C7、C9            \\
+			Chapter10         & 操作系统             & C7、C9            \\
 			\hline
 			C11               & 编译原理             & C7、C9            \\
 			\hline
@@ -1886,7 +1877,7 @@ Kruskal算法可以理解为将森林合并成树，每次在图中找权值最�
 			\hline
 			C13               & 计算理论             & C2                \\
 			\hline
-			C14               & 计算机网络           & Chapter10               \\
+			C14               & 计算机网络           & Chapter10         \\
 			\hline
 			C15               & 数值分析             & C6                \\
 			\hline
@@ -2077,13 +2068,13 @@ Kruskal算法可以理解为将森林合并成树，每次在图中找权值最�
 	\setlength{\tabcolsep}{5mm}{
 		\begin{tabular}{|c|c|}
 			\hline
-			\textbf{学期}     & \textbf{课程}      \\
+			\textbf{学期}     & \textbf{课程}            \\
 			\hline
-			\textbf{第一学期} & C1、C2、C4、C8     \\
+			\textbf{第一学期} & C1、C2、C4、C8           \\
 			\hline
-			\textbf{第二学期} & C3、C5、C9、C13    \\
+			\textbf{第二学期} & C3、C5、C9、C13          \\
 			\hline
-			\textbf{第三学期} & C6、C7             \\
+			\textbf{第三学期} & C6、C7                   \\
 			\hline
 			\textbf{第四学期} & Chapter10、C11、C12、C15 \\
 			\hline
@@ -2097,17 +2088,17 @@ Kruskal算法可以理解为将森林合并成树，每次在图中找权值最�
 	\setlength{\tabcolsep}{5mm}{
 		\begin{tabular}{|c|c|}
 			\hline
-			\textbf{学期}     & \textbf{课程}      \\
+			\textbf{学期}     & \textbf{课程}            \\
 			\hline
-			\textbf{第一学期} & C1、C2、C4、C8     \\
+			\textbf{第一学期} & C1、C2、C4、C8           \\
 			\hline
-			\textbf{第二学期} & C3、C5、C9、C13    \\
+			\textbf{第二学期} & C3、C5、C9、C13          \\
 			\hline
-			\textbf{第三学期} & C6、C7             \\
+			\textbf{第三学期} & C6、C7                   \\
 			\hline
 			\textbf{第四学期} & Chapter10、C11、C12、C15 \\
 			\hline
-			\textbf{第五学期} & C14                \\
+			\textbf{第五学期} & C14                      \\
 			\hline
 		\end{tabular}
 	}

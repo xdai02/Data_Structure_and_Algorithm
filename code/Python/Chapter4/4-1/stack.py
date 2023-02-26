@@ -8,8 +8,8 @@ class Stack:
     def __len__(self):
         return len(self.__data)
     
-    def push(self, data):
-        self.__data.append(data)
+    def push(self, elem):
+        self.__data.append(elem)
     
     def pop(self):
         return self.__data.pop()

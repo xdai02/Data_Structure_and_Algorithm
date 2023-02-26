@@ -8,15 +8,15 @@ public class SortAlgoAnalysis {
         final int TIMEOUT = 15;
         SortAlgo sortAlgo = SortAlgo.getInstance(Integer.class);
 
-        // comparator.sort(SortAlgo::bubbleSortV10, "Bubble Sort (original v1.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::bubbleSortV20, "Bubble Sort (optimized v2.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::bubbleSortV21, "Bubble Sort (optimized v2.1)", TIMEOUT);
+        comparator.sort(SortAlgo::bubbleSortV10, "Bubble Sort (original v1.0)", TIMEOUT);
+        comparator.sort(SortAlgo::bubbleSortV20, "Bubble Sort (optimized v2.0)", TIMEOUT);
+        comparator.sort(SortAlgo::bubbleSortV21, "Bubble Sort (optimized v2.1)", TIMEOUT);
 
-        // comparator.sort(SortAlgo::selectionSortV10, "Selection Sort (original v1.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::selectionSortV20, "Selection Sort (optimized v2.0)", TIMEOUT);
+        comparator.sort(SortAlgo::selectionSortV10, "Selection Sort (original v1.0)", TIMEOUT);
+        comparator.sort(SortAlgo::selectionSortV20, "Selection Sort (optimized v2.0)", TIMEOUT);
 
-        // comparator.sort(SortAlgo::insertionSortV10, "Insertion Sort (original v1.0)", TIMEOUT);
-        // comparator.sort(SortAlgo::insertionSortV20, "Insertion Sort (optimized v2.0)", TIMEOUT);
+        comparator.sort(SortAlgo::insertionSortV10, "Insertion Sort (original v1.0)", TIMEOUT);
+        comparator.sort(SortAlgo::insertionSortV20, "Insertion Sort (optimized v2.0)", TIMEOUT);
 
         comparator.sort(SortAlgo::shellSortV10, "Shell Sort (original v1.0)", TIMEOUT);
         comparator.sort(SortAlgo::shellSortHibbard, "Shell Sort (Hibbard)", TIMEOUT);
@@ -31,5 +31,7 @@ public class SortAlgoAnalysis {
         comparator.sort(SortAlgo::quickSortV21, "Quick Sort (optimized v2.1)", TIMEOUT);
         comparator.sort(SortAlgo::quickSortV22, "Quick Sort (optimized v2.2)", TIMEOUT);
         comparator.sort(SortAlgo::quickSortV30, "Quick Sort (optimized v3.0)", TIMEOUT);
+    
+        comparator.sort(SortAlgo::heapSortV10, "Heap Sort (original v1.0)", TIMEOUT);
     }
 }

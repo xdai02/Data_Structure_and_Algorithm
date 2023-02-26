@@ -389,3 +389,25 @@ def quick_sort_v3_0(lst):
             stack.append((pivot_index + 1, end))
     
     return lst
+
+def heap_sort_v1_0(lst):
+    """Heap Sort (original v1.0)"""
+    def heapify(lst, index, n):
+        child_index = 2 * index + 1
+        while child_index < n:
+            if child_index + 1 < n and lst[child_index + 1] > lst[child_index]:
+                child_index += 1
+            if lst[index] >= lst[child_index]:
+                break
+            lst[index], lst[child_index] = lst[child_index], lst[index]
+            index = child_index
+            child_index = 2 * index + 1
+    
+    for i in range(len(lst) // 2, -1, -1):
+        heapify(lst, i, len(lst))
+
+    for i in range(len(lst) - 1, 0, -1):
+        lst[0], lst[i] = lst[i], lst[0]
+        heapify(lst, 0, i)
+
+    return lst

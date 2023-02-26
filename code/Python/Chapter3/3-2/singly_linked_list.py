@@ -1,7 +1,7 @@
 class SinglyLinkedList:
-    class Node:
-        def __init__(self, data):
-            self.data = data
+    class __Node:
+        def __init__(self, elem):
+            self.data = elem
             self.next = None
 
     def __init__(self):
@@ -15,8 +15,8 @@ class SinglyLinkedList:
     def __len__(self):
         return self.__len
     
-    def add(self, data):
-        node = Node(data)
+    def add(self, elem):
+        node = self.__Node(elem)
         if self.is_empty():
             self.__head = node
         else:
@@ -24,11 +24,11 @@ class SinglyLinkedList:
         self.__tail = node
         self.__len += 1
     
-    def insert(self, index, data):
+    def insert(self, index, elem):
         if index < 0 or index > self.__len:
             raise IndexError("Index out of range")
 
-        node = Node(data)
+        node = self.__Node(elem)
         if index == 0:
             node.next = self.__head
             self.__head = node
@@ -65,14 +65,14 @@ class SinglyLinkedList:
             cur = cur.next
         return cur.data
     
-    def set(self, index, data):
+    def set(self, index, elem):
         if index < 0 or index >= self.__len:
             raise IndexError("Index out of range")
 
         cur = self.__head
         for _ in range(index):
             cur = cur.next
-        cur.data = data
+        cur.data = elem
     
     def __str__(self):
         cur = self.__head

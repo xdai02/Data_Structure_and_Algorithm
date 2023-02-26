@@ -12,8 +12,8 @@
 
 \begin{lstlisting}[language=Python]
 class Node:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, elem):
+        self.data = elem
         self.next = None
 \end{lstlisting}
 
@@ -50,8 +50,8 @@ class Node:
 
 \begin{lstlisting}[language=Python]
 class Node:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, elem):
+        self.data = elem
         self.prev = None
         self.next = None
 \end{lstlisting}
@@ -162,7 +162,7 @@ public T get(int index) throws IndexOutOfBoundsException {
 \mybox{更新结点}
 
 \begin{lstlisting}[language=Java]
-public void set(int index, T data) throws IndexOutOfBoundsException {
+public void set(int index, T elem) throws IndexOutOfBoundsException {
 	if (index < 0 || index >= size) {
 		throw new IndexOutOfBoundsException("Index out of bounds");
 	}
@@ -171,7 +171,7 @@ public void set(int index, T data) throws IndexOutOfBoundsException {
 	for (int i = 0; i < index; i++) {
 		current = current.next;
 	}
-	current.data = data;
+	current.data = elem;
 }
 \end{lstlisting}
 
@@ -315,8 +315,8 @@ public void set(int index, T data) throws IndexOutOfBoundsException {
 \mybox{插入结点}
 
 \begin{lstlisting}[language=Java]
-public void add(T data) {
-	Node<T> newNode = new Node<T>(data, null);
+public void add(T elem) {
+	Node<T> newNode = new Node<T>(elem, null);
 	if (isEmpty()) {
 		head = newNode;
 		tail = newNode;
@@ -327,12 +327,12 @@ public void add(T data) {
 	size++;
 }
 
-public void add(int index, T data) throws IndexOutOfBoundsException {
+public void add(int index, T elem) throws IndexOutOfBoundsException {
 	if (index < 0 || index > size) {
 		throw new IndexOutOfBoundsException("Index out of bounds");
 	}
 
-	Node<T> newNode = new Node<T>(data, null);
+	Node<T> newNode = new Node<T>(elem, null);
 	if (index == 0) {
 		newNode.next = head;
 		head = newNode;

@@ -3,7 +3,7 @@
 
 typedef int T;
 
-int cmp(const void *a, const void *b) {
+static int cmp(const void *a, const void *b) {
     return *(T *)a - *(T *)b;
 }
 

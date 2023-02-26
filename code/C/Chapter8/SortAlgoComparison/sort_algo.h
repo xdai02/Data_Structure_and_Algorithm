@@ -31,4 +31,6 @@ void *quick_sort_v2_1(void *args);
 void *quick_sort_v2_2(void *args);
 void *quick_sort_v3_0(void *args);
 
+void *heap_sort_v1_0(void *args);
+
 #endif

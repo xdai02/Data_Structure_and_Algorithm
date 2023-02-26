@@ -8,15 +8,15 @@ int main() {
     SortAlgoComparator<int> *comparator = new SortAlgoComparator<int>();
     comparator->read_data("data.txt");
 
-    // comparator->sort(bubble_sort_v1_0, "Bubble Sort (original v1.0)");
-    // comparator->sort(bubble_sort_v2_0, "Bubble Sort (optimized v2.0)");
-    // comparator->sort(bubble_sort_v2_1, "Bubble Sort (optimized v2.1)");
+    comparator->sort(bubble_sort_v1_0, "Bubble Sort (original v1.0)");
+    comparator->sort(bubble_sort_v2_0, "Bubble Sort (optimized v2.0)");
+    comparator->sort(bubble_sort_v2_1, "Bubble Sort (optimized v2.1)");
 
-    // comparator->sort(selection_sort_v1_0, "Selection Sort (original v1.0)");
-    // comparator->sort(selection_sort_v2_0, "Selection Sort (optimized v2.0)");
+    comparator->sort(selection_sort_v1_0, "Selection Sort (original v1.0)");
+    comparator->sort(selection_sort_v2_0, "Selection Sort (optimized v2.0)");
 
-    // comparator->sort(insertion_sort_v1_0, "Insertion Sort (original v1.0)");
-    // comparator->sort(insertion_sort_v2_0, "Insertion Sort (optimized v2.0)");
+    comparator->sort(insertion_sort_v1_0, "Insertion Sort (original v1.0)");
+    comparator->sort(insertion_sort_v2_0, "Insertion Sort (optimized v2.0)");
 
     comparator->sort(shell_sort_v1_0, "Shell Sort (original v1.0)");
     comparator->sort(shell_sort_hibbard, "Shell Sort (Hibbard)");

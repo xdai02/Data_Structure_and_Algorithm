@@ -3,7 +3,7 @@ from sort_algo import *
 
 def main():
     comparator = SortAlgoComparator()
-    comparator.read_data('data.txt')
+    comparator.read_data("data.txt")
 
     comparator.sort(bubble_sort_v1_0, "Bubble Sort (original v1.0)")
     comparator.sort(bubble_sort_v2_0, "Bubble Sort (optimized v2.0)")
@@ -28,6 +28,8 @@ def main():
     comparator.sort(quick_sort_v2_1, "Quick Sort (optimized v2.1)")
     comparator.sort(quick_sort_v2_2, "Quick Sort (optimized v2.2)")
     comparator.sort(quick_sort_v3_0, "Quick Sort (optimized v3.0)")
+
+    comparator.sort(heap_sort_v1_0, "Heap Sort (original v1.0)")
 
 if __name__ == '__main__':
     main()

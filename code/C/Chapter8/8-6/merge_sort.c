@@ -10,7 +10,7 @@ const int INSERTION_SORT_THRESHOLD = 10;
 /**
  * Binary Insertion Sort
  */
-T *insertion_sort(T *arr, int n) {
+static T *insertion_sort(T *arr, int n) {
     for (int i = 1; i < n; i++) {
         T temp = arr[i];
         int left = 0;

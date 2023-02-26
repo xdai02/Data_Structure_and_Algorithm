@@ -15,7 +15,6 @@ public class SortAlgo {
 
     /**
      * Singleton Pattern
-     *
      * @param clazz Class of data
      * @return Singleton instance of SortAlgo
      */
@@ -46,7 +45,6 @@ public class SortAlgo {
 
         return arr;
     }
-
 
     /**
      * Bubble Sort (optimized v2.0)
@@ -602,5 +600,43 @@ public class SortAlgo {
         }
 
         return arr;
+    }
+
+    /**
+     * Heap Sort (original v1.0)
+     */
+    public static <T extends Number & Comparable<T>> T[] heapSortV10(T[] arr) {
+        for (int i = arr.length / 2; i >= 0; i--) {
+            heapify(arr, i, arr.length);
+        }
+
+        for (int i = arr.length - 1; i > 0; i--) {
+            T temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+            heapify(arr, 0, i);
+        }
+
+        return arr;
+    }
+
+    /**
+     * Helper function for Heap Sort (original v1.0)
+     */
+    private static <T extends Number & Comparable<T>> void heapify(T[] arr, int index, int n) {
+        int childIndex = 2 * index + 1;
+        while (childIndex < n) {
+            if (childIndex + 1 < n && arr[childIndex + 1].compareTo(arr[childIndex]) > 0) {
+                childIndex++;
+            }
+            if (arr[index].compareTo(arr[childIndex]) >= 0) {
+                break;
+            }
+            T temp = arr[index];
+            arr[index] = arr[childIndex];
+            arr[childIndex] = temp;
+            index = childIndex;
+            childIndex = 2 * index + 1;
+        }
     }
 }

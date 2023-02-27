@@ -7,7 +7,7 @@ typedef struct queue_t {
 
 queue_t *queue_create() {
     queue_t *queue = (queue_t *)malloc(sizeof(queue_t));
-    if (!queue) {
+    if (queue == NULL) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
@@ -35,6 +35,13 @@ bool queue_is_empty(queue_t *queue) {
         return true;
     }
     return singly_linked_list_is_empty(queue->data);
+}
+
+void queue_clear(queue_t *queue) {
+    if (queue == NULL) {
+        return;
+    }
+    singly_linked_list_clear(queue->data);
 }
 
 queue_t *queue_enqueue(queue_t *queue, T elem) {

@@ -12,6 +12,7 @@ class Stack {
     public:
     bool empty();
     int size();
+    void clear();
     void push(T elem);
     T pop();
     T top();
@@ -25,6 +26,11 @@ bool Stack<T>::empty() {
 template <typename T>
 int Stack<T>::size() {
     return data.size();
+}
+
+template <typename T>
+void Stack<T>::clear() {
+    data.clear();
 }
 
 template <typename T>

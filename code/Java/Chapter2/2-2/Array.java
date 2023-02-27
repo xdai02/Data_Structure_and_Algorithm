@@ -8,9 +8,9 @@ public class Array<T> {
     private int capacity;
 
     public Array() {
-        this.size = 0;
-        this.capacity = 5;
-        this.data = (T[]) new Object[capacity];
+        size = 0;
+        capacity = 5;
+        data = (T[]) new Object[capacity];
     }
 
     public int size() {

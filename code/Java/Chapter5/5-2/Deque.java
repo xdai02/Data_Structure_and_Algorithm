@@ -15,6 +15,10 @@ public class Deque<T> {
         return data.isEmpty();
     }
 
+    public void clear() {
+        data.clear();
+    }
+
     public void pushFront(T elem) {
         data.addFirst(elem);
     }

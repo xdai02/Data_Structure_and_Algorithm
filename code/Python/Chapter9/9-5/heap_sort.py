@@ -1,5 +1,6 @@
 def heap_sort(lst):
-    for i in range(len(lst) // 2, -1, -1):
+    """Heap Sort (original v1.0)"""
+    for i in range(len(lst) // 2 - 1, -1, -1):
         heapify(lst, i, len(lst))
 
     for i in range(len(lst) - 1, 0, -1):

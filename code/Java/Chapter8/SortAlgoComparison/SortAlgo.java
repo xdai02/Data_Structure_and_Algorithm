@@ -606,7 +606,7 @@ public class SortAlgo {
      * Heap Sort (original v1.0)
      */
     public static <T extends Number & Comparable<T>> T[] heapSortV10(T[] arr) {
-        for (int i = arr.length / 2; i >= 0; i--) {
+        for (int i = arr.length / 2 - 1; i >= 0; i--) {
             heapify(arr, i, arr.length);
         }
 

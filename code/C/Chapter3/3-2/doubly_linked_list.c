@@ -14,7 +14,7 @@ typedef struct doubly_linked_list_t {
 
 static node_t *doubly_linked_list_node_create(T elem) {
     node_t *node = (node_t *)malloc(sizeof(node_t));
-    if (!node) {
+    if (node == NULL) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
@@ -26,7 +26,7 @@ static node_t *doubly_linked_list_node_create(T elem) {
 
 doubly_linked_list_t *doubly_linked_list_create() {
     doubly_linked_list_t *list = (doubly_linked_list_t *)malloc(sizeof(doubly_linked_list_t));
-    if (!list) {
+    if (list == NULL) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }

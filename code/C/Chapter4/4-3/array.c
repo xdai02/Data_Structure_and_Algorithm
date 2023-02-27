@@ -8,14 +8,14 @@ typedef struct array_t {
 
 array_t *array_create() {
     array_t *arr = (array_t *)malloc(sizeof(array_t));
-    if (!arr) {
+    if (arr == NULL) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
 
     const int INIT_CAPACITY = 5;
     arr->data = (T *)malloc(sizeof(T) * INIT_CAPACITY);
-    if (!arr->data) {
+    if (arr->data == NULL) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
@@ -83,7 +83,7 @@ static array_t *resize(array_t *arr) {
     return arr;
 }
 
-array_t *array_append(array_t *arr, T elem) {
+array_t *array_add(array_t *arr, T elem) {
     if (arr == NULL) {
         return NULL;
     }

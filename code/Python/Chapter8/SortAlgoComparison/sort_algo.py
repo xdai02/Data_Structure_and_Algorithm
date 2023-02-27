@@ -403,7 +403,7 @@ def heap_sort_v1_0(lst):
             index = child_index
             child_index = 2 * index + 1
     
-    for i in range(len(lst) // 2, -1, -1):
+    for i in range(len(lst) // 2 - 1, -1, -1):
         heapify(lst, i, len(lst))
 
     for i in range(len(lst) - 1, 0, -1):

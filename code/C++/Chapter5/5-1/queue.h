@@ -12,6 +12,7 @@ class Queue {
     public:
     bool empty();
     int size();
+    void clear();
     void enqueue(T elem);
     T dequeue();
     T front();
@@ -25,6 +26,11 @@ bool Queue<T>::empty() {
 template <typename T>
 int Queue<T>::size() {
     return data.size();
+}
+
+template <typename T>
+void Queue<T>::clear() {
+    data.clear();
 }
 
 template <typename T>

@@ -8,6 +8,9 @@ class Deque:
     def __len__(self):
         return len(self.__data)
     
+    def clear(self):
+        self.__data = []
+    
     def push_front(self, elem):
         self.__data.insert(0, elem)
     

@@ -15,7 +15,7 @@ int array_size(array_t *arr);
 bool array_is_empty(array_t *arr);
 array_t *array_clear(array_t *arr);
 void array_print(array_t *arr);
-array_t *array_append(array_t *arr, T elem);
+array_t *array_add(array_t *arr, T elem);
 array_t *array_insert(array_t *arr, int index, T elem);
 T array_remove(array_t *arr, int index);
 T array_get(array_t *arr, int index);

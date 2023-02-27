@@ -7,8 +7,11 @@ public class HeapSort {
         System.out.println(Arrays.toString(arr));
     }
 
+    /**
+     * Heap Sort (original v1.0)
+     */
     public static int[] heapSort(int[] arr) {
-        for (int i = arr.length / 2; i >= 0; i--) {
+        for (int i = arr.length / 2 - 1; i >= 0; i--) {
             heapify(arr, i, arr.length);
         }
 

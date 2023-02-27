@@ -8,6 +8,9 @@ class Queue:
     def __len__(self):
         return len(self.__data)
     
+    def clear(self):
+        self.__data = []
+    
     def enqueue(self, elem):
         self.__data.append(elem)
     

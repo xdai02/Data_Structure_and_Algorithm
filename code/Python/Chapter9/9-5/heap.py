@@ -9,6 +9,9 @@ class MinHeap:
     def is_empty(self):
         return len(self.__data) == 0
     
+    def clear(self):
+        self.__data = []
+    
     def __heapify(self):
         for i in range(len(self.__data) // 2 - 1, -1, -1):
             self.__sift_down(i)
@@ -40,9 +43,9 @@ class MinHeap:
             raise IndexError("Heap is empty")
         
         self.__data[0], self.__data[-1] = self.__data[-1], self.__data[0]
-        data = self.__data.pop()
+        elem = self.__data.pop()
         self.__sift_down(0)
-        return data
+        return elem
 
     def peek(self):
         if self.is_empty():
@@ -59,6 +62,9 @@ class MaxHeap:
 
     def is_empty(self):
         return len(self.__data) == 0
+    
+    def clear(self):
+        self.__data = []
     
     def __heapify(self):
         for i in range(len(self.__data) // 2 - 1, -1, -1):
@@ -91,9 +97,9 @@ class MaxHeap:
             raise IndexError("Heap is empty")
         
         self.__data[0], self.__data[-1] = self.__data[-1], self.__data[0]
-        data = self.__data.pop()
+        elem = self.__data.pop()
         self.__sift_down(0)
-        return data
+        return elem
     
     def peek(self):
         if self.is_empty():

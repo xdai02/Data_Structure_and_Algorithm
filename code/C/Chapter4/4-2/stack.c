@@ -37,11 +37,18 @@ bool stack_is_empty(stack_t *stack) {
     return array_is_empty(stack->data);
 }
 
+void stack_clear(stack_t *stack) {
+    if (stack == NULL) {
+        return;
+    }
+    array_clear(stack->data);
+}
+
 stack_t *stack_push(stack_t *stack, T elem) {
     if (stack == NULL) {
         return NULL;
     }
-    array_append(stack->data, elem);
+    array_add(stack->data, elem);
     return stack;
 }
 

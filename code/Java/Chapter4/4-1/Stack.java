@@ -15,6 +15,10 @@ public class Stack<T> {
         return data.size() == 0;
     }
 
+    public void clear() {
+        data.clear();
+    }
+
     public void push(T elem) {
         data.add(elem);
     }

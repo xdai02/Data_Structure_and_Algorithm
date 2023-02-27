@@ -120,11 +120,9 @@
 
 \mybox{入栈}
 
-\begin{lstlisting}[language=C]
-stack_t *stack_push(stack_t *stack, T elem) {
-	array_append(stack->data, elem);
-	return stack;
-}
+\begin{lstlisting}[language=Python]
+def push(self, elem):
+	self.__data.append(elem)
 \end{lstlisting}
 
 \vspace{0.5cm}
@@ -137,10 +135,9 @@ stack_t *stack_push(stack_t *stack, T elem) {
 
 \mybox{出栈}
 
-\begin{lstlisting}[language=C]
-T stack_pop(stack_t *stack) {
-	return array_remove(stack->data, stack_size(stack) - 1);
-}
+\begin{lstlisting}[language=Python]
+def pop(self):
+	return self.__data.pop()
 \end{lstlisting}
 
 \newpage

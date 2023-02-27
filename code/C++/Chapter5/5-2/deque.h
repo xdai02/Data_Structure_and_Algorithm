@@ -12,6 +12,7 @@ class Deque {
     public:
     bool empty();
     int size();
+    void clear();
     void push_front(T elem);
     void push_back(T elem);
     T pop_front();
@@ -28,6 +29,11 @@ bool Deque<T>::empty() {
 template <typename T>
 int Deque<T>::size() {
     return data.size();
+}
+
+template <typename T>
+void Deque<T>::clear() {
+    data.clear();
 }
 
 template <typename T>

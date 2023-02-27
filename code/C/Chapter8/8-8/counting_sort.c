@@ -19,7 +19,7 @@ int *counting_sort(int *arr, int n) {
 
     int range = max_val - min_val + 1;
     int *counts = (int *)calloc(range, sizeof(int));
-    if (!counts) {
+    if (counts == NULL) {
         exit(1);
     }
 

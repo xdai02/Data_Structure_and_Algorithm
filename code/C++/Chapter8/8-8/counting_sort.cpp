@@ -13,7 +13,7 @@ int *counting_sort(int *arr, int n) {
 
     int range = max_val - min_val + 1;
     int *counts = new int[range];
-    if (!counts) {
+    if (counts == NULL) {
         exit(1);
     }
     for (int i = 0; i < range; i++) {

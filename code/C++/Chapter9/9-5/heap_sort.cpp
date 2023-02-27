@@ -1,14 +1,8 @@
-#include <stdio.h>
+#include <iostream>
 
-typedef int T;
+using namespace std;
 
-#define swap(x, y)  \
-    {               \
-        T temp = x; \
-        x = y;      \
-        y = temp;   \
-    }
-
+template <typename T>
 static void heapify(T *arr, int index, int n) {
     int child_index = 2 * index + 1;
     while (child_index < n) {
@@ -27,8 +21,9 @@ static void heapify(T *arr, int index, int n) {
 /**
  * Heap Sort (original v1.0)
  */
+template <typename T>
 T *heap_sort(T *arr, int n) {
-    for (int i = n / 2 - 1; i >= 0; i--) {
+    for (int i = n / 2; i >= 0; i--) {
         heapify(arr, i, n);
     }
 
@@ -46,9 +41,9 @@ int main() {
 
     heap_sort(arr, n);
     for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
+        cout << arr[i] << " ";
     }
-    printf("\n");
+    cout << endl;
 
     return 0;
 }

@@ -32,5 +32,7 @@ int main() {
     comparator->sort(quick_sort_v2_2, "Quick Sort (optimized v2.2)");
     comparator->sort(quick_sort_v3_0, "Quick Sort (optimized v3.0)");
 
+    comparator->sort(heap_sort_v1_0, "Heap Sort (original v1.0)");
+
     return 0;
 }

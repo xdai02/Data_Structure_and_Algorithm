@@ -578,4 +578,37 @@ T *quick_sort_v3_0(T *arr, int n) {
     return arr;
 }
 
+template <typename T>
+static void heapify(T *arr, int index, int n) {
+    int child_index = 2 * index + 1;
+    while (child_index < n) {
+        if (child_index + 1 < n && arr[child_index + 1] > arr[child_index]) {
+            child_index++;
+        }
+        if (arr[index] >= arr[child_index]) {
+            break;
+        }
+        std::swap(arr[index], arr[child_index]);
+        index = child_index;
+        child_index = 2 * index + 1;
+    }
+}
+
+/**
+ * Heap Sort (original v1.0)
+ */
+template <typename T>
+T *heap_sort_v1_0(T *arr, int n) {
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(arr, i, n);
+    }
+
+    for (int i = n - 1; i > 0; i--) {
+        std::swap(arr[0], arr[i]);
+        heapify(arr, 0, i);
+    }
+
+    return arr;
+}
+
 #endif

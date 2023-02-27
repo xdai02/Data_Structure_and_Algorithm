@@ -7,7 +7,7 @@ typedef struct deque_t {
 
 deque_t *deque_create() {
     deque_t *deque = (deque_t *)malloc(sizeof(deque_t));
-    if (!deque) {
+    if (deque == NULL) {
         fprintf(stderr, "Error: memory allocation failed.\n");
         return NULL;
     }
@@ -35,6 +35,13 @@ bool deque_is_empty(deque_t *deque) {
         return true;
     }
     return doubly_linked_list_is_empty(deque->data);
+}
+
+void deque_clear(deque_t *deque) {
+    if (deque == NULL) {
+        return;
+    }
+    doubly_linked_list_clear(deque->data);
 }
 
 deque_t *deque_push_front(deque_t *deque, T elem) {

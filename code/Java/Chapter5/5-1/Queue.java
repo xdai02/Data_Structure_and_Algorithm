@@ -15,6 +15,10 @@ public class Queue<T> {
         return data.size();
     }
 
+    public void clear() {
+        data.clear();
+    }
+
     public void enqueue(T elem) {
         data.addLast(elem);
     }

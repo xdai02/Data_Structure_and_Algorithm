@@ -1,25 +1,42 @@
 public class Knapsack {
-    private static final int ITEM_NUM = 5;
-    private static final int CAPACITY = 20;
+    public static class Item {
+        double weight;
+        double value;
 
-    public static void main(String[] args) {
-        int[] weight = {0, 2, 3, 4, 5, 9};
-        int[] value = {0, 3, 4, 5, 8, 10};
-        System.out.println(getMaxValue(weight, value));
+        public Item(double weight, double value) {
+            this.weight = weight;
+            this.value = value;
+        }
     }
 
-    public static int getMaxValue(int[] weight, int[] value) {
-        int[][] b = new int[ITEM_NUM+1][CAPACITY+1];
+    public static void main(String[] args) {
+        Item[] items = {
+                new Item(2, 3),
+                new Item(3, 4),
+                new Item(4, 5),
+                new Item(5, 8),
+                new Item(9, 10)
+        };
+        int capacity = 20;
+        System.out.println(knapsack(items, capacity));
+    }
 
-        for(int k = 1; k <= ITEM_NUM; k++) {
-            for(int c = 1; c <= CAPACITY; c++) {
-                if(weight[k] > c) {
-                    b[k][c] = b[k-1][c];
+    public static int knapsack(Item[] items, int capacity) {
+        int[][] values = new int[items.length + 1][capacity + 1];
+
+        for (int i = 1; i <= items.length; i++) {
+            for (int j = 1; j <= capacity; j++) {
+                if (items[i - 1].weight > j) {
+                    values[i][j] = values[i - 1][j];
                 } else {
-                    b[k][c] = Math.max(b[k-1][c-weight[k]] + value[k], b[k-1][c]);
+                    values[i][j] = Math.max(
+                            values[i - 1][j - (int) items[i - 1].weight] + (int) items[i - 1].value,
+                            values[i - 1][j]
+                    );
                 }
             }
         }
-        return b[ITEM_NUM][CAPACITY];
+
+        return values[items.length][capacity];
     }
 }

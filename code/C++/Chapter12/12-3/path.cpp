@@ -1,4 +1,6 @@
-#include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 int path(int row, int col) {
     int path[row][col];
@@ -15,6 +17,6 @@ int path(int row, int col) {
 }
 
 int main() {
-    printf("%d\n", path(4, 8));
+    cout << path(4, 8) << endl;
     return 0;
 }

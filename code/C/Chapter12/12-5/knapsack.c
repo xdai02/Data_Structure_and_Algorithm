@@ -1,28 +1,50 @@
 #include <stdio.h>
-#define ITEM_NUM 5
-#define CAPACITY 20
+#include <stdlib.h>
+#include <string.h>
 
-int max(int a, int b) {
-    return a > b ? a : b;
+typedef struct {
+    int weight;
+    int value;
+} Item;
+
+Item item_create(double weight, double value) {
+    Item item;
+    item.weight = weight;
+    item.value = value;
+    return item;
 }
 
-int getMaxValue(int *weight, int *value) {
-    int b[ITEM_NUM+1][CAPACITY+1] = {{0}};
+int knapsack(Item *items, int n, int capacity) {
+    int values[n + 1][capacity + 1];
+    memset(values, 0, sizeof(values));
 
-    for(int k = 1; k <= ITEM_NUM; k++) {
-        for(int c = 1; c <= CAPACITY; c++) {
-            if(weight[k] > c) {
-                b[k][c] = b[k-1][c];
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= capacity; j++) {
+            if (items[i - 1].weight > j) {
+                values[i][j] = values[i - 1][j];
             } else {
-                b[k][c] = max(b[k-1][c-weight[k]] + value[k], b[k-1][c]);
+                values[i][j] = __max(
+                    values[i - 1][j - items[i - 1].weight] + items[i - 1].value,
+                    values[i - 1][j]
+                );
             }
         }
     }
-    return b[ITEM_NUM][CAPACITY];
+
+    return values[n][capacity];
 }
 
 int main() {
-    int weight[] = {0, 2, 3, 4, 5, 9};
-    int value[] = {0, 3, 4, 5, 8, 10};
-    printf("%d\n", getMaxValue(weight, value));
+    Item items[] = {
+        item_create(2, 3),
+        item_create(3, 4),
+        item_create(4, 5),
+        item_create(5, 8),
+        item_create(9, 10),
+    };
+    int n = sizeof(items) / sizeof(Item);
+    int capacity = 20;
+
+    printf("%d\n", knapsack(items, n, capacity));
+    return 0;
 }

@@ -1,25 +1,30 @@
-ITEM_NUM = 5
-CAPACITY = 20
+class Item:
+    def __init__(self, weight, value):
+        self.weight = weight
+        self.value = value
 
-def get_max_value(weight, value):
-    b = [
-        [0 for col in range(CAPACITY+1)] 
-        for row in range(ITEM_NUM+1)
-    ]
+def knapsack(items, capacity):
+    values = [[0 for _ in range(capacity + 1)] for _ in range(len(items) + 1)]
 
-    for k in range(1, ITEM_NUM+1):
-        for c in range(1, CAPACITY+1):
-            if weight[k] > c:
-                b[k][c] = b[k-1][c]
+    for i in range(1, len(items) + 1):
+        for j in range(1, capacity + 1):
+            if items[i - 1].weight > j:
+                values[i][j] = values[i - 1][j]
             else:
-                b[k][c] = max(b[k-1][c-weight[k]] + value[k], b[k-1][c])
-    
-    return b[ITEM_NUM][CAPACITY]
+                values[i][j] = max(
+                    values[i - 1][j - items[i - 1].weight] + items[i - 1].value,
+                    values[i - 1][j]
+                )
 
-def main():
-    weight = [0, 2, 3, 4, 5, 9]
-    value = [0, 3, 4, 5, 8, 10]
-    print(get_max_value(weight, value))
+    return values[len(items)][capacity]
 
-if __name__ == "__main__":
-    main()
+items = [
+    Item(2, 3),
+    Item(3, 4), 
+    Item(4, 5),
+    Item(5, 8),
+    Item(9, 10)
+]
+capacity = 20
+
+print(knapsack(items, capacity))

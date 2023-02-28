@@ -10,12 +10,14 @@ public class Cookie {
     public static int distribute(int[] children, int[] cookies) {
         Arrays.sort(children);
         Arrays.sort(cookies);
+
         int child = 0;
         int cookie = 0;
         while (child < children.length && cookie < cookies.length) {
-            if (children[child] <= cookies[cookie++]) {
+            if (children[child] <= cookies[cookie]) {
                 child++;
             }
+            cookie++;
         }
         return child;
     }

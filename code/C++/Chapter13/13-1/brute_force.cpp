@@ -1,9 +1,11 @@
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 
-int brute_force(const char *s, const char *p) {
-    int s_len = strlen(s);
-    int p_len = strlen(p);
+using namespace std;
+
+int brute_force(const string s, const string p) {
+    int s_len = s.size();
+    int p_len = p.size();
     int i = 0;
     int j = 0;
 
@@ -25,8 +27,8 @@ int brute_force(const char *s, const char *p) {
 }
 
 int main() {
-    const char *s = "BBC ABCDAB ABCDABCDABDE";
-    const char *p = "ABCDABD";
-    printf("%d\n", brute_force(s, p));
+    string s = "BBC ABCDAB ABCDABCDABDE";
+    string p = "ABCDABD";
+    cout << brute_force(s, p) << endl;
     return 0;
 }

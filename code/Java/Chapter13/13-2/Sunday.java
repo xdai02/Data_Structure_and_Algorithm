@@ -1,7 +1,7 @@
 public class Sunday {
     public static void main(String[] args) {
-        String s = "a simple example";
-        String p = "ample";
+        String s = "bcaitsnaxzfinihao";
+        String p = "nihao";
         System.out.println(sunday(s, p));
     }
 
@@ -12,20 +12,20 @@ public class Sunday {
         int j = 0;
         int result = 0;
 
-        while(i < s.length && j < p.length) {
-            if(s[i] == p[j]) {
+        while (i < s.length && j < p.length) {
+            if (s[i] == p[j]) {
                 i++;
                 j++;
                 continue;
             }
 
             int idx = result + p.length;
-            if(idx > s.length) {
+            if (idx > s.length) {
                 return -1;
             }
 
             int k = p.length - 1;
-            while(k >= 0 && s[idx] != p[k]) {
+            while (k >= 0 && s[idx] != p[k]) {
                 k--;
             }
 
@@ -34,7 +34,7 @@ public class Sunday {
             result = i;
             j = 0;
 
-            if(result + p.length > s.length) {
+            if (result + p.length > s.length) {
                 return -1;
             }
         }

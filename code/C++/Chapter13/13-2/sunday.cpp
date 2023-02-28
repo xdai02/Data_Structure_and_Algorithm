@@ -1,9 +1,11 @@
-#include <stdio.h>
-#include <string.h>
+#include <iostream>
+#include <string>
 
-int sunday(const char *s, const char *p) {
-    int s_len = strlen(s);
-    int p_len = strlen(p);
+using namespace std;
+
+int sunday(const string s, const string p) {
+    int s_len = s.size();
+    int p_len = p.size();
     int i = 0;
     int j = 0;
     int result = 0;
@@ -39,8 +41,8 @@ int sunday(const char *s, const char *p) {
 }
 
 int main() {
-    const char *s = "bcaitsnaxzfinihao";
-    const char *p = "nihao";
-    printf("%d\n", sunday(s, p));
+    string s = "bcaitsnaxzfinihao";
+    string p = "nihao";
+    cout << sunday(s, p) << endl;
     return 0;
 }

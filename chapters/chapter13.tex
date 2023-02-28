@@ -128,12 +128,10 @@ BF暴力匹配在最坏情况下时间复杂度是$ O(mn) $。\\
 
 \begin{lstlisting}[language=Python]
 def brute_force(s, p):
-    s_len = len(s)
-    p_len = len(p)
     i = 0
     j = 0
 
-    while i < s_len and j < p_len:
+    while i < len(s) and j < len(p):
         if s[i] == p[j]:
             i += 1
             j += 1
@@ -141,7 +139,7 @@ def brute_force(s, p):
             i = i - j + 1
             j = 0
     
-    if j == p_len:
+    if j == len(p):
         return i - j
     else:
         return -1
@@ -246,96 +244,33 @@ S[10]为f，P[0]为n，匹配失败。关注文本串中参加匹配的最末位
 
 \begin{lstlisting}[language=Python]
 def sunday(s, p):
-    s_len = len(s)
-    p_len = len(p)
     i = 0
     j = 0
     result = 0
     
-    while i < s_len and j < p_len:
+    while i < len(s) and j < len(p):
         if s[i] == p[j]:
             i += 1
             j += 1
             continue
 
-        idx = result + p_len
-        if idx >= s_len:
+        idx = result + len(p)
+        if idx >= len(s):
             return -1
 
-        k = p_len - 1
+        k = len(p) - 1
         while k >= 0 and s[idx] != p[k]:
             k -= 1
 
         i = result
-        i += p_len - k
+        i += len(p) - k
         result = i
         j = 0
 
-        if result + p_len > s_len:
+        if result + len(p) > len(s):
             return -1
 
     return result
-\end{lstlisting}
-
-\newpage
-
-\section{RK}
-
-\subsection{RK（Rabin-Karp）}
-
-RK算法的命名由Rabin和Karp两位发明者的名字而来，它的实现方式有点与众不同。BF算法只是简单粗暴地对两个字符串的所有字符依次比较，而RK算法比较的是两个字符串的哈希值。\\
-
-RK算法的基本思想就是将模式串P的哈希值跟文本串S中每一个长度为|S|的子串的哈希值进行比较。如果两个字符串哈希值不相同，则它们肯定不匹配。如果它们的哈希值相同，它们有可能匹配（因为可能存在哈希冲突）。\\
-
-由于哈希函数有可能会产生哈希冲突，哈希值相等的两个字符串不一定相同。因此如果两个字符串的哈希值相等，就把这两个字符串本身进行一次比较即可。这种方法的前提是要控制冲突概率，达到可以接受的状态。\\
-
-不过每次hash的时间复杂度为$ O(n) $，如果把全部子串都进行hash，总的时间复杂度不是和BF算法一样，都是$ O(mn) $了吗？\\
-
-其实对子串的hash计算并不是独立的，从第二个子串开始，每一次子串的hash都可以由上一次子串进行简单的加减得到（减去第一个字符的hash，加上新字符的hash）。因此通过设计特殊的哈希算法，只需扫描一遍文本串就能计算出所有子串的哈希值。期间最多需要比较m - n + 1个子串的哈希值。\\
-
-相比于BF算法，RK算法采用哈希值比较的方式，免去了许多无谓的字符比较，所以时间复杂度大大提高了。RK算法的缺点在于哈希冲突，每一次哈希冲突的时候，RK算法都要对子串和模式串进行逐个字符的比较。如果冲突太多了，RK算法就退化成了BF算法。\\
-
-\mybox{RK}
-
-\begin{lstlisting}[language=Java]
-public static int rk(String s, String p) {
-    int sLen = s.length();
-    int pLen = p.length();
-
-    int sHash = hash(s.substring(0, pLen)); // 文本串子串哈希值
-    int pHash = hash(p);                    // 模式串哈希值
-
-    for(int i = 0; i < sLen - pLen + 1; i++) {
-        if(sHash == pHash) {
-            if(match(s.substring(i, i + pLen), p)) {
-                return i;
-            }
-        }
-        if(i < sLen - pLen) {
-            sHash = nextHash(s, sHash, i, pLen);
-        }
-    }
-
-    return -1;
-}
-
-public static int hash(String s) {
-    int hashCode = 0;
-    for(int i = 0; i < s.length(); i++) {
-        hashCode += s.charAt(i) - 'a';
-    }
-    return hashCode;
-}
-
-public static int nextHash(String s, int hash, int start, int n) {
-    hash -= s.charAt(start) - 'a';
-    hash += s.charAt(start + n) - 'a';
-    return hash;
-}
-
-public static boolean match(String s, String p) {
-    return s.equals(p);
-}
 \end{lstlisting}
 
 \newpage
@@ -719,39 +654,30 @@ next数组实质上就是找出模式串前后字符重复出现的个数，next
 
 \mybox{KMP}
 
-\begin{lstlisting}[language=Java]
-public static int[] getNexts(String p) {
-	int n = p.length();
-	int[] next = new int[n];
-	int j = 0;
-	for(int i = 2; i < n; i++) {
-		while(j != 0 && p.charAt(j) != p.charAt(i-1)) {
-			j = next[j];
-		}
-		if(p.charAt(j) == p.charAt(i-1)) {
-			j++;
-		}
-		next[i] = j;
-	}
-	return next;
-}
+\begin{lstlisting}[language=Python]
+def get_nexts(p):
+    next = [0] * len(p)
+    j = 0
+    
+    for i in range(2, len(p)):
+        while j != 0 and p[j] != p[i-1]:
+            j = next[j]
+        if p[j] == p[i-1]:
+            j += 1
+        next[i] = j
+    return next
 
-public static int kmp(String s, String p) {
-	int[] next = getNexts(p);
-	int j = 0;
-	for(int i = 0; i < s.length(); i++) {
-		while(j > 0 && s.charAt(i) != p.charAt(j)) {
-			j = next[j];
-		}
-		if(s.charAt(i) == p.charAt(j)) {
-			j++;
-		}
-		if(j == p.length()) {
-			return i - p.length() + 1;
-		}
-	}
-	return -1;
-}
+def kmp(s, p):
+    next = get_nexts(p)
+    j = 0
+    for i in range(len(s)):
+        while j > 0 and s[i] != p[j]:
+            j = next[j]
+        if s[i] == p[j]:
+            j += 1
+        if j == len(p):
+            return i - len(p) + 1
+    return -1
 \end{lstlisting}
 
 \newpage
